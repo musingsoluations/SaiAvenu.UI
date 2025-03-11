@@ -53,7 +53,7 @@ jobs:
           - name: Deploy to Azure Web App
             run: |
                     az webapp config container set \
-                      --name saiavenu-ui \
+                      --name mysochub \
                       --resource-group MySocietyHub-test \
                       --docker-custom-image-name ghcr.io/${{ github.repository_owner }}/sai-avenue-ui:latest \
                       --docker-registry-server-url https://ghcr.io \
