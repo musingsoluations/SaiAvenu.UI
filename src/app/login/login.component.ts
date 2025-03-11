@@ -23,13 +23,18 @@ export class LoginComponent {
   ) { }
 
   onSubmit() {
-    const isValid = this.auth.login(this.credentials.userId, this.credentials.password);
-    if (isValid) {
-      this.errorMessage = '';
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.errorMessage = 'Invalid credentials. Please try again.';
-    }
-    this.submitting = false;
+    this.submitting = true;
+    this.errorMessage = '';
+
+    this.auth.login(this.credentials.userId, this.credentials.password).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard']);
+        this.submitting = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Login failed. Please check your credentials.';
+        this.submitting = false;
+      }
+    });
   }
 }
