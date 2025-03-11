@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: sai-avenue-ui
+  IMAGE_NAME: musingsoluations/saiavenue-ui
 
 jobs:
   build-and-push:
