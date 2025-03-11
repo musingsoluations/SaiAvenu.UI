@@ -19,10 +19,8 @@
 /* Left section with a wavy shape */
 .left-section {
   flex: 1;
-  position: relative;
-  /* Important for the ::after positioning */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  overflow: hidden;
+  clip-path: url(#waveClip);
 }
 
 /* Remove or comment out the .curve-design rules if they exist:
