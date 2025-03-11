@@ -1,0 +1,66 @@
+/* Main layout container */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Top bar styling */
+app-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Main content area (sidebar + content) */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar styling */
+app-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  padding: 15px;
+}
+
+/* Content area styling */
+.content-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f7fafc;
+}
+
+@media (max-width: 768px) {
+  app-sidebar {
+    position: fixed;
+    left: -200px;
+    top: 0;
+    bottom: 0;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+
+  app-sidebar.active {
+    left: 0;
+  }
+
+  .content-area {
+    margin-left: 0;
+  }
+}
+
+.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+}

@@ -1,0 +1,35 @@
+.sidebar-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  height: 100%;
+}
+
+.nav-header {
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 1rem;
+  padding: 0 10px;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 0.5rem;
+}
+
+.nav-item a {
+  display: block;
+  padding: 10px;
+  color: #4a5568;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.nav-item a:hover {
+  background-color: #e2e8f0;
+}

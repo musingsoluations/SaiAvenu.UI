@@ -1,11 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-top-bar',
-  imports: [],
+  standalone: true,
   templateUrl: './top-bar.component.html',
-  styleUrl: './top-bar.component.css'
+  styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
+  @Output() toggle = new EventEmitter<void>();
+  sidebarVisible = false;
 
+  toggleSidebar() {
+    this.sidebarVisible = !this.sidebarVisible;
+    this.toggle.emit();
+  }
+
+  closeSidebar() {
+    this.sidebarVisible = !this.sidebarVisible;
+    this.toggle.emit();
+  }
 }
