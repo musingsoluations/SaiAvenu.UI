@@ -1,9 +1,6 @@
 <div class="layout-container">
-  <app-top-bar (toggle)="toggleSidebar()"></app-top-bar>
-  <div class="main-content">
-    <app-sidebar [class.active]="sidebarVisible" (click)="closeSidebar()"></app-sidebar>
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
+  <app-top-bar></app-top-bar>
+  <div class="content-area">
+    <router-outlet></router-outlet>
   </div>
 </div>

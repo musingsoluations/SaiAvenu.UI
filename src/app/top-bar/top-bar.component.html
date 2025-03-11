@@ -1,11 +1,19 @@
 <nav class="topbar-container">
-  <div class="sidebar-backdrop" *ngIf="sidebarVisible" (click)="closeSidebar()"></div>
-  <button class="menu-toggle" (click)="toggle.emit()">☰</button>
-  <div class="logo">App Logo</div>
+  <div class="logo">
+    <i class="fa-solid fa-building"></i>
+    <span>Sri Sai Complex</span>
+  </div>
+  <button class="menu-toggle" (click)="toggleMenu()">☰</button>
   <ul class="nav-list">
-    <li class="nav-item"><a href="#">Notifications</a></li>
-    <li class="nav-item"><a href="#">Profile</a></li>
-    <li class="nav-item"><a href="#">Settings</a></li>
-    <li class="nav-item"><a href="#">Help</a></li>
+    <li class="nav-item"><a routerLink="/dashboard">Dashboard</a></li>
+    <li class="nav-item"><a routerLink="/profile">Profile</a></li>
+    <li class="nav-item" (click)="toggleSettingsMenu($event)">
+      <a>Settings</a>
+      <div class="dropdown-menu" [class.show]="showSettingsMenu">
+        <a class="dropdown-item" routerLink="/add-user">Add User</a>
+        <a class="dropdown-item" routerLink="/add-apartment">Add Apartment</a>
+      </div>
+    </li>
+    <li class="nav-item"><a routerLink="/reports">Reports</a></li>
   </ul>
 </nav>

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -7,16 +7,22 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-  @Output() toggle = new EventEmitter<void>();
-  sidebarVisible = false;
+  menuVisible = false;
+  showSettingsMenu = false;
 
-  toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-    this.toggle.emit();
+  toggleMenu() {
+    this.menuVisible = !this.menuVisible;
   }
 
-  closeSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-    this.toggle.emit();
+  toggleSettingsMenu(event: MouseEvent) {
+    event.stopPropagation();
+    this.showSettingsMenu = !this.showSettingsMenu;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!(event.target as Element).closest('.nav-item')) {
+      this.showSettingsMenu = false;
+    }
   }
 }
