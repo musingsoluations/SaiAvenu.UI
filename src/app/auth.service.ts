@@ -1,8 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
-import { Environment } from '../environments/environment';
-import { API_ENV } from '../environments/environment';
 
 interface AuthResponse {
   jwtToken: string;
@@ -17,15 +15,13 @@ interface AuthResponse {
 })
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  private readonly environment: Environment = inject(API_ENV);
-
   get isLoggedIn() {
     return this.isLoggedInSubject.getValue();
   }
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  private readonly AUTH_API = `${this.environment.apiUrl}api/User/login`;
+  private readonly AUTH_API = `https://mysocietyhub-test.azurewebsites.net/api/User/login`;
   private readonly TOKEN_KEY = 'jwt_token';
 
   constructor(private http: HttpClient) { }
