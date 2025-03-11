@@ -7,6 +7,7 @@ ARG API_URL
 ENV API_URL=${API_URL}
 COPY . .
 RUN sed -i "s|\\\${API_URL}|${API_URL}|g" src/environments/environment.prod.ts
+RUN cat src/environments/environment.prod.ts
 RUN npm run build -- --configuration=production
 
 # Stage 2: Serve with Nginx
