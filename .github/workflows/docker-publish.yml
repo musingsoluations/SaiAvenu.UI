@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/saiavenue-ui
+  IMAGE_NAME: ${{ github.repository_owner }}/sai-avenue-ui
 
 jobs:
   build-and-push:
