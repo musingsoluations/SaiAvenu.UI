@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   credentials = { userId: '', password: '' };
   errorMessage = '';
+  submitting = false;
 
   constructor(
     private auth: AuthService,
@@ -29,5 +30,6 @@ export class LoginComponent {
     } else {
       this.errorMessage = 'Invalid credentials. Please try again.';
     }
+    this.submitting = false;
   }
 }
