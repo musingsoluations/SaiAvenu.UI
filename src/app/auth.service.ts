@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
+import { Environment } from '../environments/environment';
 import { API_ENV } from '../environments/environment';
 
 interface AuthResponse {
@@ -16,7 +17,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  private readonly environment = inject(API_ENV);
+  private readonly environment: Environment = inject(API_ENV);
 
   get isLoggedIn() {
     return this.isLoggedInSubject.getValue();
