@@ -59,7 +59,6 @@ jobs:
                       --docker-registry-server-url https://ghcr.io \
                       --docker-registry-server-user ${{ github.actor }} \
                       --docker-registry-server-password ${{ secrets.GHCR_PAT }}
-
                     az webapp restart \
                       --name MySocietyHub-ui \
                       --resource-group MySocietyHub-test
