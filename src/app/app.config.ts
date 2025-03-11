@@ -5,10 +5,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { environment, API_ENV } from '../environments/environment';
 import { AuthInterceptor } from './auth.interceptor';
 import { authGuard } from './auth.guard';
-
-
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -29,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: API_ENV, useValue: environment }
   ]
 };
