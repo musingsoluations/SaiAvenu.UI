@@ -24,7 +24,7 @@ export class AuthService {
 
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  private readonly AUTH_API = `${this.environment.apiUrl}/api/User/login`;
+  private readonly AUTH_API = `${this.environment.apiUrl}api/User/login`;
   private readonly TOKEN_KEY = 'jwt_token';
 
   constructor(private http: HttpClient) { }

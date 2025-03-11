@@ -7,7 +7,7 @@ export interface Environment {
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:5206'
+  apiUrl: 'https://mysocietyhub-test.azurewebsites.net/'
 };
 
 export const API_ENV = new InjectionToken<Environment>('app.environment');
