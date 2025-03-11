@@ -1,3 +1,4 @@
+// src/environments/environment.ts
 import { InjectionToken } from '@angular/core';
 
 export interface Environment {
@@ -7,7 +8,10 @@ export interface Environment {
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'https://mysocietyhub-test.azurewebsites.net/'
+  apiUrl: 'http://localhost:5206'
 };
 
-export const API_ENV = new InjectionToken<Environment>('app.environment');
+export const API_ENV = new InjectionToken<Environment>('api.environment', {
+  providedIn: 'root',
+  factory: () => environment,
+});
