@@ -61,7 +61,7 @@ jobs:
                       --docker-registry-server-password ${{ secrets.GHCR_PAT }}
 
                     az webapp restart \
-                      --name saiavenu-ui \
+                      --name mysochub \
                       --resource-group MySocietyHub-test
 
           - name: Verify Deployment
