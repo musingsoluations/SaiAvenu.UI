@@ -1,0 +1,23 @@
+<div class="login-container">
+  <div class="login-form">
+    <div class="left-section">
+    </div>
+    <div class="right-section">
+      <h2>Welcome to SaiAvenue</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input type="text" id="userId" name="userId" [(ngModel)]="credentials.userId" placeholder="Mobile Number"
+            required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="password" name="password" [(ngModel)]="credentials.password" placeholder="Password"
+            required>
+        </div>
+        <button type="submit" class="signin-button">Sign In</button>
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
