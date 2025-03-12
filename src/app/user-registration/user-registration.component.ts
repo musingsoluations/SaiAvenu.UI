@@ -50,7 +50,7 @@ export class UserRegistrationComponent {
     const password = g.get('password');
     const confirmPassword = g.get('confirmPassword');
 
-    if (password?.value !== confirmPassword?.value) {
+    if (password?.value !== confirmPassword?.value || confirmPassword?.value === '') {
       confirmPassword?.setErrors({ mismatch: true });
       return { mismatch: true };
     } else {

@@ -7,7 +7,8 @@
           <input type="text" id="firstName" formControlName="firstName" placeholder="First name" [ngClass]="{ 'invalid-input': registrationForm.controls['firstName'].invalid && registrationForm.controls['firstName'].touched,
               'valid-input': registrationForm.controls['firstName'].valid
              }">
-          <span class="input-icon" title="{{ getErrorMessage('firstName') }}">i</span>
+          <span *ngIf="registrationForm.controls['firstName'].invalid " class="input-icon"
+            title="{{ getErrorMessage('firstName') }}">i</span>
         </div>
       </div>
 
@@ -17,7 +18,8 @@
           <input type="text" id="lastName" formControlName="lastName" placeholder="Last name" [ngClass]="{ 'invalid-input': registrationForm.controls['lastName'].invalid && registrationForm.controls['lastName'].touched,
               'valid-input': registrationForm.controls['lastName'].valid
              }">
-          <span class="input-icon" title="{{ getErrorMessage('lastName') }}">i</span>
+          <span *ngIf="registrationForm.controls['lastName'].invalid " class="input-icon"
+            title="{{ getErrorMessage('lastName') }}">i</span>
         </div>
       </div>
 
@@ -27,7 +29,8 @@
           <input type="email" id="email" formControlName="email" placeholder="Email address" [ngClass]="{ 'invalid-input': registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched,
               'valid-input': registrationForm.controls['email'].valid
              }">
-          <span class="input-icon" title="{{ getErrorMessage('email') }}">i</span>
+          <span *ngIf="registrationForm.controls['email'].invalid " class="input-icon"
+            title="{{ getErrorMessage('email') }}">i</span>
         </div>
       </div>
 
@@ -37,7 +40,8 @@
           <input type="password" id="password" formControlName="password" placeholder="Password"
             [ngClass]="{ 'invalid-input': registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched, 'valid-input': registrationForm.controls['password'].valid }"
             [ngClass]="{ 'invalid-input': registrationForm.hasError('mismatch') || (registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched),'valid-input': registrationForm.controls['password'].valid }">
-          <span class="input-icon" title="{{ getErrorMessage('email') }}">i</span>
+          <span *ngIf="registrationForm.controls['confirmPassword'].invalid " class="input-icon"
+            title="{{ getErrorMessage('email') }}">i</span>
         </div>
       </div>
 
@@ -46,7 +50,8 @@
         <div class="input-container">
           <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password"
             [ngClass]="{ 'invalid-input': registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched, 'valid-input': registrationForm.controls['confirmPassword'].valid }">
-          <span class="input-icon" title="{{ getErrorMessage('confirmPassword') }}">i</span>
+          <span *ngIf="registrationForm.controls['confirmPassword'].invalid " class="input-icon"
+            title="{{ getErrorMessage('confirmPassword') }}">i</span>
         </div>
       </div>
 
@@ -55,7 +60,8 @@
         <div class="input-container">
           <input type="tel" formControlName="mobile" placeholder="Enter mobile number"
             [ngClass]="{ 'invalid-input': registrationForm.controls['mobile'].invalid && registrationForm.controls['mobile'].touched, 'valid-input': registrationForm.controls['mobile'].valid }">
-          <span class="input-icon" title="{{ getErrorMessage('mobile') }}">i</span>
+          <span *ngIf="registrationForm.controls['mobile'].invalid " class="input-icon"
+            title="{{ getErrorMessage('mobile') }}">i</span>
         </div>
       </div>
       <div class="form-group">
