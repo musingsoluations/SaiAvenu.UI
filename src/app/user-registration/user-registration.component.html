@@ -1,4 +1,5 @@
-<app-message #messageComponent></app-message>
+<app-message #messageComponent (closed)="onMessageClosed()">
+</app-message>
 <div class="user-registration-container">
   <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <div class="registration-grid">

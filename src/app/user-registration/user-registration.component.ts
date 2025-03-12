@@ -19,6 +19,15 @@ import { Router } from '@angular/router';
   ]
 })
 export class UserRegistrationComponent {
+  @ViewChild('messageComponent') messageComponent!: MessageComponent;
+
+  onMessageClosed() {
+    // Handle message close if needed
+    this.registrationForm.reset();
+    this.submitted = false;
+    const rolesArray = this.registrationForm.get('roles') as FormArray;
+    rolesArray.clear();
+  }
   submitted = false;
   roles = ['Admin', 'Owner', 'Renter'];
   registrationForm: FormGroup;
@@ -93,15 +102,16 @@ export class UserRegistrationComponent {
     }
     return 'Invalid value';
   }
-
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-
   onSubmit() {
     this.submitted = true;
     if (this.registrationForm.valid) {
       this.authService.registerUser(this.registrationForm.value).subscribe({
         next: () => {
-          this.messageComponent.show('User added successfully!');
+          this.messageComponent.show(
+            'User added successfully!',
+            'fa-solid fa-shield-check',
+            '#008000',
+            'User Added');
           this.registrationForm.reset();
           this.submitted = false;
           const rolesArray = this.registrationForm.get('roles') as FormArray;

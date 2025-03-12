@@ -1,5 +1,13 @@
 <div *ngIf="isVisible" class="message-overlay">
   <div class="message-box">
-    {{ message }}
+    <div class="message-header">
+      <h3 class="message-title">{{ title }}</h3>
+      <i class="{{icon}}" [style.color]="iconColor" class="header-icon"></i>
+    </div>
+    <div class="message-content">
+      {{ message }}
+    </div>
+    <div class="message-footer">
+      <button class="btn btn-primary" (click)="closeModal()">Close</button>
+    </div>
   </div>
-</div>
