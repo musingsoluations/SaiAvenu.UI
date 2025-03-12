@@ -3,22 +3,40 @@
     <div class="registration-grid">
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" id="firstName" formControlName="firstName" placeholder="First name">
+        <input type="text" id="firstName" formControlName="firstName" placeholder="First name" [ngClass]="{ 'invalid-input': registrationForm.controls['firstName'].invalid && registrationForm.controls['firstName'].touched,
+            'valid-input': registrationForm.controls['firstName'].valid
+           }">
+        <div *ngIf="registrationForm.controls['firstName'].errors" class="error-message">
+          {{ getErrorMessage('firstName') }}
+        </div>
       </div>
 
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" formControlName="lastName" placeholder="Last name">
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Last name" [ngClass]="{ 'invalid-input': registrationForm.controls['lastName'].invalid && registrationForm.controls['lastName'].touched,
+            'valid-input': registrationForm.controls['lastName'].valid
+           }">
+        <div *ngIf="registrationForm.controls['lastName'].errors" class="error-message">
+          {{ getErrorMessage('lastName') }}
+        </div>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" formControlName="email" placeholder="Email address">
+        <input type="email" id="email" formControlName="email" placeholder="Email address" [ngClass]="{ 'invalid-input': registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched,
+            'valid-input': registrationForm.controls['email'].valid
+           }">
+        <div *ngIf="registrationForm.controls['email'].errors" class="error-message">
+          {{ getErrorMessage('email') }}
+        </div>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" placeholder="Password">
+        <input type="password" id="password" formControlName="password" placeholder="Password"
+          [ngClass]="{ 'invalid-input': registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched, 'valid-input': registrationForm.controls['password'].valid }"
+          [attr.data-tooltip]="registrationForm.controls['confirmPassword'].errors ? getErrorMessage('confirmPassword') : ''"
+          [ngClass]="{ 'invalid-input': registrationForm.hasError('mismatch') || (registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched),'valid-input': registrationForm.controls['password'].valid }">
       </div>
 
       <div class="form-group">

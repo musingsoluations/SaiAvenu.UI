@@ -35,16 +35,28 @@ export class UserRegistrationComponent {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      ]],
+      confirmPassword: ['', [Validators.required]],
       mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       roles: this.fb.array([], Validators.required)
     }, { validator: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(g: FormGroup) {
-    return g.get('password')?.value === g.get('confirmPassword')?.value
-      ? null : { mismatch: true };
+    const password = g.get('password');
+    const confirmPassword = g.get('confirmPassword');
+
+    if (password?.value !== confirmPassword?.value) {
+      confirmPassword?.setErrors({ mismatch: true });
+      return { mismatch: true };
+    } else {
+      confirmPassword?.setErrors(null);
+      return null;
+    }
   }
 
   onRoleChange(e: any) {
