@@ -14,12 +14,15 @@ export class TopBarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const dropdownTriggerEl = document.getElementById('dropdownNavbar');
+    if (!dropdownTriggerEl) {
+      return;
+    }
     var dropdownInstance = new Dropdown(dropdownTriggerEl);
     const submenuItems = document.querySelectorAll('#dropdownNavbar a');
 
-    submenuItems.forEach((item) => {
+    submenuItems?.forEach((item) => {
       item.addEventListener('click', () => {
-        dropdownInstance.hide();
+        dropdownInstance?.hide();
       });
     });
   }
