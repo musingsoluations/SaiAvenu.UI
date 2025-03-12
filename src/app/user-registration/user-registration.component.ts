@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class UserRegistrationComponent {
+  submitted = false;
   roles = ['Admin', 'Owner', 'Renter'];
   registrationForm: FormGroup;
 
@@ -52,6 +53,7 @@ export class UserRegistrationComponent {
   }
 
   onSubmit() {
+    this.submitted = true;
     if (this.registrationForm.valid) {
       this.authService.registerUser(this.registrationForm.value).subscribe({
         next: () => this.router.navigate(['/login']),
