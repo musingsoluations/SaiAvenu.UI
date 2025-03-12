@@ -18,22 +18,13 @@
 
 .form-group {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 120px 1fr;
   gap: 1rem;
   margin-bottom: 1rem;
+  align-items: center;
 }
 
-label {
-  text-align: left;
-  margin: auto 0;
-  font-weight: 500;
-  color: #2d3748;
-}
 
-label {
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
 
 input,
 select {
@@ -42,12 +33,6 @@ select {
   font-size: 1rem;
 }
 
-label {
-  font-weight: 500;
-  color: #2d3748;
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-}
 
 input,
 select {
@@ -71,10 +56,10 @@ select {
 }
 
 button[type="submit"] {
-  grid-column: span 2;
-  width: 50%;
-  margin: 1rem auto 0;
-  padding: 1rem;
+  margin: 1rem auto;
+  padding: 1rem 2rem;
+  width: fit-content;
+  display: block;
 }
 
 h2 {
@@ -88,12 +73,6 @@ h2 {
   margin-bottom: 1.2rem;
 }
 
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #4a5568;
-  font-weight: 500;
-}
 
 input,
 select {
