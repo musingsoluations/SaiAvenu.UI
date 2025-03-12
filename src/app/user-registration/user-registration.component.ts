@@ -44,6 +44,11 @@ export class UserRegistrationComponent {
       mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       roles: this.fb.array([], Validators.required)
     }, { validator: this.passwordMatchValidator });
+
+    // Mark all controls as touched to show initial validation state
+    Object.keys(this.registrationForm.controls).forEach(controlName => {
+      this.registrationForm.get(controlName)?.markAsTouched();
+    });
   }
 
   passwordMatchValidator(g: FormGroup) {
