@@ -23,10 +23,7 @@ export class UserRegistrationComponent {
 
   onMessageClosed() {
     // Handle message close if needed
-    this.registrationForm.reset();
-    this.submitted = false;
-    const rolesArray = this.registrationForm.get('roles') as FormArray;
-    rolesArray.clear();
+
   }
   submitted = false;
   roles = ['Admin', 'Owner', 'Renter'];

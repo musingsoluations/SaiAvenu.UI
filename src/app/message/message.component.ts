@@ -14,6 +14,7 @@ export class MessageComponent {
   iconColor: string = '#666'; // default color
   title: string = '';
   isVisible: boolean = false;
+  timeoutInSecond: number = 0;
   private timeoutId: any;
   @Output() closed = new EventEmitter<void>();
 
@@ -23,7 +24,9 @@ export class MessageComponent {
     this.iconColor = iconColor;
     this.title = title;
     this.isVisible = true;
-    this.timeoutId = setTimeout(() => this.closeModal(), 6000);
+    if (this.timeoutInSecond > 0) {
+      this.timeoutId = setTimeout(() => this.closeModal(), 6000);
+    }
   }
 
   closeModal() {
