@@ -1,3 +1,4 @@
+/* Remove existing styles since we're using Tailwind utility classes */
 .login-container {
   display: flex;
   justify-content: center;
