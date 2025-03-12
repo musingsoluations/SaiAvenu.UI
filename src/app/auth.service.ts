@@ -18,6 +18,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private rolesSubject = new BehaviorSubject<string[]>([]);
   private readonly environment: Environment = inject(API_ENV);
   get isLoggedIn() {
     return this.isLoggedInSubject.getValue();
@@ -34,6 +35,8 @@ export class AuthService {
     return this.http.post<{ jwtToken: string }>(this.AUTH_API, { mobileNumber, password }).pipe(
       tap(response => {
         this.setToken(response.jwtToken);
+        const payload = this.decodeToken(response.jwtToken);
+        this.rolesSubject.next(payload.roles || []);
         this.isLoggedInSubject.next(true);
       })
     );
@@ -55,13 +58,25 @@ export class AuthService {
     return token;
   }
 
+  private decodeToken(token: string): { roles: string[], exp: number } {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return { roles: [], exp: 0 };
+    }
+  }
+
   private isTokenExpired(token: string): boolean {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const payload = this.decodeToken(token);
     return payload.exp < (Date.now() / 1000);
   }
 
   private setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  get roles$() {
+    return this.rolesSubject.asObservable();
   }
 
   removeToken(): void {
