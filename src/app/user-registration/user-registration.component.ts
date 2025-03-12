@@ -117,7 +117,23 @@ export class UserRegistrationComponent {
           const rolesArray = this.registrationForm.get('roles') as FormArray;
           rolesArray.clear();
         },
-        error: (err) => console.error('Registration failed:', err)
+        error: (err) => {
+          if (err.error?.title && err.error?.errors) {
+            this.messageComponent.show(
+              err.error.errors,
+              'fa-solid fa-triangle-exclamation',
+              '#ff0000',
+              err.error.title
+            );
+          } else {
+            this.messageComponent.show(
+              'An unexpected error occurred',
+              'fa-solid fa-triangle-exclamation',
+              '#ff0000',
+              'Registration Failed'
+            );
+          }
+        }
       });
     }
   }
