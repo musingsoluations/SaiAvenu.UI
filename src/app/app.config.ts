@@ -10,6 +10,7 @@ import { authGuard } from './auth.guard';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+
   {
     path: '',
     component: LayoutComponent,
@@ -17,8 +18,8 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent) },
       { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
-      { path: 'user-registration', loadComponent: () => import('./user-registration/user-registration.component').then(m => m.UserRegistrationComponent) },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: 'user-registration', loadComponent: () => import('./user-registration/user-registration.component').then(m => m.UserRegistrationComponent) }, // NEW PUBLIC ROUTE
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ]
   },
   { path: '**', redirectTo: 'login' }
