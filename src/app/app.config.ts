@@ -7,6 +7,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { AuthInterceptor } from './auth.interceptor';
 import { authGuard } from './auth.guard';
+import { UserRegistrationComponent } from './user-registration/user-registration.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent) },
       { path: 'profile', loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent) },
+      { path: 'user-registration', loadComponent: () => import('./user-registration/user-registration.component').then(m => m.UserRegistrationComponent) },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
