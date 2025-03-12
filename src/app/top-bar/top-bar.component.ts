@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -8,23 +8,15 @@ import { RouterModule } from '@angular/router';
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.css']
 })
-export class TopBarComponent {
+export class TopBarComponent implements OnInit {
   menuVisible = false;
-  showSettingsMenu = false;
+
+  ngOnInit() {
+    // Initialize Flowbite components
+    import('flowbite').then(({ initFlowbite }) => initFlowbite());
+  }
 
   toggleMenu() {
     this.menuVisible = !this.menuVisible;
-  }
-
-  toggleSettingsMenu(event: MouseEvent) {
-    event.stopPropagation();
-    this.showSettingsMenu = !this.showSettingsMenu;
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    if (!(event.target as Element).closest('.nav-item')) {
-      this.showSettingsMenu = false;
-    }
   }
 }
