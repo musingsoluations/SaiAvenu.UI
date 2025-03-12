@@ -1,0 +1,70 @@
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+  <div class="form-group">
+    <input type="text" formControlName="firstName" placeholder="Enter first name">
+    <div *ngIf="registrationForm.get('firstName')?.errors?.['required']" class="error-msg">
+      First name is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input type="text" formControlName="lastName" placeholder="Enter last name">
+    <div *ngIf="registrationForm.get('lastName')?.errors?.['required']" class="error-msg">
+      Last name is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input type="email" formControlName="email" placeholder="Enter email">
+    <div *ngIf="registrationForm.get('email')?.errors?.['required']" class="error-msg">
+      Email is required
+    </div>
+    <div *ngIf="registrationForm.get('email')?.errors?.['email']" class="error-msg">
+      Invalid email format
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input type="password" formControlName="password" placeholder="Enter password">
+    <div *ngIf="registrationForm.get('password')?.errors?.['required']" class="error-msg">
+      Password is required
+    </div>
+    <div *ngIf="registrationForm.get('password')?.errors?.['minlength']" class="error-msg">
+      Password must be at least 8 characters
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input type="password" formControlName="confirmPassword" placeholder="Confirm password">
+    <div *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']" class="error-msg">
+      Confirm password is required
+    </div>
+    <div *ngIf="registrationForm.errors?.['mismatch']" class="error-msg">
+      Passwords do not match
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input type="tel" formControlName="mobile" placeholder="Enter mobile number">
+    <div *ngIf="registrationForm.get('mobile')?.errors?.['required']" class="error-msg">
+      Mobile number is required
+    </div>
+    <div *ngIf="registrationForm.get('mobile')?.errors?.['pattern']" class="error-msg">
+      Invalid mobile number (10 digits required)
+    </div>
+  </div>
+
+  <div class="roles-group">
+    <label>Roles:</label>
+    <div *ngFor="let role of roles" class="role-checkbox">
+      <input type="checkbox" [value]="role" (change)="onRoleChange($event)">
+      {{ role }}
+    </div>
+    <div *ngIf="registrationForm.get('roles')?.errors?.['required']" class="error-msg">
+      At least one role must be selected
+    </div>
+  </div>
+
+  <button type="submit" class="auth-button" [disabled]="!registrationForm.valid">
+    Register User
+  </button>
+</form>

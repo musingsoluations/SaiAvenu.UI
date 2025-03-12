@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
 import { Environment } from '../environments/environment.interface';
 import { API_ENV } from '../environments/environment';
+import { CreateUserDto } from './models/user.dto';
 
 interface AuthResponse {
   jwtToken: string;
@@ -35,6 +36,13 @@ export class AuthService {
         this.setToken(response.jwtToken);
         this.isLoggedInSubject.next(true);
       })
+    );
+  }
+
+  registerUser(userData: CreateUserDto) {
+    return this.http.post<{ jwtToken: string }>(
+      `${this.environment.apiUrl}/api/user/register`,
+      userData
     );
   }
 
