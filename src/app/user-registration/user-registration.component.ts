@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MessageComponent } from '../message/message.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-registration.component.css'],
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MessageComponent
   ]
 })
 export class UserRegistrationComponent {
@@ -92,11 +94,19 @@ export class UserRegistrationComponent {
     return 'Invalid value';
   }
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+
   onSubmit() {
     this.submitted = true;
     if (this.registrationForm.valid) {
       this.authService.registerUser(this.registrationForm.value).subscribe({
-        next: () => this.router.navigate(['/login']),
+        next: () => {
+          this.messageComponent.show('User added successfully!');
+          this.registrationForm.reset();
+          this.submitted = false;
+          const rolesArray = this.registrationForm.get('roles') as FormArray;
+          rolesArray.clear();
+        },
         error: (err) => console.error('Registration failed:', err)
       });
     }
