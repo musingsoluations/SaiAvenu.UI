@@ -38,6 +38,7 @@ select {
   border: 1px solid #e2e8f0;
   border-radius: 0.375rem;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 input:focus,
@@ -45,6 +46,71 @@ select:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.invalid-input {
+  border-color: #ef4444 !important;
+  border-width: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.5s ease 0.3s;
+}
+
+.invalid-input::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #ef4444 50%, transparent 50%);
+  z-index: 1;
+  clip-path: inset(0 100% 100% 0);
+  animation: borderSpread 0.8s ease-out forwards;
+}
+
+.valid-input {
+  border-color: #22c55e !important;
+  border-width: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.5s ease 0.3s;
+}
+
+.valid-input::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #22c55e 50%, transparent 50%);
+  z-index: 1;
+  clip-path: inset(0 100% 100% 0);
+  animation: borderSpread 0.8s ease-out forwards;
+}
+
+@keyframes borderSpread {
+  0% {
+    clip-path: inset(0 100% 100% 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.invalid-input:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: #ef4444;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transform: translateY(100%);
+  z-index: 10;
 }
 
 button[type="submit"] {

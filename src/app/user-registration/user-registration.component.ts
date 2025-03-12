@@ -57,6 +57,29 @@ export class UserRegistrationComponent {
     }
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.registrationForm.get(controlName);
+
+    if (!control?.errors) return '';
+
+    if (control.errors['required']) {
+      return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} is required`;
+    }
+    if (control.errors['email']) {
+      return 'Please enter a valid email address';
+    }
+    if (control.errors['minlength']) {
+      return `Password must be at least ${control.errors['minlength'].requiredLength} characters`;
+    }
+    if (control.errors['pattern']) {
+      return 'Mobile number must be 10 digits';
+    }
+    if (control.errors['mismatch']) {
+      return 'Passwords do not match';
+    }
+    return 'Invalid value';
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.registrationForm.valid) {

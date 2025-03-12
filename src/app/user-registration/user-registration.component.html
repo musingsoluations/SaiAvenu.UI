@@ -23,12 +23,16 @@
 
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password">
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password"
+          [ngClass]="{ 'invalid-input': registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched, 'valid-input': registrationForm.controls['confirmPassword'].valid }"
+          [attr.data-tooltip]="registrationForm.controls['confirmPassword'].errors ? getErrorMessage('confirmPassword') : ''">
       </div>
 
       <div class="form-group">
         <label for="mobile">Mobile Number</label>
-        <input type="tel" formControlName="mobile" placeholder="Enter mobile number">
+        <input type="tel" formControlName="mobile" placeholder="Enter mobile number"
+          [ngClass]="{ 'invalid-input': registrationForm.controls['mobile'].invalid && registrationForm.controls['mobile'].touched, 'valid-input': registrationForm.controls['mobile'].valid }"
+          [attr.data-tooltip]="registrationForm.controls['mobile'].errors ? getErrorMessage('mobile') : ''">
       </div>
       <div class="form-group">
         <label for="roles">Roles:</label>
