@@ -49,6 +49,20 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
+.checkbox-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
 input:focus,
 select:focus {
   outline: none;
