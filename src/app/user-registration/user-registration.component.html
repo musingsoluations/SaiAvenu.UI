@@ -4,58 +4,31 @@
       <div class="form-group">
         <label for="firstName">First Name</label>
         <input type="text" id="firstName" formControlName="firstName" placeholder="First name">
-        <div
-          *ngIf="registrationForm.get('firstName')?.errors?.['required'] && (registrationForm.get('firstName')?.touched || submitted)"
-          class="error-message">
-          First name is required
-        </div>
       </div>
 
       <div class="form-group">
-        <input type="text" formControlName="lastName" placeholder="Enter last name">
-        <div *ngIf="registrationForm.get('lastName')?.errors?.['required']" class="error-msg">
-          Last name is required
-        </div>
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Last name">
       </div>
 
       <div class="form-group">
-        <input type="email" formControlName="email" placeholder="Enter email">
-        <div *ngIf="registrationForm.get('email')?.errors?.['required']" class="error-msg">
-          Email is required
-        </div>
-        <div *ngIf="registrationForm.get('email')?.errors?.['email']" class="error-msg">
-          Invalid email format
-        </div>
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Email address">
       </div>
 
       <div class="form-group">
-        <input type="password" formControlName="password" placeholder="Enter password">
-        <div *ngIf="registrationForm.get('password')?.errors?.['required']" class="error-msg">
-          Password is required
-        </div>
-        <div *ngIf="registrationForm.get('password')?.errors?.['minlength']" class="error-msg">
-          Password must be at least 8 characters
-        </div>
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Password">
       </div>
 
       <div class="form-group">
-        <input type="password" formControlName="confirmPassword" placeholder="Confirm password">
-        <div *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']" class="error-msg">
-          Confirm password is required
-        </div>
-        <div *ngIf="registrationForm.errors?.['mismatch']" class="error-msg">
-          Passwords do not match
-        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password">
       </div>
 
       <div class="form-group">
+        <label for="mobile">Mobile Number</label>
         <input type="tel" formControlName="mobile" placeholder="Enter mobile number">
-        <div *ngIf="registrationForm.get('mobile')?.errors?.['required']" class="error-msg">
-          Mobile number is required
-        </div>
-        <div *ngIf="registrationForm.get('mobile')?.errors?.['pattern']" class="error-msg">
-          Invalid mobile number (10 digits required)
-        </div>
       </div>
 
       <div class="roles-group">
@@ -63,9 +36,6 @@
         <div *ngFor="let role of roles" class="role-checkbox">
           <input type="checkbox" [value]="role" (change)="onRoleChange($event)">
           {{ role }}
-        </div>
-        <div *ngIf="registrationForm.get('roles')?.errors?.['required']" class="error-msg">
-          At least one role must be selected
         </div>
       </div>
     </div> <!-- Closing registration-grid -->

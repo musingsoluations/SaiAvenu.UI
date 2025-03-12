@@ -18,8 +18,13 @@ import { Router } from '@angular/router';
 })
 export class UserRegistrationComponent {
   submitted = false;
+  showErrors: { [key: string]: boolean } = {};
   roles = ['Admin', 'Owner', 'Renter'];
   registrationForm: FormGroup;
+
+  toggleError(field: string) {
+    this.showErrors[field] = !this.showErrors[field];
+  }
 
   constructor(
     private fb: FormBuilder,
