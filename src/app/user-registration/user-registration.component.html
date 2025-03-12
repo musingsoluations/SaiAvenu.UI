@@ -30,13 +30,8 @@
         <label for="mobile">Mobile Number</label>
         <input type="tel" formControlName="mobile" placeholder="Enter mobile number">
       </div>
-
-      <div class="roles-group">
+      <div class="form-group">
         <label>Roles:</label>
-        <div *ngFor="let role of roles" class="role-checkbox">
-          <input type="checkbox" [value]="role" (change)="onRoleChange($event)">
-          {{ role }}
-        </div>
       </div>
     </div> <!-- Closing registration-grid -->
     <button type="submit" class="auth-button" [disabled]="!registrationForm.valid">

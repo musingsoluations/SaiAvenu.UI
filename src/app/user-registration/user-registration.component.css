@@ -19,44 +19,24 @@
 .form-group {
   display: grid;
   grid-template-columns: 120px 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: .2rem;
+  margin-bottom: .2rem;
   align-items: center;
 }
-
-
 
 input,
 select {
   width: 100%;
   padding: 0.875rem;
   font-size: 1rem;
-}
-
-
-input,
-select {
   padding: 0.75rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.375rem;
-  font-size: 1rem;
-}
-
-.roles-group {
-  grid-column: span 2;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.role-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  transition: all 0.3s ease;
 }
 
 button[type="submit"] {
-  margin: 1rem auto;
+  margin: 2rem auto;
   padding: 1rem 2rem;
   width: fit-content;
   display: block;
@@ -67,21 +47,6 @@ h2 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 1.2rem;
-}
-
-
-input,
-select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.3s ease;
 }
 
 input:focus,
@@ -111,12 +76,6 @@ button[type="submit"]:disabled {
   background: #cbd5e0;
   cursor: not-allowed;
   opacity: 0.7;
-}
-
-.error-message {
-  color: #e53e3e;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {
