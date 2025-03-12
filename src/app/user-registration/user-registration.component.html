@@ -3,42 +3,60 @@
     <div class="registration-grid">
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" id="firstName" formControlName="firstName" placeholder="First name" [ngClass]="{ 'invalid-input': registrationForm.controls['firstName'].invalid && registrationForm.controls['firstName'].touched,
-            'valid-input': registrationForm.controls['firstName'].valid
-           }">
+        <div class="input-container">
+          <input type="text" id="firstName" formControlName="firstName" placeholder="First name" [ngClass]="{ 'invalid-input': registrationForm.controls['firstName'].invalid && registrationForm.controls['firstName'].touched,
+              'valid-input': registrationForm.controls['firstName'].valid
+             }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" formControlName="lastName" placeholder="Last name" [ngClass]="{ 'invalid-input': registrationForm.controls['lastName'].invalid && registrationForm.controls['lastName'].touched,
-            'valid-input': registrationForm.controls['lastName'].valid
-           }">
+        <div class="input-container">
+          <input type="text" id="lastName" formControlName="lastName" placeholder="Last name" [ngClass]="{ 'invalid-input': registrationForm.controls['lastName'].invalid && registrationForm.controls['lastName'].touched,
+              'valid-input': registrationForm.controls['lastName'].valid
+             }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" formControlName="email" placeholder="Email address" [ngClass]="{ 'invalid-input': registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched,
-            'valid-input': registrationForm.controls['email'].valid
-           }">
+        <div class="input-container">
+          <input type="email" id="email" formControlName="email" placeholder="Email address" [ngClass]="{ 'invalid-input': registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched,
+              'valid-input': registrationForm.controls['email'].valid
+             }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" formControlName="password" placeholder="Password"
-          [ngClass]="{ 'invalid-input': registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched, 'valid-input': registrationForm.controls['password'].valid }"
-          [ngClass]="{ 'invalid-input': registrationForm.hasError('mismatch') || (registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched),'valid-input': registrationForm.controls['password'].valid }">
+        <div class="input-container">
+          <input type="password" id="password" formControlName="password" placeholder="Password"
+            [ngClass]="{ 'invalid-input': registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched, 'valid-input': registrationForm.controls['password'].valid }"
+            [ngClass]="{ 'invalid-input': registrationForm.hasError('mismatch') || (registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched),'valid-input': registrationForm.controls['password'].valid }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password"
-          [ngClass]="{ 'invalid-input': registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched, 'valid-input': registrationForm.controls['confirmPassword'].valid }">
+        <div class="input-container">
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm password"
+            [ngClass]="{ 'invalid-input': registrationForm.controls['confirmPassword'].invalid && registrationForm.controls['confirmPassword'].touched, 'valid-input': registrationForm.controls['confirmPassword'].valid }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="mobile">Mobile Number</label>
-        <input type="tel" formControlName="mobile" placeholder="Enter mobile number"
-          [ngClass]="{ 'invalid-input': registrationForm.controls['mobile'].invalid && registrationForm.controls['mobile'].touched, 'valid-input': registrationForm.controls['mobile'].valid }">
+        <div class="input-container">
+          <input type="tel" formControlName="mobile" placeholder="Enter mobile number"
+            [ngClass]="{ 'invalid-input': registrationForm.controls['mobile'].invalid && registrationForm.controls['mobile'].touched, 'valid-input': registrationForm.controls['mobile'].valid }">
+          <span class="input-icon">i</span>
+        </div>
       </div>
       <div class="form-group">
         <label for="roles">Roles:</label>
