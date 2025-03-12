@@ -51,8 +51,6 @@ select:focus {
 .invalid-input {
   border-color: #ef4444 !important;
   border-width: 2px;
-  position: relative;
-  overflow: hidden;
   transition: border-color 0.5s ease 0.3s;
 }
 
@@ -100,18 +98,6 @@ select:focus {
   }
 }
 
-.invalid-input:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  background: #ef4444;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  transform: translateY(100%);
-  z-index: 10;
-}
 
 button[type="submit"] {
   margin: 2rem auto;
