@@ -31,11 +31,12 @@
         <input type="tel" formControlName="mobile" placeholder="Enter mobile number">
       </div>
       <div class="form-group">
-        <label>Roles:</label>
+        <label for="roles">Roles:</label>
         <div class="checkbox-group">
-          <label><input type="checkbox"> Admin</label>
-          <label><input type="checkbox"> Manager</label>
-          <label><input type="checkbox"> User</label>
+          <label *ngFor="let role of roles">
+            <input type="checkbox" [value]="role" (change)="onRoleChange($event)">
+            {{ role }}
+          </label>
         </div>
       </div>
     </div> <!-- Closing registration-grid -->
