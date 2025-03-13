@@ -1,3 +1,5 @@
+.left-section {}
+
 .login-card {
   display: flex;
   width: 100%;
@@ -15,11 +17,13 @@
 }
 
 .left-section {
-  flex: 1;
+  display: flex;
   margin-right: 2rem;
   border-radius: 8px;
   flex: 0 0 40%;
   background: #1976d2;
+  justify-content: center;
+  align-items: center;
 }
 
 .right-section {
@@ -74,4 +78,14 @@
 .login-button {
   margin-top: 1rem;
   width: 80%;
+}
+
+.mainText {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.subText {
+  color: rgb(82, 78, 78);
+  font-size: 0.8rem;
 }
