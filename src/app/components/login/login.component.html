@@ -1,14 +1,23 @@
 <div class="login-container">
   <div class="login-card">
-    <div class="left-section"></div>
+    <div class="left-section">
+      <div id="text">
+        <div>
+          My Society Hub
+        </div>
+        <div>
+          Simplifying Society Living, One Click at a Time!
+        </div>
+      </div>
+    </div>
     <div class="right-section">
       <form [formGroup]="loginForm" class="login-form">
-        <mat-form-field [floatLabel]="floatLabel()" style="width: 100%">
+        <mat-form-field [floatLabel]="floatLabel()" style="width: 80%">
           <mat-label>Mobile Number</mat-label>
           <input matInput placeholder="Enter your mobile number" type="text" formControlName="mobileNumber">
         </mat-form-field>
 
-        <mat-form-field [floatLabel]="floatLabel()" style="width: 100%">
+        <mat-form-field [floatLabel]="floatLabel()" style="width: 80%">
           <mat-label>Password</mat-label>
           <input matInput placeholder="Enter your password" type="password" formControlName="password">
           <button mat-icon-button matSuffix aria-label="Toggle password visibility">
