@@ -12,7 +12,7 @@ export class UserAdminService {
   private readonly environment: Environment = inject(API_ENV);
 
   registerUser(user: CreateUser): Observable<any> {
-    var registerUsers = `${this.environment.apiUrl}/api/User/login`;
+    var registerUsers = `${this.environment.apiUrl}/api/User/register`;
     return this.http.post(registerUsers, user);
   }
 }

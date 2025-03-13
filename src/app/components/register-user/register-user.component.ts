@@ -70,7 +70,7 @@ export class RegisterUserComponent {
 
   register() {
     if (this.registerForm.valid) {
-      const { confirmPassword, ...userData } = this.registerForm.value;
+      const userData = this.registerForm.value;
       this.userAdminService.registerUser(userData).subscribe({
         next: () => console.log('User registration successful'),
         error: (err) => console.error('Registration failed:', err)
