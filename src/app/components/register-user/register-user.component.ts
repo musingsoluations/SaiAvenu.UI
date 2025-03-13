@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CreateUser } from '../../models/create-user';
@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register-user',
@@ -49,10 +50,14 @@ export class RegisterUserComponent {
       roles: this.fb.array([], Validators.required)
     }, { validator: this.passwordMatchValidator });
   }
+  private _snackBar = inject(MatSnackBar);
+
   readonly hideRequiredControl = new FormControl(false);
   readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
   readonly options: any;
+
   protected readonly hideRequired = toSignal(this.hideRequiredControl.valueChanges);
+
   protected readonly floatLabel = toSignal(
     this.floatLabelControl.valueChanges.pipe(map(v => v || 'auto')),
     { initialValue: 'auto' },
@@ -76,7 +81,10 @@ export class RegisterUserComponent {
     if (this.registerForm.valid) {
       const userData = this.registerForm.value;
       this.userAdminService.registerUser(userData).subscribe({
-        next: () => console.log('User registration successful'),
+        next: () => {
+          this._snackBar.open('User registered successfully', 'Done', { duration: 5000 });
+          this.registerForm.reset();
+        },
         error: (err) => {
           console.error(err);
           this.dialog.open(ConfirmationDialogComponent, {
