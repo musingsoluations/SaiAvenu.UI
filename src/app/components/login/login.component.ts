@@ -1,0 +1,64 @@
+import { Component, inject } from '@angular/core';
+import { FloatLabelType, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
+import { AuthService } from '../../services/Auth/auth.service';
+import { UserLogin } from '../../models/user-login';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    ReactiveFormsModule // Added for formGroup support
+  ],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.options = this.fb.group({
+      hideRequired: this.hideRequiredControl,
+      floatLabel: this.floatLabelControl,
+    });
+    this.loginForm = this.fb.group({
+      mobileNumber: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
+  }
+
+  readonly hideRequiredControl = new FormControl(false);
+  readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
+  readonly options: any;
+  protected readonly hideRequired = toSignal(this.hideRequiredControl.valueChanges);
+  protected readonly floatLabel = toSignal(
+    this.floatLabelControl.valueChanges.pipe(map(v => v || 'auto')),
+    { initialValue: 'auto' },
+  );
+
+  loginForm: any;
+
+  login() {
+    const loginInfo = this.loginForm.value as UserLogin;
+    this.authService.login(loginInfo).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err: any) => {
+        console.error('Login failed:', err);
+      }
+    });
+  }
+}

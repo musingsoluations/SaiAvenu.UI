@@ -1,10 +1,9 @@
-// src/environments/environment.prod.ts
-import { Environment } from './environment.interface';
 import { InjectionToken } from '@angular/core';
+import { Environment } from './environment.interface';
 
 export const environment: Environment = {
-  production: true,
-  apiUrl: '${API_URL}'
+  production: false,
+  apiUrl: 'http://localhost:5206',
 };
 
 export const API_ENV = new InjectionToken<Environment>('api.environment', {

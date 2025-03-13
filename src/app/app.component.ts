@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { SpinnerComponent } from './spinner/spinner.component';
-import { initFlowbite } from 'flowbite';
+import { Component } from '@angular/core';
+import { MatToolbar } from '@angular/material/toolbar';
+import { RouterOutlet } from '@angular/router';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterModule, SpinnerComponent],
+  imports: [RouterOutlet, SpinnerComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
-  ngOnInit(): void {
-    initFlowbite();
-  }
+export class AppComponent {
+  title = 'saiAvenue';
 }

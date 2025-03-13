@@ -1,0 +1,36 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  background: #2c3e50;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.topbar a {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.topbar a:hover {
+  opacity: 0.8;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background: #f5f6fa;
+}
