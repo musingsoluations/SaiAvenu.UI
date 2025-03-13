@@ -3,7 +3,7 @@ import { Environment } from './environment.interface';
 import { InjectionToken } from '@angular/core';
 
 export const environment: Environment = {
-  production: true,
+  production: false,
   apiUrl: 'http://localhost:5206',
 };
 

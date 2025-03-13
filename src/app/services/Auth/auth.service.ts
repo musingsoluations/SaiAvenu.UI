@@ -5,9 +5,9 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthResponse } from '../../models/auth-response';
 import { CurrentUser } from '../../models/current-user';
-import { Environment } from '../../../environments/environment.interface';
-import { API_ENV } from '../../../environments/environment.prod';
+import { API_ENV } from '../../../environments/environment';
 import { UserLogin } from '../../models/user-login';
+import { Environment } from '../../../environments/environment.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -1,11 +1,31 @@
 <div class="layout-container">
-  <header class="topbar">
-    <h1>Sai Avenue</h1>
-    <nav>
-      <a routerLink="/dashboard">Dashboard</a>
-      <a routerLink="/profile">Profile</a>
-    </nav>
-  </header>
+  <mat-toolbar class="topbar">
+    <mat-toolbar-row>
+      <div id="logo">
+        <mat-icon class="logo-icon">domain</mat-icon>
+        <span>Sri Sai Avenue</span>
+      </div>
+      <span class="fill-remaining-space"></span>
+      <div id="Member-menu">
+        <nav class="nav-links">
+          <a mat-button routerLink="/dashboard">Dashboard</a>
+          <a mat-button routerLink="/profile">Profile</a>
+        </nav>
+      </div>
+
+      <span class="fill-remaining-space"></span>
+      <div id="user-menu">
+        <button mat-fab [matMenuTriggerFor]="menu" aria-label="User Menu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/profile">Profile</button>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </mat-toolbar>
 
   <main class="content-area">
     <router-outlet></router-outlet>

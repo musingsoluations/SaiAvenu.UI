@@ -4,13 +4,25 @@
   height: 100vh;
 }
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
 .topbar {
   background: #2c3e50;
   color: white;
   padding: 1rem;
+}
+
+.nav-links {
   display: flex;
-  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
+}
+
+.logo-icon {
+  color: white;
+  margin-right: 1rem;
 }
 
 .topbar nav {
@@ -26,6 +38,16 @@
 
 .topbar a:hover {
   opacity: 0.8;
+
+  .logo-icon {
+    color: white;
+    margin-right: 1rem;
+  }
+
+  button[mat-icon-button] {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .content-area {
@@ -33,4 +55,10 @@
   padding: 2rem;
   overflow-y: auto;
   background: #f5f6fa;
+}
+
+.fab-button-container {
+  display: flex;
+  justify-content: center;
+  width: 140px;
 }
