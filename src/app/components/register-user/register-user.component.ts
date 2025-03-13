@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatError } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-register-user',
@@ -20,7 +22,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatError
+    MatError,
+    MatButton,
+    CommonModule
   ]
 })
 export class RegisterUserComponent {
