@@ -9,7 +9,9 @@
       <div id="Member-menu">
         <nav class="nav-links">
           <a mat-button routerLink="/dashboard">Dashboard</a>
-          <a mat-button routerLink="/profile">Profile</a>
+          <a mat-button [matMenuTriggerFor]="configMenu">Configration
+            <mat-icon>settings</mat-icon>
+          </a>
         </nav>
       </div>
 
@@ -24,6 +26,10 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item routerLink="/profile">Profile</button>
       <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+
+    <mat-menu #configMenu="matMenu">
+      <button mat-menu-item routerLink="/register">Register User</button>
     </mat-menu>
   </mat-toolbar>
 
