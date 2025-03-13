@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { CreateUser } from '../../models/create-user';
+import { UserAdminService } from '../../services/admin/user-admin.service';
 import { FloatLabelType } from '@angular/material/form-field';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -30,7 +31,10 @@ import { MatButton } from '@angular/material/button';
 export class RegisterUserComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userAdminService: UserAdminService
+  ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -66,8 +70,11 @@ export class RegisterUserComponent {
 
   register() {
     if (this.registerForm.valid) {
-      const userData: CreateUser = this.registerForm.value;
-      // Implement registration logic
+      const { confirmPassword, ...userData } = this.registerForm.value;
+      this.userAdminService.registerUser(userData).subscribe({
+        next: () => console.log('User registration successful'),
+        error: (err) => console.error('Registration failed:', err)
+      });
     }
   }
 }
