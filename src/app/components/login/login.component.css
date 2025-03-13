@@ -1,13 +1,8 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-}
-
 .login-card {
   display: flex;
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
   min-height: 400px;
   border-radius: 8px;
   overflow: hidden;
@@ -15,16 +10,40 @@
 }
 
 .left-section {
+  flex: 1;
+  margin-right: 2rem;
+  border-radius: 8px;
   flex: 0 0 40%;
   background: #1976d2;
 }
 
 .right-section {
   flex: 1;
+  min-width: 300px;
+  flex: 1;
   padding: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 959px) {
+  .left-section {
+    display: none;
+  }
+
+  .right-section {
+    flex: 0 0 100%;
+    min-width: auto;
+  }
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
 .login-form {
