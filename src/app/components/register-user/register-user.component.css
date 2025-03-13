@@ -49,10 +49,6 @@ mat-form-field {
   display: block;
 }
 
-.login-button {
-  margin-top: 1.5rem;
-}
-
 .roles-section {
   display: flex;
   flex-direction: row;
