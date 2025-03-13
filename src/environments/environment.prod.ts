@@ -3,7 +3,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:5206',
+  apiUrl: '${API_URL}',
 };
 
 export const API_ENV = new InjectionToken<Environment>('api.environment', {
