@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CreateUser } from '../../models/create-user';
 import { UserAdminService } from '../../services/admin/user-admin.service';
 import { FloatLabelType } from '@angular/material/form-field';
@@ -12,6 +13,7 @@ import { MatError } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-register-user',
@@ -25,7 +27,8 @@ import { MatButton } from '@angular/material/button';
     MatCheckboxModule,
     MatError,
     MatButton,
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ]
 })
 export class RegisterUserComponent {
@@ -33,7 +36,8 @@ export class RegisterUserComponent {
 
   constructor(
     private fb: FormBuilder,
-    private userAdminService: UserAdminService
+    private userAdminService: UserAdminService,
+    private dialog: MatDialog
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -73,7 +77,15 @@ export class RegisterUserComponent {
       const userData = this.registerForm.value;
       this.userAdminService.registerUser(userData).subscribe({
         next: () => console.log('User registration successful'),
-        error: (err) => console.error('Registration failed:', err)
+        error: (err) => {
+          console.error(err);
+          this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+              title: err.error.title || 'Error',
+              content: err.error.errors || 'An error occurred'
+            }
+          });
+        }
       });
     }
   }
