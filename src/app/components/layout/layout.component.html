@@ -8,8 +8,12 @@
       <span class="fill-remaining-space"></span>
       <div id="Member-menu">
         <nav class="nav-links">
-          <a mat-button routerLink="/dashboard">Dashboard</a>
-          <a mat-button [matMenuTriggerFor]="configMenu">Configration
+          <a mat-button routerLink="/dashboard">
+            <mat-icon>grid_view</mat-icon>
+            <span class="desktop-only">Dashboard</span>
+          </a>
+          <a mat-button [matMenuTriggerFor]="configMenu" aria-label="Configuration">
+            <span class="desktop-only">Configuration</span>
             <mat-icon>settings</mat-icon>
           </a>
         </nav>

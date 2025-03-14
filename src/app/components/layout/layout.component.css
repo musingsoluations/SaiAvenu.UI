@@ -25,6 +25,16 @@
   margin-right: 1rem;
 }
 
+.desktop-only {
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
 .topbar nav {
   display: flex;
   gap: 2rem;
@@ -38,16 +48,16 @@
 
 .topbar a:hover {
   opacity: 0.8;
+}
 
-  .logo-icon {
-    color: white;
-    margin-right: 1rem;
-  }
+.logo-icon {
+  color: white;
+  margin-right: 1rem;
+}
 
-  button[mat-icon-button] {
-    width: 40px;
-    height: 40px;
-  }
+button[mat-icon-button] {
+  width: 40px;
+  height: 40px;
 }
 
 .content-area {
@@ -61,4 +71,40 @@
   display: flex;
   justify-content: center;
   width: 140px;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0.5rem;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  #logo span {
+    font-size: 1rem;
+  }
+
+  .nav-links a span:not(.mat-icon) {
+    display: none;
+  }
+
+  .nav-links .mat-icon {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: 0.25rem;
+  }
+
+  #logo {
+    margin-right: 0.5rem;
+  }
+
+  #logo span {
+    font-size: 0.9rem;
+  }
 }
