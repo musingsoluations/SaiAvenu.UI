@@ -1,4 +1,18 @@
 /* Apartment component styles */
 .apartment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 1rem;
+}
+
+.row {
+  width: 80%;
+  flex: 1;
+  border: 1px solid #ccc;
+  margin: 0.5rem;
   padding: 1rem;
 }
