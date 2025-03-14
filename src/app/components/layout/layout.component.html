@@ -12,7 +12,7 @@
             <mat-icon>grid_view</mat-icon>
             <span class="desktop-only">Dashboard</span>
           </a>
-          <a mat-button [matMenuTriggerFor]="configMenu" aria-label="Configuration">
+          <a mat-button [matMenuTriggerFor]="configMenu" aria-label="Configuration" *ngIf="isAdmin$ | async">
             <span class="desktop-only">Configuration</span>
             <mat-icon>settings</mat-icon>
           </a>

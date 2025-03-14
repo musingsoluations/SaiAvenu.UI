@@ -5,6 +5,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/Auth/auth.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
@@ -15,14 +18,20 @@ import { AuthService } from '../../services/Auth/auth.service';
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    AsyncPipe,
   ],
   standalone: true,
 })
 export class LayoutComponent {
   isCollapsed = false;
+  isAdmin$: Observable<boolean>;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.isAdmin$ = this.authService.roles$.pipe(
+      map((roles: string[]) => roles.includes('Admin'))
+    );
+  }
 
   logout() {
     this.authService.logout();
