@@ -16,6 +16,44 @@
   margin: auto;
 }
 
+@media (max-width: 768px) {
+  .login-card {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .form-header {
+    font-size: 1rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .form-section h4 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .form-header {
+    font-size: 1.3rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .form-section h4 {
+    font-size: 1rem;
+  }
+
+  .roles-section {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 .form-header {
   text-align: center;
   margin-bottom: 2rem;
