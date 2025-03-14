@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { UserAdminService } from '../../services/admin/user-admin.service';
+import { UserprofileService } from '../../services/users/userprofile.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,7 @@ export class ProfileComponent {
 
   constructor(
     private fb: FormBuilder,
+    private userProfileService: UserprofileService,
     private userAdminService: UserAdminService,
     private dialog: MatDialog
   ) {
@@ -38,8 +40,8 @@ export class ProfileComponent {
       lastName: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      password: [''],
+      confirmPassword: [''],
     }, { validator: this.passwordMatchValidator });
   }
   private _snackBar = inject(MatSnackBar);
@@ -57,6 +59,18 @@ export class ProfileComponent {
   passwordMatchValidator(form: FormGroup) {
     return form.get('password')?.value === form.get('confirmPassword')?.value
       ? null : { mismatch: true };
+  }
+
+  ngOnInit() {
+    this.userProfileService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.registerForm.patchValue(profile);
+      },
+      error: (err) => {
+        this._snackBar.open('Failed to load profile', 'Close', { duration: 5000 });
+        console.error('Profile load error:', err);
+      }
+    });
   }
 
   onRoleChange(event: any, role: string) {
