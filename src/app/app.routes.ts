@@ -23,6 +23,7 @@ export const routes: Routes = [
           import('./components/register-user/register-user.component').then(
             m => m.RegisterUserComponent,
           ),
+        data: { requiredRoles: ['Admin'] },
       },
       {
         path: 'profile',

@@ -7,13 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/Auth/auth.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
   imports: [
+    CommonModule,
     RouterModule,
     MatMenuModule,
     MatIconModule,

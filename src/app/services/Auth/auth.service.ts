@@ -70,7 +70,7 @@ export class AuthService {
 
   private decodeToken(token: string): { roles: string[]; exp: number } {
     try {
-      return JSON.parse(atob(token.split('.')[1]));
+      return JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))));
     } catch (e) {
       return { roles: [], exp: 0 };
     }
@@ -87,6 +87,10 @@ export class AuthService {
 
   get roles$() {
     return this.rolesSubject.asObservable();
+  }
+
+  getRoles(): string[] {
+    return this.rolesSubject.getValue();
   }
 
   removeToken(): void {

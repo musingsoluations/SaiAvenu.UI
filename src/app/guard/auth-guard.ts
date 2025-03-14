@@ -12,6 +12,18 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log('AuthGuard check:', { token, isLoggedIn });
 
   if (token && isLoggedIn) {
+    const requiredRoles = route.firstChild?.data['requiredRoles'] as string[] | undefined;
+
+    if (requiredRoles) {
+      const userRoles = authService.getRoles();
+      const hasRequiredRole = requiredRoles.some(role => userRoles.includes(role));
+
+      if (!hasRequiredRole) {
+        console.log('User lacks required roles, redirecting to dashboard');
+        router.navigate(['/dashboard']);
+        return false;
+      }
+    }
     return true;
   }
 
