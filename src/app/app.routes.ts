@@ -26,6 +26,14 @@ export const routes: Routes = [
         data: { requiredRoles: ['Admin'] },
       },
       {
+        path: 'apartment',
+        loadComponent: () =>
+          import('./components/apartment/apartment.component').then(
+            m => m.ApartmentComponent,
+          ),
+        data: { requiredRoles: ['Admin'] },
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./components/profile/profile.component').then(m => m.ProfileComponent),
