@@ -5,13 +5,13 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { UserAdminService } from '../../services/admin/user-admin.service';
-import { UserprofileService } from '../../services/users/userprofile.service';
+import { UserProfileService } from '../../services/users/user-profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -31,8 +31,7 @@ export class ProfileComponent {
 
   constructor(
     private fb: FormBuilder,
-    private userProfileService: UserprofileService,
-    private userAdminService: UserAdminService,
+    private userProfileService: UserProfileService,
     private dialog: MatDialog
   ) {
     this.registerForm = this.fb.group({
@@ -73,23 +72,12 @@ export class ProfileComponent {
     });
   }
 
-  onRoleChange(event: any, role: string) {
-    const roles = this.registerForm.get('roles') as FormArray;
-    if (event.checked) {
-      roles.push(this.fb.control(role));
-    } else {
-      const index = roles.controls.findIndex(x => x.value === role);
-      roles.removeAt(index);
-    }
-  }
-
   register() {
     if (this.registerForm.valid) {
-      const userData = this.registerForm.value;
-      this.userAdminService.registerUser(userData).subscribe({
+      const UserProfileUpdate = this.registerForm.value;
+      this.userProfileService.updateUserProfile(UserProfileUpdate).subscribe({
         next: () => {
           this._snackBar.open('User registered successfully', 'Done', { duration: 5000 });
-          this.registerForm.reset();
         },
         error: (err: any) => {
           console.error(err);
