@@ -1,0 +1,48 @@
+<div class="login-container">
+  <div class="login-card" style="width: 100%">
+    <form [formGroup]="registerForm" class="login-form">
+      <h2 class="form-header">Update Profile</h2>
+
+      <div class="form-section">
+        <h4>Personal Information</h4>
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" required>
+        </mat-form-field>
+
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" required>
+        </mat-form-field>
+
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>Mobile Number</mat-label>
+          <input matInput formControlName="mobile" required pattern="[0-9]{10}">
+          <mat-error>Valid 10-digit number required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-section">
+        <h4>Account Details</h4>
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+        </mat-form-field>
+
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" required>
+        </mat-form-field>
+
+        <mat-form-field [floatLabel]="floatLabel()">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" required>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" class="login-button" (click)="register()"
+        [disabled]="registerForm.invalid">
+        Update Profile
+      </button>
+    </form>
+  </div>
+</div>

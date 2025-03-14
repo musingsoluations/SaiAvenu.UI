@@ -24,6 +24,11 @@ export const routes: Routes = [
             m => m.RegisterUserComponent,
           ),
       },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./components/profile/profile.component').then(m => m.ProfileComponent),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
