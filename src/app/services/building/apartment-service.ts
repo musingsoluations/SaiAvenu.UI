@@ -17,6 +17,6 @@ export class ApartmentService {
 
   getUserWithRole(roles: string[]) {
     const url = `${this.environment.apiUrl}/api/Apartment/userwithroles`;
-    return this.http.post<ApartmentUser>(url, roles);
+    return this.http.post<ApartmentUser[]>(url, roles);
   }
 }
