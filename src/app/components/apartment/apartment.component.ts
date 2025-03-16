@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Apartment } from '../../models/apartment';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { ApartmentUser } from '../../models/apartment-user';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { CommonModule } from '@angular/common';
@@ -8,17 +10,27 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-apartment',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+
+  ],
   templateUrl: './apartment.component.html',
   styleUrls: ['./apartment.component.css']
 })
 export class ApartmentComponent implements OnInit {
+  floatLabel(): 'always' {
+    return 'always';
+  }
 
   buildingService: ApartmentService = inject(ApartmentService);
 
   flatNo: string = '';
-  selectedOwnerId: number | null = null;
-  selectedRenterId: number | null = null;
+  selectedOwnerId: string | null = null;
+  selectedRenterId: string | null = null;
   owners: ApartmentUser[] = [];
   renters: ApartmentUser[] = [];
 

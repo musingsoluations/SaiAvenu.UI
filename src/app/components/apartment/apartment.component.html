@@ -1,26 +1,43 @@
 <div class="apartment">
   <div id="Input" class="row top-row">
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Flat No:</label>
-        <input type="text" class="form-control" [(ngModel)]="flatNo" name="flatNo" required>
+    <form (ngSubmit)="onSubmit()" class="form-container">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <mat-form-field [floatLabel]="floatLabel()">
+            <mat-label>Flat Number</mat-label>
+            <input matInput [(ngModel)]="flatNo" name="flatNo" required placeholder="Enter flat number">
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field [floatLabel]="floatLabel()">
+            <mat-label>Owner</mat-label>
+            <mat-select [(ngModel)]="selectedOwnerId" name="owner" required placeholder="Select Owner">
+              <mat-option *ngFor="let user of owners" [value]="user.userId">
+                {{user.firstName}} {{user.lastName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Renter Select -->
+        <div class="form-group col-md-4">
+          <mat-form-field [floatLabel]="floatLabel()">
+            <mat-label>Renter</mat-label>
+            <mat-select [(ngModel)]="selectedRenterId" name="renter" required placeholder="Select Renter">
+              <mat-option *ngFor="let user of renters" [value]="user.userId">
+                {{user.firstName}} {{user.lastName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>Owner:</label>
-        <select class="form-control" [(ngModel)]="selectedOwnerId" name="owner" required>
-          <option *ngFor="let user of owners" [value]="user.id">{{user.firstName}} {{user.lastName}}</option>
-        </select>
+      <div class="form-footer mt-4">
+        <button mat-raised-button color="primary" type="submit" class="submit-button">
+          Save Apartment
+        </button>
       </div>
-
-      <div class="form-group">
-        <label>Renter:</label>
-        <select class="form-control" [(ngModel)]="selectedRenterId" name="renter" required>
-          <option *ngFor="let user of renters" [value]="user.id">{{user.firstName}} {{user.lastName}}</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Save</button>
     </form>
   </div>
   <div id="List" class="row bottom-row">
