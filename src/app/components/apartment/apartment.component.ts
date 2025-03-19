@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,12 +15,11 @@ import { Apartment } from '../../models/apartment';
   selector: 'app-apartment',
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-
   ],
   templateUrl: './apartment.component.html',
   styleUrls: ['./apartment.component.css']
@@ -31,13 +30,21 @@ export class ApartmentComponent implements OnInit {
   }
 
   buildingService: ApartmentService = inject(ApartmentService);
-  constructor(private snackBar: MatSnackBar, private dialog: MatDialog) { }
-
-  flatNo: string = '';
-  selectedOwnerId: string | null = null;
-  selectedRenterId: string | null = null;
+  apartmentForm: FormGroup;
   owners: ApartmentUser[] = [];
   renters: ApartmentUser[] = [];
+
+  constructor(
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {
+    this.apartmentForm = this.fb.group({
+      flatNo: ['', [Validators.required]],
+      ownerId: ['', [Validators.required]],
+      renterId: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.buildingService.getUserWithRole(['owner']).subscribe(
@@ -51,21 +58,22 @@ export class ApartmentComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.selectedOwnerId) {
+    if (this.apartmentForm.invalid) {
       this.dialog.open(ConfirmationDialogComponent, {
         data: {
           title: 'Validation Error',
-          message: 'Please select both owner and renter',
+          message: 'Please fill in all required fields (Flat Number and Owner)',
           buttons: [{ text: 'OK', role: 'dismiss' }]
         }
       });
       return;
     }
 
+    const formValue = this.apartmentForm.value;
     const apartmentData: Apartment = {
-      apartmentNumber: this.flatNo,
-      ownerId: this.selectedOwnerId as string,
-      tenantId: this.selectedRenterId as string
+      apartmentNumber: formValue.flatNo,
+      ownerId: formValue.ownerId,
+      tenantId: formValue.renterId || null
     };
 
     this.buildingService.createApartment(apartmentData).subscribe({
@@ -89,9 +97,6 @@ export class ApartmentComponent implements OnInit {
   }
 
   private resetForm() {
-    this.flatNo = '';
-    this.selectedOwnerId = null;
-    this.selectedRenterId = null;
+    this.apartmentForm.reset();
   }
-
 }

@@ -1,29 +1,34 @@
 <div class="apartment">
   <div id="Input" class="row top-row">
-    <form (ngSubmit)="onSubmit()" class="form-container">
+    <form [formGroup]="apartmentForm" (ngSubmit)="onSubmit()" class="form-container">
       <div class="form-group">
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>Flat Number</mat-label>
-          <input matInput [(ngModel)]="flatNo" name="flatNo" required placeholder="Enter flat number">
+          <input matInput formControlName="flatNo" placeholder="Enter flat number">
+          <mat-error *ngIf="apartmentForm.get('flatNo')?.errors?.['required'] && apartmentForm.get('flatNo')?.touched">
+            Flat number is required
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div class="form-group">
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>Owner</mat-label>
-          <mat-select [(ngModel)]="selectedOwnerId" name="owner" required placeholder="Select Owner">
+          <mat-select formControlName="ownerId" placeholder="Select Owner">
             <mat-option *ngFor="let user of owners" [value]="user.userId">
               {{user.firstName}} {{user.lastName}}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="apartmentForm.get('ownerId')?.errors?.['required'] && apartmentForm.get('ownerId')?.touched">
+            Owner selection is required
+          </mat-error>
         </mat-form-field>
       </div>
 
-      <!-- Renter Select -->
       <div class="form-group">
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>Renter</mat-label>
-          <mat-select [(ngModel)]="selectedRenterId" name="renter" placeholder="Select Renter">
+          <mat-select formControlName="renterId" placeholder="Select Renter">
             <mat-option *ngFor="let user of renters" [value]="user.userId">
               {{user.firstName}} {{user.lastName}}
             </mat-option>
@@ -32,7 +37,7 @@
       </div>
 
       <div class="form-footer mt-4">
-        <button mat-raised-button color="primary" type="submit" class="submit-button">
+        <button mat-raised-button color="primary" type="submit" class="submit-button" [disabled]="apartmentForm.invalid">
           Save Apartment
         </button>
       </div>
