@@ -23,7 +23,7 @@
       <div class="form-group">
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>Renter</mat-label>
-          <mat-select [(ngModel)]="selectedRenterId" name="renter" required placeholder="Select Renter">
+          <mat-select [(ngModel)]="selectedRenterId" name="renter" placeholder="Select Renter">
             <mat-option *ngFor="let user of renters" [value]="user.userId">
               {{user.firstName}} {{user.lastName}}
             </mat-option>
