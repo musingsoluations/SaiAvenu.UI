@@ -5,11 +5,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApartmentUser } from '../../models/apartment-user';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { CommonModule } from '@angular/common';
 import { Apartment } from '../../models/apartment';
+import { ApartmentResponse } from "../../models/ApartmentResponse";
 
 @Component({
   selector: 'app-apartment',
@@ -20,6 +22,7 @@ import { Apartment } from '../../models/apartment';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatTableModule,
   ],
   templateUrl: './apartment.component.html',
   styleUrls: ['./apartment.component.css']
@@ -33,6 +36,8 @@ export class ApartmentComponent implements OnInit {
   apartmentForm: FormGroup;
   owners: ApartmentUser[] = [];
   renters: ApartmentUser[] = [];
+  apartments: ApartmentResponse[] = [];
+  displayedColumns: string[] = ['Apartment Number', 'Owner', 'Tenant'];
 
   constructor(
     private snackBar: MatSnackBar,
@@ -55,6 +60,24 @@ export class ApartmentComponent implements OnInit {
       (users) => {
         this.renters = users;
       });
+    this.loadApartments();
+  }
+
+  loadApartments() {
+    this.buildingService.getApartments().subscribe(
+      (apartments) => {
+        this.apartments = apartments;
+      },
+      (error) => {
+        this.dialog.open(ConfirmationDialogComponent, {
+          data: {
+            title: 'Error',
+            message: `Failed to load apartments: ${error.message}`,
+            buttons: [{ text: 'OK', role: 'dismiss' }]
+          }
+        });
+      }
+    );
   }
 
   onSubmit() {
@@ -83,6 +106,7 @@ export class ApartmentComponent implements OnInit {
           panelClass: ['success-snackbar']
         });
         this.resetForm();
+        this.loadApartments(); // Reload the apartments list after successful creation
       },
       error: (err) => {
         this.dialog.open(ConfirmationDialogComponent, {

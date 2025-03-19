@@ -4,6 +4,7 @@ import { Environment } from "../../../environments/environment.interface";
 import { API_ENV } from "../../../environments/environment";
 import { ApartmentUser } from "../../models/apartment-user";
 import { Apartment } from "../../models/apartment";
+import { ApartmentResponse } from "../../models/ApartmentResponse";
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +25,10 @@ export class ApartmentService {
   createApartment(apartment: Apartment) {
     const url = `${this.environment.apiUrl}/api/Apartment/AddApartment`;
     return this.http.post<Apartment>(url, apartment);
+  }
+
+  getApartments() {
+    const url = `${this.environment.apiUrl}/api/Apartment/GetApartments`;
+    return this.http.get<ApartmentResponse[]>(url);
   }
 }

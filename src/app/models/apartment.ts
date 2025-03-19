@@ -3,3 +3,4 @@ export interface Apartment {
   ownerId: string;
   tenantId?: string;
 }
+
