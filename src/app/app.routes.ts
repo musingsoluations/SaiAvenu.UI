@@ -38,6 +38,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/profile/profile.component').then(m => m.ProfileComponent),
       },
+      {
+        path: 'collection',
+        loadComponent: () =>
+          import('./components/collection/collection.component').then(m => m.CollectionComponent),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
