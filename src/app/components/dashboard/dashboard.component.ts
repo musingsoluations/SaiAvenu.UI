@@ -12,23 +12,38 @@ import { CollectionChartComponent } from '../../shared/components/collection-cha
 export class DashboardComponent {
   chartData = [
     {
-      "name": "Demand",
+      "name": "January",
       "series": [
-        { "name": "January", "value": 100000 },
-        { "name": "February", "value": 120000 },
-        { "name": "March", "value": 95000 },
-        { "name": "April", "value": 130000 },
-        { "name": "May", "value": 140000 }
+        { "name": "Demand", "value": 100000 },
+        { "name": "Collection", "value": 90000 }
       ]
     },
     {
-      "name": "Collection",
+      "name": "February",
       "series": [
-        { "name": "January", "value": 90000 },
-        { "name": "February", "value": 110000 },
-        { "name": "March", "value": 85000 },
-        { "name": "April", "value": 125000 },
-        { "name": "May", "value": 135000 }
+        { "name": "Demand", "value": 120000 },
+        { "name": "Collection", "value": 110000 }
+      ]
+    },
+    {
+      "name": "March",
+      "series": [
+        { "name": "Demand", "value": 95000 },
+        { "name": "Collection", "value": 85000 }
+      ]
+    },
+    {
+      "name": "April",
+      "series": [
+        { "name": "Demand", "value": 130000 },
+        { "name": "Collection", "value": 125000 }
+      ]
+    },
+    {
+      "name": "May",
+      "series": [
+        { "name": "Demand", "value": 140000 },
+        { "name": "Collection", "value": 135000 }
       ]
     }
   ];
