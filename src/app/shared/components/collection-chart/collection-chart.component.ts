@@ -78,13 +78,17 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   }
 
   get totalDemand(): number {
-    const demandSeries = this.chartData.find(item => item.name === 'Demand')?.series || [];
-    return demandSeries.reduce((total, item) => total + item.value, 0);
+    return this.chartData.reduce((total, month) => {
+      const demand = month.series.find(item => item.name === 'Demand');
+      return total + (demand?.value || 0);
+    }, 0);
   }
 
   get totalCollection(): number {
-    const collectionSeries = this.chartData.find(item => item.name === 'Collection')?.series || [];
-    return collectionSeries.reduce((total, item) => total + item.value, 0);
+    return this.chartData.reduce((total, month) => {
+      const collection = month.series.find(item => item.name === 'Collection');
+      return total + (collection?.value || 0);
+    }, 0);
   }
 
   get collectionPercentage(): number {
