@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -46,8 +46,18 @@ export class CollectionComponent implements OnInit {
       paidDate: [null], // Default null value remains
       isPaid: [false], // Hidden field with default value false
       forWhat: ['', [Validators.required]],
-      comment: ['']
+      comment: ['', (control: AbstractControl) => {
+        const collectionType = control.parent?.get('forWhat')?.value;
+        return collectionType === CollectionType.AdhocExpense && !control.value?.trim()
+          ? { required: true }
+          : null;
+      }]
     });
+    // Add validation trigger for collection type changes
+    this.demandForm.get('forWhat')?.valueChanges.subscribe(() => {
+      this.demandForm.get('comment')?.updateValueAndValidity();
+    });
+
     // Subscribe to changes in apartment selection
     this.demandForm.get('apartmentName')?.valueChanges.subscribe((selectedApartments: string[]) => {
       this.allSelected = selectedApartments.length === this.apartments.length;
