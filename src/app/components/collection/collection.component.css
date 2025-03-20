@@ -37,6 +37,78 @@
   padding: 20px;
   background: #f0f0f0;
   height: 100%;
+  overflow-y: auto;
+}
+
+/* Form styles */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 100%;
+}
+
+.form-container h2 {
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.checkbox-field {
+  margin: 8px 0;
+}
+
+.radio-group {
+  margin: 8px 0;
+}
+
+.radio-group-label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.radio-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.radio-buttons .mat-mdc-radio-button {
+  margin-right: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* Select All styles */
+.select-all-option {
+  padding: 8px 16px;
+}
+
+.select-all-checkbox {
+  margin: 0;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  padding-top: 0 !important;
+}
+
+::ng-deep .mat-divider {
+  margin: 0 !important;
+}
+
+/* Error message styles */
+mat-error {
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 /* Responsive adjustments */
@@ -50,6 +122,11 @@
   .col {
     height: 50%;
   }
+
+  .radio-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -60,5 +137,9 @@
 
   .box {
     padding: 10px;
+  }
+
+  .form-container {
+    gap: 12px;
   }
 }
