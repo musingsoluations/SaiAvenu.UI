@@ -123,10 +123,6 @@ mat-error {
     height: 50%;
   }
 
-  .radio-buttons {
-    flex-direction: column;
-    gap: 12px;
-  }
 }
 
 @media (max-width: 480px) {

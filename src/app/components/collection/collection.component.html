@@ -61,9 +61,8 @@
         <div class="form-field radio-group">
           <label class="radio-group-label">Collection Type</label>
           <mat-radio-group formControlName="forWhat" class="radio-buttons">
-            <mat-radio-button *ngFor="let type of collectionTypeOptions" [value]="type.value">
-              {{type.label}}
-            </mat-radio-button>
+            <mat-radio-button *ngFor="let type of collectionTypeOptions"
+              [value]="type.value">{{type.label}}</mat-radio-button>
           </mat-radio-group>
           <mat-error *ngIf="demandForm.get('forWhat')?.errors?.['required'] && demandForm.get('forWhat')?.touched">
             Collection type is required
@@ -72,7 +71,7 @@
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Comment</mat-label>
-          <textarea matInput formControlName="comment" placeholder="Enter comment" rows="3"></textarea>
+          <textarea matInput formControlName="comment" placeholder="Enter comment" rows="1"></textarea>
         </mat-form-field>
 
         <div class="form-actions">
