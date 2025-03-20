@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule, FormArray, FormControl } from '@angular/forms';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,7 +39,7 @@ export class CollectionComponent implements OnInit {
   collectionTypes = CollectionType;
   unpaidFees: UnpaidFeeDto[] = [];
   displayedColumns: string[] = ['apartmentNumber', 'amount', 'requestForDate', 'dueDate', 'forWhat', 'comment', 'receivedDate', 'actions'];
-  paymentForms: FormArray;
+  paymentForms: FormArray<FormGroup<{ receivedDate: FormControl<string | null> }>>;
   collectionTypeOptions = [
     { value: CollectionType.MonthlyMaintenance, label: 'Monthly Maintenance' },
     { value: CollectionType.AdhocExpense, label: 'Adhoc Expense' }
@@ -85,7 +85,7 @@ export class CollectionComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder, private collectionService: CollectionService) {
-    this.paymentForms = this.fb.array([]);
+    this.paymentForms = this.fb.array<FormGroup<{ receivedDate: FormControl<string | null> }>>([]);
     this.demandForm = this.fb.group({
       apartmentName: [[], [Validators.required]],
       amount: ['', [Validators.required, Validators.min(0)]],
@@ -127,7 +127,7 @@ export class CollectionComponent implements OnInit {
         this.unpaidFees = fees;
         this.paymentForms.clear();
         fees.forEach(() => this.paymentForms.push(this.fb.group({
-          receivedDate: ['', Validators.required]
+          receivedDate: new FormControl<string>('', Validators.required)
         })));
       },
       error: (err) => console.error('Failed to load unpaid fees:', err)
