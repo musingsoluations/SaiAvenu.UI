@@ -1,1 +1,64 @@
-/* Colltion component styles */
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  height: 45%;
+}
+
+.col {
+  flex: 1;
+}
+
+.full-width {
+  flex: 1;
+  width: 100%;
+}
+
+.box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  background: #f0f0f0;
+  height: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    height: auto;
+    min-height: 45%;
+  }
+
+  .col {
+    height: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .box {
+    padding: 10px;
+  }
+}
