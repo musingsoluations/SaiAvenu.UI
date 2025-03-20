@@ -10,7 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule } from '@angular/common';
 import { CollectionType, CreateCollectionDemandDto } from '../../models/create-collection-demand';
 import { CollectionService } from '../../services/collection/collection.service';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { CollectionChartComponent, ChartDataPoint } from '../../shared/components/collection-chart/collection-chart.component';
 
 @Component({
   selector: 'app-collection',
@@ -24,7 +24,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatCheckboxModule,
     MatDividerModule,
     MatRadioModule,
-    NgxChartsModule
+    CollectionChartComponent
   ],
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.css']
@@ -40,187 +40,37 @@ export class CollectionComponent implements OnInit {
   ];
 
   // Chart data
-  chartData = [
+  chartData: ChartDataPoint[] = [
     {
-      "name": "Jan",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 95000
-        },
-        {
-          "name": "Collection",
-          "value": 85000
-        }
+      name: "Demand",
+      series: [
+        { name: "January", value: 100000 },
+        { name: "February", value: 120000 },
+        { name: "March", value: 95000 },
+        { name: "April", value: 130000 },
+        { name: "May", value: 140000 }
       ]
     },
     {
-      "name": "February",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 95000
-        },
-        {
-          "name": "Collection",
-          "value": 85000
-        }
-      ]
-    },
-    {
-      "name": "March",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 95000
-        },
-        {
-          "name": "Collection",
-          "value": 85000
-        }
-      ]
-    },
-    {
-      "name": "April",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 130000
-        },
-        {
-          "name": "Collection",
-          "value": 125000
-        }
-      ]
-    },
-    {
-      "name": "May",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "June",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "July",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "August",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "September",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "October",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "November",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
-      ]
-    },
-    {
-      "name": "December",
-      "series": [
-        {
-          "name": "Demand",
-          "value": 140000
-        },
-        {
-          "name": "Collection",
-          "value": 135000
-        }
+      name: "Collection",
+      series: [
+        { name: "January", value: 90000 },
+        { name: "February", value: 110000 },
+        { name: "March", value: 85000 },
+        { name: "April", value: 125000 },
+        { name: "May", value: 135000 }
       ]
     }
   ];
 
-  // Chart options
-  view: [number, number] = [700, 400];
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Month';
-  showYAxisLabel = true;
-  yAxisLabel = 'Amount (₹)';
-  colorScheme = 'vivid';
-  barPadding = 2;
-  groupPadding = 16;
-
   constructor(private fb: FormBuilder, private collectionService: CollectionService) {
     this.demandForm = this.fb.group({
-      apartmentName: [[], [Validators.required]], // Array for multiple selection
+      apartmentName: [[], [Validators.required]],
       amount: ['', [Validators.required, Validators.min(0)]],
       requestForDate: ['', [Validators.required]],
       dueDate: ['', [Validators.required]],
-      paidDate: [null], // Default null value remains
-      isPaid: [false], // Hidden field with default value false
+      paidDate: [null],
+      isPaid: [false],
       forWhat: ['', [Validators.required]],
       comment: ['', (control: AbstractControl) => {
         const collectionType = control.parent?.get('forWhat')?.value;
@@ -273,32 +123,5 @@ export class CollectionComponent implements OnInit {
       console.log(demand);
       // Handle form submission
     }
-  }
-
-  get totalDemand(): number {
-    return this.chartData.reduce((total, month) => {
-      const demandValue = month.series.find(s => s.name === 'Demand')?.value || 0;
-      return total + demandValue;
-    }, 0);
-  }
-
-  get totalCollection(): number {
-    return this.chartData.reduce((total, month) => {
-      const collectionValue = month.series.find(s => s.name === 'Collection')?.value || 0;
-      return total + collectionValue;
-    }, 0);
-  }
-
-  get collectionPercentage(): number {
-    return this.totalDemand ? (this.totalCollection / this.totalDemand) * 100 : 0;
-  }
-
-  formatCurrency(value: number): string {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
   }
 }

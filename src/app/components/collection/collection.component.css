@@ -9,37 +9,36 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   padding: 20px;
-  height: 100%;
+  width: 100%;
 }
 
 .row {
   display: flex;
   gap: 20px;
-  flex: 1;
-  min-height: 600px;
+  margin-bottom: 20px;
 }
 
 .col {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  min-width: 0;
 }
 
 .box {
-  background-color: white;
+  background: white;
   border-radius: 8px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  overflow: auto;
 }
 
 .full-width {
   width: 100%;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 /* Chart container */
@@ -93,7 +92,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 100%;
 }
 
 .form-field {
@@ -101,30 +99,26 @@
 }
 
 .radio-group {
-  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .radio-group-label {
-  display: block;
-  margin-bottom: 8px;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 14px;
+  font-size: 12px;
+  margin-bottom: 4px;
 }
 
 .radio-buttons {
   display: flex;
-  flex-direction: row;
-  gap: 24px;
-  align-items: center;
-}
-
-.radio-buttons mat-radio-button {
-  margin-right: 16px;
+  gap: 16px;
 }
 
 .form-actions {
-  margin-top: auto;
-  padding-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 /* Select All styles */
@@ -151,17 +145,12 @@ mat-error {
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 16px;
-  }
-
   .row {
     flex-direction: column;
-    min-height: auto;
   }
 
   .col {
-    min-height: 500px;
+    width: 100%;
   }
 
   .stats-summary {
