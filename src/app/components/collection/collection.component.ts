@@ -74,7 +74,6 @@ export class CollectionComponent implements OnInit {
         apartmentName: [...this.apartments]
       });
     }
-    this.allSelected = !this.allSelected;
   }
 
   onSubmit() {
