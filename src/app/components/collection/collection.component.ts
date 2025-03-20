@@ -43,7 +43,7 @@ export class CollectionComponent implements OnInit {
       amount: ['', [Validators.required, Validators.min(0)]],
       requestForDate: ['', [Validators.required]],
       dueDate: ['', [Validators.required]],
-      paidDate: [null],
+      paidDate: [null], // Default null value remains
       isPaid: [false], // Hidden field with default value false
       forWhat: ['', [Validators.required]],
       comment: ['']
@@ -83,8 +83,8 @@ export class CollectionComponent implements OnInit {
         ...formValue,
         requestForDate: new Date(formValue.requestForDate),
         dueDate: new Date(formValue.dueDate),
-        paidDate: formValue.paidDate ? new Date(formValue.paidDate) : null,
-        isPaid: false // Ensure isPaid is always false when creating
+        paidDate: null,
+        isPaid: false
       };
       console.log(demand);
       // Handle form submission
