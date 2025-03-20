@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -7,10 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { CollectionType, CreateCollectionDemandDto } from '../../models/create-collection-demand';
 import { CollectionService } from '../../services/collection/collection.service';
 import { CollectionChartComponent, ChartDataPoint } from '../../shared/components/collection-chart/collection-chart.component';
+import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 
 @Component({
   selector: 'app-collection',
@@ -24,7 +26,8 @@ import { CollectionChartComponent, ChartDataPoint } from '../../shared/component
     MatCheckboxModule,
     MatDividerModule,
     MatRadioModule,
-    CollectionChartComponent
+    CollectionChartComponent,
+    MatTableModule // Required for Angular Material table
   ],
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.css']
@@ -34,6 +37,9 @@ export class CollectionComponent implements OnInit {
   apartments: string[] = [];
   allSelected = true;
   collectionTypes = CollectionType;
+  unpaidFees: UnpaidFeeDto[] = [];
+  displayedColumns: string[] = ['apartmentNumber', 'amount', 'requestForDate', 'dueDate', 'forWhat', 'comment', 'receivedDate', 'actions'];
+  paymentForms: FormArray;
   collectionTypeOptions = [
     { value: CollectionType.MonthlyMaintenance, label: 'Monthly Maintenance' },
     { value: CollectionType.AdhocExpense, label: 'Adhoc Expense' }
@@ -79,6 +85,7 @@ export class CollectionComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder, private collectionService: CollectionService) {
+    this.paymentForms = this.fb.array([]);
     this.demandForm = this.fb.group({
       apartmentName: [[], [Validators.required]],
       amount: ['', [Validators.required, Validators.min(0)]],
@@ -105,12 +112,32 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchUnpaidFees();
     this.collectionService.getApartmentNumbers().subscribe(x => {
       this.apartments = x;
       this.demandForm.patchValue({
         apartmentName: [...this.apartments]
       });
     });
+  }
+
+  fetchUnpaidFees() {
+    this.collectionService.getUnpaidFees().subscribe({
+      next: (fees) => {
+        this.unpaidFees = fees;
+        this.paymentForms.clear();
+        fees.forEach(() => this.paymentForms.push(this.fb.group({
+          receivedDate: ['', Validators.required]
+        })));
+      },
+      error: (err) => console.error('Failed to load unpaid fees:', err)
+    });
+  }
+
+  markAsPaid(index: number) {
+    const receivedDate = this.paymentForms.at(index).value.receivedDate;
+    console.log('Marking payment as received on:', receivedDate);
+    // TODO: Implement API call
   }
 
   toggleAllSelection() {

@@ -82,6 +82,68 @@
     </div>
   </div>
   <div class="box full-width">
-    Full Width Content
+    <h2>Unpaid Fees</h2>
+    <div class="table-container">
+      <table mat-table [dataSource]="unpaidFees" class="mat-elevation-z8">
+        <!-- Apartment Column -->
+        <ng-container matColumnDef="apartmentNumber">
+          <th mat-header-cell *matHeaderCellDef> Apartment </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.apartmentNumber}} </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.amount | currency:'INR'}} </td>
+        </ng-container>
+
+        <!-- Request Date Column -->
+        <ng-container matColumnDef="requestForDate">
+          <th mat-header-cell *matHeaderCellDef> Request Date </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.requestForDate | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Due Date Column -->
+        <ng-container matColumnDef="dueDate">
+          <th mat-header-cell *matHeaderCellDef> Due Date </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.dueDate | date:'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Purpose Column -->
+        <ng-container matColumnDef="forWhat">
+          <th mat-header-cell *matHeaderCellDef> Purpose </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.forWhat}} </td>
+        </ng-container>
+
+        <!-- Comment Column -->
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef> Comment </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.comment || '-'}} </td>
+        </ng-container>
+
+        <!-- Received Date Column -->
+        <ng-container matColumnDef="receivedDate">
+          <th mat-header-cell *matHeaderCellDef> Received Date </th>
+          <td mat-cell *matCellDef="let fee; let i = index">
+            <input type="date" [formGroup]="$any(paymentForms.controls[i])" formControlName="receivedDate"
+              class="date-input">
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let fee; let i = index">
+            <button mat-raised-button color="primary" class="action-button" [disabled]="!paymentForms.controls[i].valid"
+              (click)="markAsPaid(i)">
+              Mark as Paid
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
   </div>
 </div>
