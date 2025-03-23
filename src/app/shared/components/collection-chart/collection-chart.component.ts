@@ -18,38 +18,40 @@ export interface ChartDataPoint {
   imports: [CommonModule, NgxChartsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
-    <div class="stats-summary">
-      <div class="stat-item">
-        <div class="stat-label">Total Demand</div>
-        <div class="stat-value">{{formatCurrency(totalDemand)}}</div>
+    <div class="stats-container">
+      <div class="stats-summary">
+        <div class="stat-item">
+          <div class="stat-label">TOTAL DEMAND</div>
+          <div class="stat-value">{{formatCurrency(totalDemand)}}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">TOTAL COLLECTION</div>
+          <div class="stat-value">{{formatCurrency(totalCollection)}}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">COLLECTION RATE</div>
+          <div class="stat-value">{{collectionPercentage | number:'1.1-1'}}%</div>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-label">Total Collection</div>
-        <div class="stat-value">{{formatCurrency(totalCollection)}}</div>
+      <div class="chart-container">
+        <ngx-charts-bar-vertical-2d
+          [view]="[width, height]"
+          [scheme]="'ocean'"
+          [results]="chartData"
+          [gradient]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'Month'"
+          [yAxisLabel]="'Amount (₹)'"
+          [barPadding]="8"
+          [groupPadding]="16"
+          [roundDomains]="true"
+          [animations]="true">
+        </ngx-charts-bar-vertical-2d>
       </div>
-      <div class="stat-item">
-        <div class="stat-label">Collection Rate</div>
-        <div class="stat-value">{{collectionPercentage | number:'1.0-1'}}%</div>
-      </div>
-    </div>
-    <div class="chart-container">
-      <ngx-charts-bar-vertical-2d
-        [view]="[width, height]"
-        [scheme]="'cool'"
-        [results]="chartData"
-        [gradient]="false"
-        [xAxis]="true"
-        [yAxis]="true"
-        [legend]="true"
-        [showXAxisLabel]="true"
-        [showYAxisLabel]="true"
-        [xAxisLabel]="'Month'"
-        [yAxisLabel]="'Amount (₹)'"
-        [barPadding]="8"
-        [groupPadding]="16"
-        [roundDomains]="true"
-        [animations]="true">
-      </ngx-charts-bar-vertical-2d>
     </div>
   `,
   styleUrls: ['./collection-chart.component.css']
@@ -79,14 +81,14 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
 
   get totalDemand(): number {
     return this.chartData.reduce((total, month) => {
-      const demand = month.series.find(item => item.name === 'Demand');
+      const demand = month.series.find(item => item.name === 'Total Demand');
       return total + (demand?.value || 0);
     }, 0);
   }
 
   get totalCollection(): number {
     return this.chartData.reduce((total, month) => {
-      const collection = month.series.find(item => item.name === 'Collection');
+      const collection = month.series.find(item => item.name === 'Total Collection');
       return total + (collection?.value || 0);
     }, 0);
   }

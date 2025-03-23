@@ -6,6 +6,7 @@ import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 import { API_ENV } from '../../../environments/environment';
 import { Environment } from '../../../environments/environment.interface';
 import { Payment } from '../../models/payment';
+import { ChartDataItem } from '../../models/collection-expense';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class CollectionService {
   private readonly environment: Environment = inject(API_ENV);
 
   createDemand(demand: CreateCollectionDemandDto): Observable<string[]> {
-    return this.http.post<string[]>(`${this.environment.apiUrl}api/Collections/demand`, demand);
+    return this.http.post<string[]>(`${this.environment.apiUrl}/api/Collections/demand`, demand);
   }
 
   getUnpaidFees(): Observable<UnpaidFeeDto[]> {
@@ -31,5 +32,9 @@ export class CollectionService {
 
   makePayment(payment: Payment): Observable<void> {
     return this.http.post<void>(`${this.environment.apiUrl}/api/Collections/payment`, payment);
+  }
+
+  getCollectionExpenses(year: number): Observable<ChartDataItem[]> {
+    return this.http.post<ChartDataItem[]>(`${this.environment.apiUrl}/api/Collections/collection-expense`, year);
   }
 }

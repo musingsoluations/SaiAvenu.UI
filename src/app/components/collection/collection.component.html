@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [class.loading]="isLoading">
   <div class="row">
     <div class="col box">
       <form [formGroup]="demandForm" (ngSubmit)="onSubmit()" class="form-container">
@@ -82,7 +82,16 @@
     </div>
     <div class="col box">
       <h2>Collection Statistics</h2>
-      <app-collection-chart [chartData]="chartData"></app-collection-chart>
+      <div class="chart-wrapper">
+        <div *ngIf="isLoading" class="loading-spinner">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        <app-collection-chart
+          [chartData]="chartData"
+          [style.visibility]="isLoading ? 'hidden' : 'visible'"
+          class="chart-container">
+        </app-collection-chart>
+      </div>
     </div>
   </div>
   <div class="box full-width">
