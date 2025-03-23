@@ -1,4 +1,4 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -33,9 +33,9 @@ export interface ChartDataPoint {
           <div class="stat-value">{{collectionPercentage | number:'1.1-1'}}%</div>
         </div>
       </div>
-      <div class="chart-container">
+      <div #chartContainer class="chart-container">
         <ngx-charts-bar-vertical-2d
-          [view]="[width, height]"
+          [view]="chartDimensions"
           [scheme]="'ocean'"
           [results]="chartData"
           [gradient]="false"
@@ -58,24 +58,45 @@ export interface ChartDataPoint {
 })
 export class CollectionChartComponent implements OnInit, AfterViewInit {
   @Input() chartData: ChartDataPoint[] = [];
+  @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
-  width = 800;
-  height = 400;
+  chartDimensions: [number, number] = [800, 400];
+  private resizeObserver: ResizeObserver;
+
+  constructor(private cdr: ChangeDetectorRef) {
+    this.resizeObserver = new ResizeObserver(() => this.updateDimensions());
+  }
 
   ngOnInit() {
-    this.updateDimensions();
+    // Initial dimensions update
+    setTimeout(() => this.updateDimensions(), 0);
   }
 
   ngAfterViewInit() {
-    this.updateDimensions();
-    window.addEventListener('resize', () => this.updateDimensions());
+    // Start observing the container for size changes
+    this.resizeObserver.observe(this.chartContainer.nativeElement);
+
+    // Update dimensions after view init
+    setTimeout(() => {
+      this.updateDimensions();
+      this.cdr.detectChanges();
+    }, 100);
+  }
+
+  ngOnDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   private updateDimensions() {
-    const container = document.querySelector('.chart-container');
-    if (container) {
-      this.width = container.clientWidth;
-      this.height = container.clientHeight;
+    if (this.chartContainer) {
+      const { clientWidth, clientHeight } = this.chartContainer.nativeElement;
+      this.chartDimensions = [
+        Math.max(clientWidth, 300), // Minimum width
+        Math.max(clientHeight, 300)  // Minimum height
+      ];
+      this.cdr.detectChanges();
     }
   }
 
