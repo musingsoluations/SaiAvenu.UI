@@ -1,6 +1,6 @@
 export enum CollectionType {
-  MonthlyMaintenance,
-  AdhocExpense
+  MonthlyMaintenance = 1,
+  AdhocExpense = 2
 }
 
 export interface CreateCollectionDemandDto {

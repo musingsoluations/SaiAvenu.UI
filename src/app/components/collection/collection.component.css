@@ -204,3 +204,12 @@ mat-error {
     font-size: 20px;
   }
 }
+
+.payment-amount-field {
+  width: 150px;
+  margin: -1em 0;
+}
+
+.payment-amount-field input {
+  text-align: right;
+}

@@ -38,7 +38,9 @@
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Request For Date</mat-label>
-          <input matInput type="date" formControlName="requestForDate">
+          <input matInput [matDatepicker]="requestDatePicker" formControlName="requestForDate">
+          <mat-datepicker-toggle matIconSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #requestDatePicker></mat-datepicker>
           <mat-error
             *ngIf="demandForm.get('requestForDate')?.errors?.['required'] && demandForm.get('requestForDate')?.touched">
             Request date is required
@@ -47,7 +49,9 @@
 
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Due Date</mat-label>
-          <input matInput type="date" formControlName="dueDate">
+          <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate">
+          <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #dueDatePicker></mat-datepicker>
           <mat-error *ngIf="demandForm.get('dueDate')?.errors?.['required'] && demandForm.get('dueDate')?.touched">
             Due date is required
           </mat-error>
@@ -97,6 +101,12 @@
           <td mat-cell *matCellDef="let fee"> {{fee.amount | currency:'INR'}} </td>
         </ng-container>
 
+        <!-- Remaining Amount Column -->
+         <ng-container matColumnDef="remainingAmount">
+          <th mat-header-cell *matHeaderCellDef> Remaining </th>
+          <td mat-cell *matCellDef="let fee"> {{fee.remainingAmount | currency:'INR'}} </td>
+        </ng-container>
+
         <!-- Request Date Column -->
         <ng-container matColumnDef="requestForDate">
           <th mat-header-cell *matHeaderCellDef> Request Date </th>
@@ -112,7 +122,7 @@
         <!-- Purpose Column -->
         <ng-container matColumnDef="forWhat">
           <th mat-header-cell *matHeaderCellDef> Purpose </th>
-          <td mat-cell *matCellDef="let fee"> {{fee.forWhat}} </td>
+          <td mat-cell *matCellDef="let fee"> {{getCollectionTypeLabel(fee.forWhat)}} </td>
         </ng-container>
 
         <!-- Comment Column -->
@@ -121,11 +131,35 @@
           <td mat-cell *matCellDef="let fee"> {{fee.comment || '-'}} </td>
         </ng-container>
 
+        <!-- Payment Amount Column -->
+        <ng-container matColumnDef="paymentAmount">
+          <th mat-header-cell *matHeaderCellDef> Payment Amount </th>
+          <td mat-cell *matCellDef="let fee; let i = index">
+            <mat-form-field appearance="outline" class="payment-amount-field">
+              <input matInput type="number" [formControl]="$any(paymentForms.at(i).get('paymentAmount'))"
+                     [max]="fee.amount" [min]="0" placeholder="Enter amount">
+              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['required']">
+                Amount is required
+              </mat-error>
+              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['min']">
+                Amount must be greater than 0
+              </mat-error>
+              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['max']">
+                Amount cannot exceed {{fee.amount | currency:'INR'}}
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
         <!-- Received Date Column -->
         <ng-container matColumnDef="receivedDate">
           <th mat-header-cell *matHeaderCellDef> Received Date </th>
           <td mat-cell *matCellDef="let fee; let i = index">
-            <input type="date" [formControl]="$any(paymentForms.at(i).get('receivedDate'))" class="date-input">
+            <mat-form-field appearance="outline" class="payment-amount-field">
+              <input matInput [matDatepicker]="dp" [formControl]="$any(paymentForms.at(i).get('receivedDate'))">
+              <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp="matDatepicker"></mat-datepicker>
+            </mat-form-field>
           </td>
         </ng-container>
 
