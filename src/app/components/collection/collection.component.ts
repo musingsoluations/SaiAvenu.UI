@@ -103,8 +103,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       amount: ['', [Validators.required, Validators.min(0)]],
       requestForDate: ['', [Validators.required]],
       dueDate: ['', [Validators.required]],
-      paidDate: [null],
-      isPaid: [false],
       forWhat: ['', [Validators.required]],
       comment: ['', (control: AbstractControl) => {
         const collectionType = control.parent?.get('forWhat')?.value;
