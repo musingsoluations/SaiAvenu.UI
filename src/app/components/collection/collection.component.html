@@ -95,12 +95,26 @@
     </div>
   </div>
   <div class="box full-width">
-    <h2>Unpaid Collections</h2>
+    <div class="table-header">
+      <h2>Unpaid Collections</h2>
+    </div>
     <div class="table-container">
-      <table mat-table [dataSource]="unpaidFees" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Apartment Column -->
         <ng-container matColumnDef="apartmentNumber">
-          <th mat-header-cell *matHeaderCellDef> Apartment </th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="header-cell" [class.show-filter]="showFilter">
+              <div class="header-content">
+                <span class="header-label">Apartment</span>
+                <button mat-icon-button class="filter-button" (click)="toggleFilter($event)">
+                  <mat-icon>filter_list</mat-icon>
+                </button>
+              </div>
+              <mat-form-field appearance="outline" class="filter-field">
+                <input matInput (keyup)="applyFilter($event)" placeholder="Filter apartments" #filterInput>
+              </mat-form-field>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let fee"> {{fee.apartmentNumber}} </td>
         </ng-container>
 

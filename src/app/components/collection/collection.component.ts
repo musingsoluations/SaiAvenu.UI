@@ -1,13 +1,14 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule, FormArray, FormControl } from '@angular/forms';
 import { ApartmentService } from '../../services/building/apartment-service';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { CollectionType, CreateCollectionDemandDto } from '../../models/create-collection-demand';
 import { CollectionService } from '../../services/collection/collection.service';
@@ -19,6 +20,8 @@ import { PaymentMethod } from '../../models/payment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ChartDataItem } from '../../models/collection-expense';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-collection',
@@ -26,9 +29,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatIconButton,
     MatCheckboxModule,
     MatDividerModule,
     MatRadioModule,
@@ -36,7 +41,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.css']
@@ -78,6 +84,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   totalCollection = 0;
   collectionRate = 0;
 
+  selectedApartmentFilter: string = '';
+  filteredUnpaidFees: UnpaidFeeDto[] = [];
+  dataSource: MatTableDataSource<UnpaidFeeDto>;
+  @ViewChild('filterInput') filterInput!: ElementRef;
+  showFilter = false;
+
   constructor(
     private fb: FormBuilder,
     private collectionService: CollectionService,
@@ -109,6 +121,13 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     this.demandForm.get('apartmentName')?.valueChanges.subscribe((selectedApartments: string[]) => {
       this.allSelected = selectedApartments.length === this.apartments.length;
     });
+
+    this.dataSource = new MatTableDataSource<UnpaidFeeDto>();
+
+    // Configure the filter predicate for partial matches
+    this.dataSource.filterPredicate = (data: UnpaidFeeDto, filter: string) => {
+      return data.apartmentNumber.toLowerCase().includes(filter.toLowerCase());
+    };
   }
 
   getCollectionTypeLabel(type: CollectionType): string {
@@ -183,16 +202,27 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       : 0;
   }
 
+  filterUnpaidFees() {
+    if (!this.selectedApartmentFilter) {
+      this.filteredUnpaidFees = this.unpaidFees;
+    } else {
+      this.filteredUnpaidFees = this.unpaidFees.filter(
+        fee => fee.apartmentNumber === this.selectedApartmentFilter
+      );
+    }
+  }
+
   private fetchUnpaidFees(): Promise<void> {
     return new Promise((resolve) => {
       this.collectionService.getUnpaidFees().subscribe({
         next: (fees) => {
           this.unpaidFees = fees;
+          this.dataSource.data = fees; // Update the data source
           this.paymentForms.clear();
           fees.forEach((fee) => this.paymentForms.push(this.fb.group({
-            receivedDate: ['', Validators.required],
-            paymentAmount: [fee.remainingAmount, [Validators.required, Validators.min(0), Validators.max(fee.remainingAmount)]],
-            paymentMethod: ['', [Validators.required]]
+            paymentAmount: ['', [Validators.required, Validators.min(0), Validators.max(fee.amount)]],
+            paymentMethod: ['', [Validators.required]],
+            receivedDate: ['', [Validators.required]]
           })));
           resolve();
         },
@@ -279,5 +309,34 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         control?.markAsTouched();
       });
     }
+  }
+
+  toggleFilter(event: Event): void {
+    event.stopPropagation();
+    this.showFilter = !this.showFilter;
+    if (this.showFilter) {
+      setTimeout(() => {
+        this.filterInput.nativeElement.focus();
+      });
+    } else {
+      this.dataSource.filter = '';
+      if (this.filterInput) {
+        this.filterInput.nativeElement.value = '';
+      }
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeFilter(event: Event): void {
+    if (this.showFilter && !this.filterInput.nativeElement.contains(event.target)) {
+      this.showFilter = false;
+      this.dataSource.filter = '';
+      this.filterInput.nativeElement.value = '';
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
