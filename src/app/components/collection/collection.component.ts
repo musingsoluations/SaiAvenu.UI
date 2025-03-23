@@ -220,7 +220,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
           this.dataSource.data = fees; // Update the data source
           this.paymentForms.clear();
           fees.forEach((fee) => this.paymentForms.push(this.fb.group({
-            paymentAmount: ['', [Validators.required, Validators.min(0), Validators.max(fee.amount)]],
+            paymentAmount: [fee.remainingAmount, [Validators.required, Validators.min(0), Validators.max(fee.amount)]],
             paymentMethod: ['', [Validators.required]],
             receivedDate: ['', [Validators.required]]
           })));
