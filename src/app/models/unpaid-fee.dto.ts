@@ -1,9 +1,10 @@
 export interface UnpaidFeeDto {
-  Id: string;
+  id: string;
   apartmentNumber: string;
   amount: number;
   requestForDate: Date;
   dueDate: Date;
+  remainingAmount: number;
   forWhat: string;
   comment?: string;
 }

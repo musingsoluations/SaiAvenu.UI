@@ -15,6 +15,8 @@ import { CollectionChartComponent, ChartDataPoint } from '../../shared/component
 import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { PaymentMethod } from '../../models/payment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-collection',
@@ -51,6 +53,7 @@ export class CollectionComponent implements OnInit {
     'forWhat',
     'comment',
     'paymentAmount',
+    'paymentMethod',
     'receivedDate',
     'actions'
   ];
@@ -58,6 +61,11 @@ export class CollectionComponent implements OnInit {
   collectionTypeOptions = [
     { value: CollectionType.MonthlyMaintenance, label: 'Monthly Maintenance' },
     { value: CollectionType.AdhocExpense, label: 'Adhoc Expense' }
+  ];
+
+  paymentMethods = [
+    { value: PaymentMethod.Cash, label: 'Cash' },
+    { value: PaymentMethod.Online, label: 'Online' }
   ];
 
   // Chart data
@@ -99,7 +107,12 @@ export class CollectionComponent implements OnInit {
     }
   ];
 
-  constructor(private fb: FormBuilder, private collectionService: CollectionService) {
+  constructor(
+    private fb: FormBuilder,
+    private collectionService: CollectionService,
+    private apartmentService: ApartmentService,
+    private snackBar: MatSnackBar
+  ) {
     this.paymentForms = this.fb.array([]);
     this.demandForm = this.fb.group({
       apartmentName: [[], [Validators.required]],
@@ -143,24 +156,47 @@ export class CollectionComponent implements OnInit {
   fetchUnpaidFees() {
     this.collectionService.getUnpaidFees().subscribe({
       next: (fees) => {
+        console.log('Received unpaid fees:', fees); // Debug log
         this.unpaidFees = fees;
         this.paymentForms.clear();
         fees.forEach((fee) => this.paymentForms.push(this.fb.group({
           receivedDate: ['', Validators.required],
-          paymentAmount: [fee.amount, [Validators.required, Validators.min(0), Validators.max(fee.amount)]]
+          paymentAmount: [fee.amount, [Validators.required, Validators.min(0), Validators.max(fee.remainingAmount)]],
+          paymentMethod: ['', [Validators.required]]
         })));
       },
       error: (err) => console.error('Failed to load unpaid fees:', err)
     });
   }
 
-  markAsPaid(index: number) {
-    const formValue = this.paymentForms.at(index).value;
-    console.log('Marking payment as received:', {
-      receivedDate: formValue.receivedDate,
-      paymentAmount: formValue.paymentAmount
-    });
-    // TODO: Implement API call
+  markAsPaid(index: number): void {
+    const paymentForm = this.paymentForms.at(index);
+    const fee = this.unpaidFees[index];
+
+    console.log('Fee object:', fee);
+    console.log('Fee Id:', fee.id);
+
+    if (paymentForm.valid) {
+      const payment = {
+        amount: paymentForm.get('paymentAmount')?.value,
+        paymentDate: paymentForm.get('receivedDate')?.value,
+        feeCollectionId: fee.id,
+        paymentMethod: paymentForm.get('paymentMethod')?.value
+      };
+
+      console.log('Payment object:', payment);
+
+      this.collectionService.makePayment(payment).subscribe({
+        next: () => {
+          this.snackBar.open('Payment recorded successfully', 'Close', { duration: 3000 });
+          this.fetchUnpaidFees(); // Refresh the list
+        },
+        error: (error) => {
+          this.snackBar.open('Failed to record payment', 'Close', { duration: 6000 });
+          console.error('Payment error:', error);
+        }
+      });
+    }
   }
 
   toggleAllSelection() {

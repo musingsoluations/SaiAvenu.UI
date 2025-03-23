@@ -5,6 +5,7 @@ import { CreateCollectionDemandDto } from '../../models/create-collection-demand
 import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 import { API_ENV } from '../../../environments/environment';
 import { Environment } from '../../../environments/environment.interface';
+import { Payment } from '../../models/payment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class CollectionService {
 
   getApartmentNumbers(): Observable<string[]> {
     return this.http.get<string[]>(`${this.environment.apiUrl}/api/Apartment/GetApartmentNumbers`);
+  }
+
+  makePayment(payment: Payment): Observable<void> {
+    return this.http.post<void>(`${this.environment.apiUrl}/api/Collections/payment`, payment);
   }
 }
