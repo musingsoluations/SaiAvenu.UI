@@ -232,6 +232,14 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private formatDateForServer(date: Date): string {
+    // Adjust for timezone to keep the date as selected by user
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   markAsPaid(index: number): void {
     const paymentForm = this.paymentForms.at(index);
     const fee = this.unpaidFees[index];
@@ -242,7 +250,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     if (paymentForm.valid) {
       const payment = {
         amount: paymentForm.get('paymentAmount')?.value,
-        paymentDate: paymentForm.get('receivedDate')?.value,
+        paymentDate: this.formatDateForServer(paymentForm.get('receivedDate')?.value),
         feeCollectionId: fee.id,
         paymentMethod: paymentForm.get('paymentMethod')?.value
       };
@@ -278,8 +286,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       const demand: CreateCollectionDemandDto = {
         apartmentName: formValue.apartmentName,
         amount: formValue.amount,
-        requestForDate: formValue.requestForDate,
-        dueDate: formValue.dueDate,
+        requestForDate: this.formatDateForServer(formValue.requestForDate),
+        dueDate: this.formatDateForServer(formValue.dueDate),
         forWhat: formValue.forWhat,
         comment: formValue.comment
       };
@@ -337,4 +345,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+    // Remove time part from the date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date >= today;
+  };
 }

@@ -6,8 +6,8 @@ export enum CollectionType {
 export interface CreateCollectionDemandDto {
   apartmentName: string[];
   amount: number;
-  requestForDate: Date;
-  dueDate: Date;
+  requestForDate: string;
+  dueDate: string;
   forWhat: CollectionType;
-  comment: string | null;
+  comment: string;
 }

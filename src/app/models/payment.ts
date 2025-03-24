@@ -5,7 +5,7 @@ export enum PaymentMethod {
 
 export interface Payment {
   amount: number;
-  paymentDate: Date;
+  paymentDate: string;
   feeCollectionId: string;
   paymentMethod: PaymentMethod;
 }
