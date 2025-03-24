@@ -43,6 +43,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/collection/collection.component').then(m => m.CollectionComponent),
       },
+      {
+        path: 'expense',
+        loadComponent: () =>
+          import('./components/expense/expense.component').then(m => m.ExpenseComponent),
+        data: { requiredRoles: ['Admin'] },
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
