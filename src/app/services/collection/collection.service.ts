@@ -34,7 +34,11 @@ export class CollectionService {
     return this.http.post<void>(`${this.environment.apiUrl}/api/Collections/payment`, payment);
   }
 
-  getCollectionExpenses(year: number): Observable<ChartDataItem[]> {
-    return this.http.post<ChartDataItem[]>(`${this.environment.apiUrl}/api/Collections/collection-expense`, year);
+  getCollectionPayment(year: number): Observable<ChartDataItem[]> {
+    return this.http.post<ChartDataItem[]>(`${this.environment.apiUrl}/api/Collections/collection-payment`, year);
+  }
+
+  getCollectionPaymentSelf(year: number): Observable<ChartDataItem[]> {
+    return this.http.post<ChartDataItem[]>(`${this.environment.apiUrl}/api/Collections/demand-paid-self`, year);
   }
 }

@@ -18,6 +18,7 @@ import { ExpenseDto } from '../../models/expense';
 
 export class DashboardComponent implements OnInit {
   chartData: ChartDataItem[] = [];
+  chartDataSelf: ChartDataItem[] = [];
   expenses: ExpenseDto[] = [];
   constructor(
     private collectionService: CollectionService,
@@ -26,8 +27,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
-    this.collectionService.getCollectionExpenses(currentYear).subscribe(data => {
+    this.collectionService.getCollectionPayment(currentYear).subscribe(data => {
       this.chartData = data;
+    });
+    this.collectionService.getCollectionPaymentSelf(currentYear).subscribe(selfData => {
+      this.chartDataSelf = selfData;
     });
     this.loadExpenses();
   }
