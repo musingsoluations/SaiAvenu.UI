@@ -12,8 +12,8 @@ import { ApartmentService } from '../../services/building/apartment-service';
 import { CommonModule } from '@angular/common';
 import { Apartment } from '../../models/apartment';
 import { ApartmentResponse } from "../../models/ApartmentResponse";
-import { catchError, finalize, take } from 'rxjs/operators';
-import { of, Subject } from 'rxjs';
+import { catchError, finalize, take, map } from 'rxjs/operators';
+import { of, Subject, Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -69,53 +69,68 @@ export class ApartmentComponent implements OnInit, OnDestroy {
   private loadInitialData(): void {
     this.isLoading = true;
 
-    // Combine all initial data loading
-    const owners$ = this.buildingService.getUserWithRole(['owner']).pipe(
-      catchError(error => {
-        this.showError('Failed to load owners', error);
-        return of([]);
-      })
+    // Create safe observables that handle null/undefined values
+    const owners$ = this.createSafeObservable(
+      this.buildingService.getUserWithRole(['owner']),
+      'owners'
     );
 
-    const renters$ = this.buildingService.getUserWithRole(['renter']).pipe(
-      catchError(error => {
-        this.showError('Failed to load renters', error);
-        return of([]);
-      })
+    const renters$ = this.createSafeObservable(
+      this.buildingService.getUserWithRole(['renter']),
+      'renters'
     );
 
-    const apartments$ = this.buildingService.getApartments().pipe(
-      catchError(error => {
-        this.showError('Failed to load apartments', error);
-        return of([]);
-      })
+    const apartments$ = this.createSafeObservable(
+      this.buildingService.getApartments(),
+      'apartments'
     );
 
-    // Subscribe to all observables at once
-    forkJoin({
-      owners: owners$,
-      renters: renters$,
-      apartments: apartments$
-    }).pipe(
-      take(1),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    ).subscribe({
-      next: (result) => {
-        this.owners = result.owners;
-        this.renters = result.renters;
-        this.apartments = result.apartments;
-      },
-      error: (error) => {
-        this.showError('Error loading data', error);
-        this.isLoading = false;
-      }
-    });
+    // Use forkJoin only if all observables are valid
+    if (owners$ && renters$ && apartments$) {
+      forkJoin({
+        owners: owners$,
+        renters: renters$,
+        apartments: apartments$
+      }).pipe(
+        take(1),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      ).subscribe({
+        next: (result) => {
+          this.owners = result.owners || [];
+          this.renters = result.renters || [];
+          this.apartments = result.apartments || [];
+        },
+        error: (error) => {
+          this.showError('Error loading data', error);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.isLoading = false;
+      this.showError('Error', 'Failed to initialize data loading');
+    }
   }
 
-  // Remove the separate loadApartments method since it's now part of loadInitialData
-  // Update the onSubmit method to use the new pattern
+  private createSafeObservable<T>(
+    source: Observable<T> | undefined | null,
+    name: string
+  ): Observable<T> | null {
+    if (!source) {
+      this.showError(`Error`, `${name} service call returned undefined`);
+      return null;
+    }
+
+    return source.pipe(
+      map(data => data || [] as any),
+      catchError(error => {
+        this.showError(`Failed to load ${name}`, error);
+        return of([] as any);
+      })
+    );
+  }
+
   onSubmit() {
     if (this.apartmentForm.invalid) {
       this.showError('Validation Error', 'Please fill in all required fields (Flat Number and Owner)');
@@ -130,26 +145,37 @@ export class ApartmentComponent implements OnInit, OnDestroy {
     };
 
     this.isLoading = true;
-    this.buildingService.createApartment(apartmentData).pipe(
-      take(1),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    ).subscribe({
-      next: (result) => {
-        if (result) {
-          this.snackBar.open('Apartment saved successfully!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          this.resetForm();
-          this.loadInitialData(); // Reload all data
+
+    const createApartment$ = this.createSafeObservable(
+      this.buildingService.createApartment(apartmentData),
+      'create apartment'
+    );
+
+    if (createApartment$) {
+      createApartment$.pipe(
+        take(1),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      ).subscribe({
+        next: (result) => {
+          if (result) {
+            this.snackBar.open('Apartment saved successfully!', 'Close', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.resetForm();
+            this.loadInitialData();
+          }
+        },
+        error: (error) => {
+          this.showError('Save Error', error);
         }
-      },
-      error: (error) => {
-        this.showError('Save Error', error);
-      }
-    });
+      });
+    } else {
+      this.isLoading = false;
+      this.showError('Error', 'Failed to create apartment');
+    }
   }
 
   private showError(title: string, error: any): void {
