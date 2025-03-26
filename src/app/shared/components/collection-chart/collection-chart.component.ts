@@ -35,6 +35,7 @@ export interface ChartDataPoint {
       </div>
       <div #chartContainer class="chart-container">
         <ngx-charts-bar-vertical-2d
+          *ngIf="isValidChartData"
           [view]="chartDimensions"
           [scheme]="'ocean'"
           [results]="chartData"
@@ -57,7 +58,14 @@ export interface ChartDataPoint {
   styleUrls: ['./collection-chart.component.css']
 })
 export class CollectionChartComponent implements OnInit, AfterViewInit {
-  @Input() chartData: ChartDataPoint[] = [];
+  @Input() set chartData(value: ChartDataPoint[] | null) {
+    this._chartData = Array.isArray(value) ? value : [];
+  }
+  get chartData(): ChartDataPoint[] {
+    return this._chartData;
+  }
+  private _chartData: ChartDataPoint[] = [];
+
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
   chartDimensions: [number, number] = [800, 400];
@@ -67,16 +75,16 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
     this.resizeObserver = new ResizeObserver(() => this.updateDimensions());
   }
 
+  get isValidChartData(): boolean {
+    return Array.isArray(this.chartData) && this.chartData.length > 0;
+  }
+
   ngOnInit() {
-    // Initial dimensions update
     setTimeout(() => this.updateDimensions(), 0);
   }
 
   ngAfterViewInit() {
-    // Start observing the container for size changes
     this.resizeObserver.observe(this.chartContainer.nativeElement);
-
-    // Update dimensions after view init
     setTimeout(() => {
       this.updateDimensions();
       this.cdr.detectChanges();
@@ -93,23 +101,25 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
     if (this.chartContainer) {
       const { clientWidth, clientHeight } = this.chartContainer.nativeElement;
       this.chartDimensions = [
-        Math.max(clientWidth, 300), // Minimum width
-        Math.max(clientHeight, 300)  // Minimum height
+        Math.max(clientWidth, 300),
+        Math.max(clientHeight, 300)
       ];
       this.cdr.detectChanges();
     }
   }
 
   get totalDemand(): number {
-    return (this.chartData || []).reduce((total, month) => {
-      const demand = month.series.find(item => item.name === 'Total Demand');
+    if (!Array.isArray(this.chartData)) return 0;
+    return this.chartData.reduce((total, month) => {
+      const demand = month.series?.find(item => item.name === 'Total Demand');
       return total + (demand?.value || 0);
     }, 0);
   }
 
   get totalCollection(): number {
-    return (this.chartData || []).reduce((total, month) => {
-      const collection = month.series.find(item => item.name === 'Total Collection');
+    if (!Array.isArray(this.chartData)) return 0;
+    return this.chartData.reduce((total, month) => {
+      const collection = month.series?.find(item => item.name === 'Total Collection');
       return total + (collection?.value || 0);
     }, 0);
   }
