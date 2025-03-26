@@ -170,7 +170,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
   private fetchChartData(): Promise<void> {
     return new Promise((resolve) => {
-      this.collectionService.getCollectionExpenses(new Date().getFullYear()).subscribe({
+      this.collectionService.getCollectionPayment(new Date().getFullYear()).subscribe({
         next: (data) => {
           this.chartData = data;
           this.calculateStatistics(data);

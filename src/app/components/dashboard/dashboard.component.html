@@ -9,4 +9,10 @@
     <h2>Current Month Expenses</h2>
     <app-expense-grid [expenses]="expenses"></app-expense-grid>
   </div>
+  <div class="dashboard-section">
+    <h2>Collection Overview</h2>
+    <div class="chart-box">
+      <app-collection-chart [chartData]="chartData"></app-collection-chart>
+    </div>
+  </div>
 </div>
