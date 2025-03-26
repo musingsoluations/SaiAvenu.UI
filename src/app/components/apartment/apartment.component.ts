@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ApartmentUser } from '../../models/apartment-user';
 import { ApartmentService } from '../../services/building/apartment-service';
@@ -41,7 +42,7 @@ export class ApartmentComponent implements OnInit, OnDestroy {
   apartmentForm: FormGroup;
   owners: ApartmentUser[] = [];
   renters: ApartmentUser[] = [];
-  apartments: ApartmentResponse[] = [];
+  dataSource: MatTableDataSource<ApartmentResponse>;
   displayedColumns: string[] = ['Apartment Number', 'Owner', 'Tenant'];
   isLoading = false;
 
@@ -55,6 +56,7 @@ export class ApartmentComponent implements OnInit, OnDestroy {
       ownerId: ['', [Validators.required]],
       renterId: ['']
     });
+    this.dataSource = new MatTableDataSource<ApartmentResponse>([]);
   }
 
   ngOnInit(): void {
@@ -69,7 +71,6 @@ export class ApartmentComponent implements OnInit, OnDestroy {
   private loadInitialData(): void {
     this.isLoading = true;
 
-    // Create safe observables that handle null/undefined values
     const owners$ = this.createSafeObservable(
       this.buildingService.getUserWithRole(['owner']),
       'owners'
@@ -85,7 +86,6 @@ export class ApartmentComponent implements OnInit, OnDestroy {
       'apartments'
     );
 
-    // Use forkJoin only if all observables are valid
     if (owners$ && renters$ && apartments$) {
       forkJoin({
         owners: owners$,
@@ -100,7 +100,7 @@ export class ApartmentComponent implements OnInit, OnDestroy {
         next: (result) => {
           this.owners = result.owners || [];
           this.renters = result.renters || [];
-          this.apartments = result.apartments || [];
+          this.dataSource.data = result.apartments || [];
         },
         error: (error) => {
           this.showError('Error loading data', error);
