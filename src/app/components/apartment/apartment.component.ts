@@ -14,6 +14,7 @@ import { Apartment } from '../../models/apartment';
 import { ApartmentResponse } from "../../models/ApartmentResponse";
 import { catchError, finalize, take } from 'rxjs/operators';
 import { of, Subject } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-apartment',
@@ -68,48 +69,53 @@ export class ApartmentComponent implements OnInit, OnDestroy {
   private loadInitialData(): void {
     this.isLoading = true;
 
-    // Load owners
-    this.buildingService.getUserWithRole(['owner']).pipe(
-      take(1),
+    // Combine all initial data loading
+    const owners$ = this.buildingService.getUserWithRole(['owner']).pipe(
       catchError(error => {
         this.showError('Failed to load owners', error);
         return of([]);
       })
-    ).subscribe(users => {
-      this.owners = users;
-    });
+    );
 
-    // Load renters
-    this.buildingService.getUserWithRole(['renter']).pipe(
-      take(1),
+    const renters$ = this.buildingService.getUserWithRole(['renter']).pipe(
       catchError(error => {
         this.showError('Failed to load renters', error);
         return of([]);
       })
-    ).subscribe(users => {
-      this.renters = users;
-    });
+    );
 
-    // Load apartments
-    this.loadApartments();
-  }
-
-  loadApartments() {
-    this.isLoading = true;
-    this.buildingService.getApartments().pipe(
-      take(1),
+    const apartments$ = this.buildingService.getApartments().pipe(
       catchError(error => {
         this.showError('Failed to load apartments', error);
         return of([]);
-      }),
+      })
+    );
+
+    // Subscribe to all observables at once
+    forkJoin({
+      owners: owners$,
+      renters: renters$,
+      apartments: apartments$
+    }).pipe(
+      take(1),
       finalize(() => {
         this.isLoading = false;
       })
-    ).subscribe(apartments => {
-      this.apartments = apartments;
+    ).subscribe({
+      next: (result) => {
+        this.owners = result.owners;
+        this.renters = result.renters;
+        this.apartments = result.apartments;
+      },
+      error: (error) => {
+        this.showError('Error loading data', error);
+        this.isLoading = false;
+      }
     });
   }
 
+  // Remove the separate loadApartments method since it's now part of loadInitialData
+  // Update the onSubmit method to use the new pattern
   onSubmit() {
     if (this.apartmentForm.invalid) {
       this.showError('Validation Error', 'Please fill in all required fields (Flat Number and Owner)');
@@ -126,21 +132,22 @@ export class ApartmentComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.buildingService.createApartment(apartmentData).pipe(
       take(1),
-      catchError(error => {
-        this.showError('Save Error', error);
-        return of(null);
-      }),
       finalize(() => {
         this.isLoading = false;
       })
-    ).subscribe(result => {
-      if (result !== null) {
-        this.snackBar.open('Apartment saved successfully!', 'Close', {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        });
-        this.resetForm();
-        this.loadApartments();
+    ).subscribe({
+      next: (result) => {
+        if (result) {
+          this.snackBar.open('Apartment saved successfully!', 'Close', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.resetForm();
+          this.loadInitialData(); // Reload all data
+        }
+      },
+      error: (error) => {
+        this.showError('Save Error', error);
       }
     });
   }
