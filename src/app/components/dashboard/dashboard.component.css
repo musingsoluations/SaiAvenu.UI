@@ -14,10 +14,22 @@
 }
 
 h2 {
-  margin: 0 0 24px 0;
+  margin: 0;
   color: #333;
   font-size: 24px;
   font-weight: 500;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.filter-container {
+  display: flex;
+  gap: 16px;
 }
 
 .chart-box {

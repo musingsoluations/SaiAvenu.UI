@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
+import { ExpenseGridComponent } from '../../shared/components/expense-grid/expense-grid.component';
 import { ExpenseService } from '../../services/expense/expense.service';
 import { ExpenseType, CreateExpenseDto, ExpenseDto } from '../../models/expense';
 
@@ -22,7 +22,7 @@ import { ExpenseType, CreateExpenseDto, ExpenseDto } from '../../models/expense'
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTableModule,
+    ExpenseGridComponent,
   ],
   templateUrl: './expense.component.html',
   styleUrls: ['./expense.component.css']

@@ -5,5 +5,8 @@
       <app-collection-chart [chartData]="chartData"></app-collection-chart>
     </div>
   </div>
-  <!-- Add more dashboard sections here -->
+  <div class="dashboard-section">
+    <h2>Current Month Expenses</h2>
+    <app-expense-grid [expenses]="expenses"></app-expense-grid>
+  </div>
 </div>
