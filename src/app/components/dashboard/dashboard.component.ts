@@ -28,10 +28,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
     this.collectionService.getCollectionPayment(currentYear).subscribe(data => {
-      this.chartData = data;
+      this.chartData = data ?? [];
     });
     this.collectionService.getCollectionPaymentSelf(currentYear).subscribe(selfData => {
-      this.chartDataSelf = selfData;
+      this.chartDataSelf = selfData ?? [];
     });
     this.loadExpenses();
   }
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
     const currentDate = new Date();
     this.expenseService.getExpenses(currentDate.getMonth() + 1, currentDate.getFullYear()).subscribe({
       next: (expenses) => {
-        this.expenses = expenses;
+        this.expenses = expenses ?? [];
       },
       error: (error) => {
         console.error('Load expenses error:', error);
