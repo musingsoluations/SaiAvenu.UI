@@ -7,8 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 import { ExpenseService } from '../../services/expense/expense.service';
-import { ExpenseType, CreateExpenseDto } from '../../models/expense';
+import { ExpenseType, CreateExpenseDto, ExpenseDto } from '../../models/expense';
 
 @Component({
   selector: 'app-expense',
@@ -21,6 +22,7 @@ import { ExpenseType, CreateExpenseDto } from '../../models/expense';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTableModule,
   ],
   templateUrl: './expense.component.html',
   styleUrls: ['./expense.component.css']
@@ -31,6 +33,16 @@ export class ExpenseComponent implements OnInit {
     { value: ExpenseType.recurring, label: 'Recurring' },
     { value: ExpenseType.adHoc, label: 'Ad Hoc' }
   ];
+
+  expenses: ExpenseDto[] = [];
+  displayedColumns: string[] = ['name', 'type', 'amount', 'date'];
+  totalExpense: number = 0;
+
+  currentMonth = new Date().getMonth() + 1;
+  currentYear = new Date().getFullYear();
+
+  months = Array.from({length: 12}, (_, i) => ({ value: i + 1, label: new Date(0, i).toLocaleString('default', { month: 'long' }) }));
+  years = Array.from({length: 5}, (_, i) => this.currentYear - 2 + i);
 
   constructor(
     private fb: FormBuilder,
@@ -45,7 +57,36 @@ export class ExpenseComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadExpenses();
+  }
+
+  loadExpenses(): void {
+    this.expenseService.getExpenses(this.currentMonth, this.currentYear).subscribe({
+      next: (expenses) => {
+        this.expenses = expenses;
+        this.totalExpense = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to load expenses', 'Close', { duration: 6000 });
+        console.error('Load expenses error:', error);
+      }
+    });
+  }
+
+  onMonthChange(month: number): void {
+    this.currentMonth = month;
+    this.loadExpenses();
+  }
+
+  onYearChange(year: number): void {
+    this.currentYear = year;
+    this.loadExpenses();
+  }
+
+  getExpenseTypeLabel(type: ExpenseType): string {
+    return this.expenseTypes.find(t => t.value === type)?.label || '';
+  }
 
   private formatDateForServer(date: Date): string {
     const year = date.getFullYear();

@@ -9,3 +9,7 @@ export interface CreateExpenseDto {
   amount: number;
   date: string; // Will be formatted as YYYY-MM-DD for DateOnly
 }
+
+export interface ExpenseDto extends CreateExpenseDto {
+  id: string;
+}

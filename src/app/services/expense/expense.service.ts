@@ -1,21 +1,20 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CreateExpenseDto } from '../../models/expense';
-import { API_ENV } from '../../../environments/environment';
-import { Environment } from '../../../environments/environment.interface';
+import { Observable, of } from 'rxjs';
+import { CreateExpenseDto, ExpenseDto } from '../../models/expense';
+import { MockExpenseService } from './mock-expense.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExpenseService {;
-
-  private readonly environment: Environment = inject(API_ENV);
-
+export class ExpenseService {
   constructor(private http: HttpClient) { }
 
   createExpense(expense: CreateExpenseDto): Observable<string> {
-    const url = `${this.environment.apiUrl}/api/Expense/create`;
-    return this.http.post<string>(`${url}`, expense);
+    return of('mock-expense-id');
+  }
+
+  getExpenses(month: number, year: number): Observable<ExpenseDto[]> {
+    return of(MockExpenseService.getExpenses(month, year));
   }
 }
