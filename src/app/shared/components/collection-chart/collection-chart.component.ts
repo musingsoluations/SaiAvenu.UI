@@ -101,14 +101,14 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   }
 
   get totalDemand(): number {
-    return this.chartData.reduce((total, month) => {
+    return (this.chartData || []).reduce((total, month) => {
       const demand = month.series.find(item => item.name === 'Total Demand');
       return total + (demand?.value || 0);
     }, 0);
   }
 
   get totalCollection(): number {
-    return this.chartData.reduce((total, month) => {
+    return (this.chartData || []).reduce((total, month) => {
       const collection = month.series.find(item => item.name === 'Total Collection');
       return total + (collection?.value || 0);
     }, 0);
