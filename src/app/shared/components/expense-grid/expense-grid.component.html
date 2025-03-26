@@ -47,9 +47,11 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   <!-- Footer Row -->
-  <tr class="total-row">
-    <td colspan="2" class="text-right"><strong>Total:</strong></td>
-    <td>{{totalExpense | currency:'INR'}}</td>
-    <td></td>
-  </tr>
+  <ng-container matColumnDef="footerTotal">
+    <td mat-footer-cell *matFooterCellDef colspan="4">
+      <span class="text-right">Total: {{totalExpense | currency:'INR'}}</span>
+    </td>
+  </ng-container>
+
+  <tr mat-footer-row *matFooterRowDef="['footerTotal']"></tr>
 </table>

@@ -21,6 +21,7 @@ export class ExpenseGridComponent implements OnInit {
   @Output() expensesChange = new EventEmitter<ExpenseDto[]>();
 
   displayedColumns: string[] = ['name', 'type', 'amount', 'date'];
+  footerColumns: string[] = ['footerTotal'];
   totalExpense: number = 0;
 
   currentMonth = new Date().getMonth() + 1;

@@ -7,9 +7,18 @@
   text-align: right;
 }
 
-.total-row {
+.mat-mdc-footer-row {
   font-weight: bold;
   background-color: #f5f5f5;
+}
+
+.mat-mdc-footer-cell {
+  padding: 8px 16px !important;
+}
+
+.mat-mdc-footer-cell span {
+  display: block;
+  text-align: right;
 }
 
 .filter-container {
