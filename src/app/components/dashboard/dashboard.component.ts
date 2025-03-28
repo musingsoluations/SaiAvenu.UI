@@ -7,11 +7,12 @@ import { ChartDataItem } from '../../models/collection-expense';
 import { ExpenseGridComponent } from '../../shared/components/expense-grid/expense-grid.component';
 import { ExpenseService } from '../../services/expense/expense.service';
 import { ExpenseDto } from '../../models/expense';
+import { UserPaymentsGridComponent } from '../../shared/components/user-payments-grid/user-payments-grid.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, CollectionChartComponent, ExpenseGridComponent],
+  imports: [CommonModule, MatSelectModule, CollectionChartComponent, ExpenseGridComponent, UserPaymentsGridComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
