@@ -13,9 +13,14 @@
   overflow: hidden; /* Prevent content from overflowing */
 }
 
-/* The third section will span full width */
+/* The first two sections remain in the default grid layout */
+/* The third and fourth sections will be displayed side by side */
 .dashboard-section:nth-child(3) {
-  grid-column: 1 / -1;
+  grid-column: 1;
+}
+
+.dashboard-section:nth-child(4) {
+  grid-column: 2;
 }
 
 h2 {
