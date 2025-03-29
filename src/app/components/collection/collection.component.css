@@ -57,15 +57,10 @@ h2 {
 
 /* Chart container */
 .chart-wrapper {
-  position: relative;
   width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 600px;
   background: white;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .chart-container {
@@ -303,7 +298,11 @@ table {
   }
 
   .chart-wrapper {
-    height: 250px;
+    height: auto;
+  }
+
+  .chart-container {
+    display: none;
   }
 }
 
