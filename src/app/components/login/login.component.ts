@@ -3,12 +3,14 @@ import { FloatLabelType, MatFormFieldModule } from '@angular/material/form-field
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from '../../services/Auth/auth.service';
 import { UserLogin } from '../../models/user-login';
 import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    ReactiveFormsModule // Added for formGroup support
+    MatDialogModule,
+    ReactiveFormsModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -27,7 +30,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.options = this.fb.group({
       hideRequired: this.hideRequiredControl,
@@ -58,6 +62,13 @@ export class LoginComponent {
       },
       error: (err: any) => {
         console.error('Login failed:', err);
+        this.dialog.open(ConfirmationDialogComponent, {
+          width: '300px',
+          data: {
+            title: 'Login Failed',
+            content: err.error?.message || 'Invalid credentials. Please try again.'
+          }
+        });
       }
     });
   }
