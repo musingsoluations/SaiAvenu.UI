@@ -14,15 +14,65 @@
   padding: 1rem;
 }
 
+mat-toolbar-row {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
+}
+
+.nav-links a {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 0.8;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
 }
 
 .logo-icon {
   color: white;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+#Member-menu {
+  flex-grow: 1;
+}
+
+#user-menu {
+  margin-left: auto;
+  position: relative;
+  right: 0;
+}
+
+#user-menu button {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  margin-right: 4px;
 }
 
 .desktop-only {
@@ -33,63 +83,35 @@
   .desktop-only {
     display: none;
   }
-}
 
-.topbar nav {
-  display: flex;
-  gap: 2rem;
-}
-
-.topbar a {
-  color: white;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.topbar a:hover {
-  opacity: 0.8;
-}
-
-.logo-icon {
-  color: white;
-  margin-right: 1rem;
-}
-
-button[mat-icon-button] {
-  width: 40px;
-  height: 40px;
-}
-
-.content-area {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-  background: #f5f6fa;
-}
-
-.fab-button-container {
-  display: flex;
-  justify-content: center;
-  width: 140px;
-}
-
-@media (max-width: 768px) {
   .topbar {
     padding: 0.5rem;
   }
 
-
+  mat-toolbar-row {
+    padding: 0 8px;
+  }
 
   #logo span {
     font-size: 1rem;
   }
 
-  .nav-links a span:not(.mat-icon) {
-    display: none;
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-links a {
+    padding: 0 2px;
   }
 
   .nav-links .mat-icon {
-    margin-right: 0;
+    margin-right: 4px;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+
+  #logo {
+    margin-right: 1rem;
   }
 }
 
@@ -98,17 +120,19 @@ button[mat-icon-button] {
     padding: 0.25rem;
   }
 
-  .nav-links {
-    gap: 0;
-    padding: 0 2px;
+  mat-toolbar-row {
+    padding: 0 4px;
   }
 
-
+  .nav-links {
+    gap: 1px;
+    padding: 0;
+  }
 
   .nav-links .mat-icon {
-    font-size: 16px;
+    font-size: 18px;
+    margin-right: 2px;
   }
-
 
   #logo {
     margin-right: 0.5rem;

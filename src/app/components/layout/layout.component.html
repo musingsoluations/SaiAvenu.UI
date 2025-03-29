@@ -5,7 +5,7 @@
         <mat-icon class="logo-icon">domain</mat-icon>
         <span>Sri Sai Avenue</span>
       </div>
-      <span class="fill-remaining-space"></span>
+
       <div id="Member-menu">
         <nav class="nav-links">
           <a mat-button routerLink="/dashboard">
@@ -13,13 +13,12 @@
             <span class="desktop-only">Dashboard</span>
           </a>
           <a mat-button [matMenuTriggerFor]="configMenu" aria-label="Configuration" *ngIf="isAdmin$ | async">
-            <span class="desktop-only">Configuration</span>
             <mat-icon>settings</mat-icon>
+            <span class="desktop-only">Configuration</span>
           </a>
         </nav>
       </div>
 
-      <span class="fill-remaining-space"></span>
       <div id="user-menu">
         <button mat-fab [matMenuTriggerFor]="menu" aria-label="User Menu">
           <mat-icon>account_circle</mat-icon>
