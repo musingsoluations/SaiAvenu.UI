@@ -65,10 +65,9 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   private updateDimensions() {
     if (this.chartContainer) {
       const { clientWidth, clientHeight } = this.chartContainer.nativeElement;
-      this.chartDimensions = [
-        Math.max(clientWidth, 300),
-        Math.max(clientHeight, 300)
-      ];
+      const width = Math.max(clientWidth - 32, 300); // Account for padding
+      const height = Math.max(clientHeight - 48, 250); // Account for padding and legend
+      this.chartDimensions = [width, height];
       this.cdr.detectChanges();
     }
   }
