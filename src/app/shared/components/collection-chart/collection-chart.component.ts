@@ -18,48 +18,7 @@ export interface ChartDataPoint {
   standalone: true,
   imports: [CommonModule, NgxChartsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: `
-    <div class="stats-container">
-      <div class="stats-summary">
-        <div class="stat-item">
-          <div class="stat-label">TOTAL DEMAND</div>
-          <div class="stat-value">{{formatCurrency(totalDemand)}}</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">TOTAL COLLECTION</div>
-          <div class="stat-value">{{formatCurrency(totalCollection)}}</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">COLLECTION RATE</div>
-          <div class="stat-value">{{collectionPercentage | number:'1.1-1'}}%</div>
-        </div>
-      </div>
-      <div #chartContainer class="chart-container">
-        <ngx-charts-bar-vertical-2d
-          *ngIf="isValidChartData"
-          [view]="chartDimensions"
-          [scheme]="'ocean'"
-          [results]="chartData"
-          [gradient]="false"
-          [xAxis]="true"
-          [yAxis]="true"
-          [legend]="true"
-          [legendTitle]="''"
-          [legendPosition]="LegendPosition.Below"
-          [showXAxisLabel]="true"
-          [showYAxisLabel]="true"
-          [xAxisLabel]="'Month'"
-          [yAxisLabel]="'Amount (₹)'"
-          [barPadding]="8"
-          [groupPadding]="16"
-          [roundDomains]="true"
-          [animations]="true"
-          [yAxisTickFormatting]="formatYAxisTick"
-          [marginLeft]="60">
-        </ngx-charts-bar-vertical-2d>
-      </div>
-    </div>
-  `,
+  templateUrl: './collection-chart.component.html',
   styleUrls: ['./collection-chart.component.css']
 })
 export class CollectionChartComponent implements OnInit, AfterViewInit {
