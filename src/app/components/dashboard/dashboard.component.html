@@ -1,24 +1,20 @@
-<div class="dashboard-container">
-  <div class="dashboard-section">
+<div class="dashboard">
+  <div class="card">
     <h2>Overall Demand Vs Payment</h2>
-    <div class="chart-box">
-      <app-collection-chart [chartData]="chartData"></app-collection-chart>
-    </div>
+    <app-collection-chart [chartData]="chartData"></app-collection-chart>
   </div>
 
-  <div class="dashboard-section">
+  <div class="card">
     <h2>Monthly Expenses</h2>
     <app-expense-grid [expenses]="expenses"></app-expense-grid>
   </div>
 
-  <div class="dashboard-section">
+  <div class="card">
     <h2>Your Demand Vs Payment</h2>
-    <div class="chart-box">
-      <app-collection-chart [chartData]="chartDataSelf"></app-collection-chart>
-    </div>
+    <app-collection-chart [chartData]="chartDataSelf"></app-collection-chart>
   </div>
 
-  <div class="dashboard-section">
+  <div class="card">
     <h2>Your Payments</h2>
     <app-user-payments-grid></app-user-payments-grid>
   </div>
