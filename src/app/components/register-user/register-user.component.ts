@@ -35,6 +35,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RegisterUserComponent {
   registerForm: FormGroup;
 
+  checkboxStates: { [key: string]: boolean } = {
+    Admin: false,
+    Owner: false,
+    Renter: false
+  };
+
   constructor(
     private fb: FormBuilder,
     private userAdminService: UserAdminService,
@@ -69,6 +75,7 @@ export class RegisterUserComponent {
 
   onRoleChange(event: any, role: string) {
     const roles = this.registerForm.get('roles') as FormArray;
+    this.checkboxStates[role] = event.checked;
     if (event.checked) {
       roles.push(this.fb.control(role));
     } else {
@@ -84,6 +91,12 @@ export class RegisterUserComponent {
         next: () => {
           this._snackBar.open('User registered successfully', 'Done', { duration: 5000 });
           this.registerForm.reset();
+          const roles = this.registerForm.get('roles') as FormArray;
+          roles.clear();
+          // Reset checkbox states
+          Object.keys(this.checkboxStates).forEach(key => {
+            this.checkboxStates[key] = false;
+          });
         },
         error: (err) => {
           console.error(err);

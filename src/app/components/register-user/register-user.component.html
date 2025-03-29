@@ -41,9 +41,9 @@
 
         <div class="roles-section">
           <h4>Select Roles</h4>
-          <mat-checkbox (change)="onRoleChange($event, 'Admin')">Admin</mat-checkbox>
-          <mat-checkbox (change)="onRoleChange($event, 'Owner')">Owner</mat-checkbox>
-          <mat-checkbox (change)="onRoleChange($event, 'Renter')">Renter</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Admin']" (change)="onRoleChange($event, 'Admin')">Admin</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Owner']" (change)="onRoleChange($event, 'Owner')">Owner</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Renter']" (change)="onRoleChange($event, 'Renter')">Renter</mat-checkbox>
         </div>
       </div>
 
