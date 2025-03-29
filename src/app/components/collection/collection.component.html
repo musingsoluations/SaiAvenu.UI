@@ -1,16 +1,16 @@
 <div class="container" [class.loading]="isLoading">
   <div class="row">
-    <div class="col box">
+    <div class="col form-col box">
       <form [formGroup]="demandForm" (ngSubmit)="onSubmit()" class="form-container">
         <h2>Create Collection Demand</h2>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Select Apartments</mat-label>
           <mat-select formControlName="apartmentName" multiple>
             <div class="select-all-option">
               <mat-checkbox [checked]="allSelected"
                 [indeterminate]="demandForm.get('apartmentName')?.value?.length > 0 && !allSelected"
-                (change)="toggleAllSelection()" class="select-all-checkbox">
+                (change)="toggleAllSelection()">
                 Select All
               </mat-checkbox>
             </div>
@@ -19,13 +19,12 @@
               {{apartment}}
             </mat-option>
           </mat-select>
-          <mat-error
-            *ngIf="demandForm.get('apartmentName')?.errors?.['required'] && demandForm.get('apartmentName')?.touched">
+          <mat-error *ngIf="demandForm.get('apartmentName')?.errors?.['required'] && demandForm.get('apartmentName')?.touched">
             Please select at least one apartment
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Amount</mat-label>
           <input matInput type="number" formControlName="amount" placeholder="Enter amount">
           <mat-error *ngIf="demandForm.get('amount')?.errors?.['required'] && demandForm.get('amount')?.touched">
@@ -36,18 +35,17 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Request For Date</mat-label>
           <input matInput [matDatepicker]="requestDatePicker" formControlName="requestForDate" [matDatepickerFilter]="dateFilter">
           <mat-datepicker-toggle matIconSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #requestDatePicker></mat-datepicker>
-          <mat-error
-            *ngIf="demandForm.get('requestForDate')?.errors?.['required'] && demandForm.get('requestForDate')?.touched">
+          <mat-error *ngIf="demandForm.get('requestForDate')?.errors?.['required'] && demandForm.get('requestForDate')?.touched">
             Request date is required
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Due Date</mat-label>
           <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" [matDatepickerFilter]="dateFilter">
           <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
@@ -57,18 +55,19 @@
           </mat-error>
         </mat-form-field>
 
-        <div class="form-field radio-group">
-          <label class="radio-group-label">Collection Type</label>
-          <mat-radio-group formControlName="forWhat" class="radio-buttons">
-            <mat-radio-button *ngFor="let type of collectionTypeOptions"
-              [value]="type.value">{{type.label}}</mat-radio-button>
+        <div class="radio-group">
+          <label>Collection Type</label>
+          <mat-radio-group formControlName="forWhat">
+            <mat-radio-button *ngFor="let type of collectionTypeOptions" [value]="type.value">
+              {{type.label}}
+            </mat-radio-button>
           </mat-radio-group>
           <mat-error *ngIf="demandForm.get('forWhat')?.errors?.['required'] && demandForm.get('forWhat')?.touched">
             Collection type is required
           </mat-error>
         </div>
 
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="fill">
           <mat-label>Comment</mat-label>
           <textarea matInput formControlName="comment" placeholder="Enter comment" rows="1"></textarea>
         </mat-form-field>
@@ -80,7 +79,8 @@
         </div>
       </form>
     </div>
-    <div class="col box">
+    <!-- Chart Column -->
+    <div class="col chart-col box">
       <h2>Collection Statistics</h2>
       <div class="chart-wrapper">
         <div *ngIf="isLoading" class="loading-spinner">
@@ -88,13 +88,14 @@
         </div>
         <app-collection-chart
           [chartData]="chartData"
-          [style.visibility]="isLoading ? 'hidden' : 'visible'"
-          class="chart-container">
+          [style.visibility]="isLoading ? 'hidden' : 'visible'">
         </app-collection-chart>
       </div>
     </div>
   </div>
-  <div class="box full-width">
+
+  <!-- Table Section -->
+  <div class="box table-section">
     <div class="table-header">
       <h2>Unpaid Collections</h2>
     </div>
