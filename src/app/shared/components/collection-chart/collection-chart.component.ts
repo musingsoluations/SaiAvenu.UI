@@ -1,6 +1,7 @@
 import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 export interface SeriesItem {
   name: string;
@@ -43,6 +44,8 @@ export interface ChartDataPoint {
           [xAxis]="true"
           [yAxis]="true"
           [legend]="true"
+          [legendTitle]="''"
+          [legendPosition]="LegendPosition.Below"
           [showXAxisLabel]="true"
           [showYAxisLabel]="true"
           [xAxisLabel]="'Month'"
@@ -50,7 +53,9 @@ export interface ChartDataPoint {
           [barPadding]="8"
           [groupPadding]="16"
           [roundDomains]="true"
-          [animations]="true">
+          [animations]="true"
+          [yAxisTickFormatting]="formatYAxisTick"
+          [marginLeft]="60">
         </ngx-charts-bar-vertical-2d>
       </div>
     </div>
@@ -70,6 +75,7 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
 
   chartDimensions: [number, number] = [800, 400];
   private resizeObserver: ResizeObserver;
+  LegendPosition = LegendPosition;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.resizeObserver = new ResizeObserver(() => this.updateDimensions());
@@ -135,4 +141,11 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
       maximumFractionDigits: 0
     }).format(value);
   }
+
+  formatYAxisTick = (value: number) => {
+    if (value >= 1000) {
+      return `${value / 1000}K`;
+    }
+    return value.toString();
+  };
 }
