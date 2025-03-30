@@ -332,22 +332,18 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.filterInput.nativeElement.focus();
       });
-    } else {
-      this.dataSource.filter = '';
-      if (this.filterInput) {
-        this.filterInput.nativeElement.value = '';
-      }
-      this.filteredIndices.clear(); // Clear the filtered indices map
     }
+    // We don't clear the filter when hiding the filter UI
+    // This allows the filter to persist when clicking on other cells
   }
 
   @HostListener('document:click', ['$event'])
   closeFilter(event: Event): void {
+    // Only hide the filter UI but preserve the filter value when clicking elsewhere
     if (this.showFilter && !this.filterInput.nativeElement.contains(event.target)) {
       this.showFilter = false;
-      this.dataSource.filter = '';
-      this.filterInput.nativeElement.value = '';
-      this.filteredIndices.clear(); // Clear the filtered indices map
+      // Don't clear the filter or input value when clicking on table cells
+      // This allows the filter to persist when interacting with other elements
     }
   }
 
