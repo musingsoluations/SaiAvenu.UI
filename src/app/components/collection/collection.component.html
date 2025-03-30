@@ -160,15 +160,15 @@
           <th mat-header-cell *matHeaderCellDef> Payment Amount </th>
           <td mat-cell *matCellDef="let fee; let i = index">
             <mat-form-field appearance="outline" class="payment-amount-field">
-              <input matInput type="number" [formControl]="$any(paymentForms.at(i).get('paymentAmount'))"
+              <input matInput type="number" [formControl]="$any(paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentAmount'))"
                      [max]="fee.amount" [min]="0" placeholder="Enter amount">
-              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['required']">
+              <mat-error *ngIf="paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentAmount')?.errors?.['required']">
                 Amount is required
               </mat-error>
-              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['min']">
+              <mat-error *ngIf="paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentAmount')?.errors?.['min']">
                 Amount must be greater than 0
               </mat-error>
-              <mat-error *ngIf="paymentForms.at(i).get('paymentAmount')?.errors?.['max']">
+              <mat-error *ngIf="paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentAmount')?.errors?.['max']">
                 Amount cannot exceed {{fee.amount | currency:'INR'}}
               </mat-error>
             </mat-form-field>
@@ -180,12 +180,12 @@
           <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
           <td mat-cell *matCellDef="let fee; let i = index">
             <mat-form-field appearance="outline" class="payment-amount-field">
-              <mat-select [formControl]="$any(paymentForms.at(i).get('paymentMethod'))" placeholder="Mode">
+              <mat-select [formControl]="$any(paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentMethod'))" placeholder="Mode">
                 <mat-option *ngFor="let method of paymentMethods" [value]="method.value">
                   {{method.label}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="paymentForms.at(i).get('paymentMethod')?.errors?.['required']">
+              <mat-error *ngIf="paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('paymentMethod')?.errors?.['required']">
                 Payment mode is required
               </mat-error>
             </mat-form-field>
@@ -197,7 +197,7 @@
           <th mat-header-cell *matHeaderCellDef> Received Date </th>
           <td mat-cell *matCellDef="let fee; let i = index">
             <mat-form-field appearance="outline" class="payment-amount-field">
-              <input matInput [matDatepicker]="dp" [formControl]="$any(paymentForms.at(i).get('receivedDate'))" [matDatepickerFilter]="dateFilter">
+              <input matInput [matDatepicker]="dp" [formControl]="$any(paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('receivedDate'))" [matDatepickerFilter]="dateFilter">
               <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp="matDatepicker"></mat-datepicker>
             </mat-form-field>
@@ -209,7 +209,8 @@
           <th mat-header-cell *matHeaderCellDef> Action </th>
           <td mat-cell *matCellDef="let fee; let i = index">
             <button mat-raised-button color="primary" class="action-button"
-              [disabled]="paymentForms.at(i).get('receivedDate')?.invalid" (click)="markAsPaid(i)">
+              [disabled]="paymentForms.at(filteredIndices.has(i) ? filteredIndices.get(i) : i).get('receivedDate')?.invalid"
+              (click)="markAsPaid(filteredIndices.has(i) ? filteredIndices.get(i) : i)">
               Paid
             </button>
           </td>

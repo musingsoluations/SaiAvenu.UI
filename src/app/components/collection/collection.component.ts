@@ -89,6 +89,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<UnpaidFeeDto>;
   @ViewChild('filterInput') filterInput!: ElementRef;
   showFilter = false;
+  // Map to track the original indices of fees after filtering
+  filteredIndices: Map<number, number> = new Map();
 
   constructor(
     private fb: FormBuilder,
@@ -261,6 +263,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         next: () => {
           this.snackBar.open('Payment recorded successfully', 'Close', { duration: 3000 });
           this.fetchUnpaidFees(); // Refresh the list
+          // Clear the filter after successful payment
+          this.dataSource.filter = '';
+          if (this.filterInput) {
+            this.filterInput.nativeElement.value = '';
+          }
+          this.showFilter = false;
         },
         error: (error) => {
           this.snackBar.open('Failed to record payment', 'Close', { duration: 6000 });
@@ -329,6 +337,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       if (this.filterInput) {
         this.filterInput.nativeElement.value = '';
       }
+      this.filteredIndices.clear(); // Clear the filtered indices map
     }
   }
 
@@ -338,12 +347,26 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       this.showFilter = false;
       this.dataSource.filter = '';
       this.filterInput.nativeElement.value = '';
+      this.filteredIndices.clear(); // Clear the filtered indices map
     }
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    // Update the filteredIndices map to maintain the relationship between
+    // the visible rows in the filtered table and their original indices
+    this.filteredIndices.clear();
+    if (this.dataSource.filteredData) {
+      this.dataSource.filteredData.forEach((filteredItem, filteredIndex) => {
+        // Find the original index of this item in the unpaidFees array
+        const originalIndex = this.unpaidFees.findIndex(fee => fee.id === filteredItem.id);
+        if (originalIndex !== -1) {
+          this.filteredIndices.set(filteredIndex, originalIndex);
+        }
+      });
+    }
   }
 
   dateFilter = (date: Date | null): boolean => {
