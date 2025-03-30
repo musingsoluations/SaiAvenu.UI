@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CollectionChartComponent } from '../../shared/components/collection-chart/collection-chart.component';
 import { CollectionService } from '../../services/collection/collection.service';
 import { ChartDataItem } from '../../models/collection-expense';
@@ -12,7 +13,14 @@ import { UserPaymentsGridComponent } from '../../shared/components/user-payments
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, CollectionChartComponent, ExpenseGridComponent, UserPaymentsGridComponent],
+  imports: [
+    CommonModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    CollectionChartComponent,
+    ExpenseGridComponent,
+    UserPaymentsGridComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

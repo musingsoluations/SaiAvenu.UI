@@ -1,17 +1,26 @@
 <div class="dashboard">
   <div class="card">
     <h2>Overall Demand Vs Payment</h2>
-    <app-collection-chart [chartData]="chartData"></app-collection-chart>
+    <div *ngIf="chartData.length === 0" class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    <app-collection-chart *ngIf="chartData.length > 0" [chartData]="chartData"></app-collection-chart>
   </div>
 
   <div class="card">
     <h2>Monthly Expenses</h2>
-    <app-expense-grid [expenses]="expenses"></app-expense-grid>
+    <div *ngIf="expenses.length === 0" class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    <app-expense-grid *ngIf="expenses.length > 0" [expenses]="expenses"></app-expense-grid>
   </div>
 
   <div class="card">
     <h2>Your Demand Vs Payment</h2>
-    <app-collection-chart [chartData]="chartDataSelf"></app-collection-chart>
+    <div *ngIf="chartDataSelf.length === 0" class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    <app-collection-chart *ngIf="chartDataSelf.length > 0" [chartData]="chartDataSelf"></app-collection-chart>
   </div>
 
   <div class="card">
