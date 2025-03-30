@@ -332,9 +332,13 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.filterInput.nativeElement.focus();
       });
+    } else {
+      // Clear the filter when hiding the filter UI
+      this.dataSource.filter = '';
+      if (this.filterInput) {
+        this.filterInput.nativeElement.value = '';
+      }
     }
-    // We don't clear the filter when hiding the filter UI
-    // This allows the filter to persist when clicking on other cells
   }
 
   @HostListener('document:click', ['$event'])
