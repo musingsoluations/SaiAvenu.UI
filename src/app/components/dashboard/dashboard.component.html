@@ -10,7 +10,7 @@
   <div class="card">
     <h2>Monthly Expenses</h2>
     <div *ngIf="expenses.length === 0" class="loading">
-      <mat-spinner diameter="40"></mat-spinner>
+      <div diameter="40">Nothing to show here. Come back later.</div>
     </div>
     <app-expense-grid *ngIf="expenses.length > 0" [expenses]="expenses"></app-expense-grid>
   </div>
