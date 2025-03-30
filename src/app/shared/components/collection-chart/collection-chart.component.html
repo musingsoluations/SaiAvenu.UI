@@ -29,12 +29,15 @@
       [showYAxisLabel]="true"
       [xAxisLabel]="'Month'"
       [yAxisLabel]="'Amount (₹)'"
-      [barPadding]="8"
-      [groupPadding]="16"
+      [barPadding]="barPadding"
+      [groupPadding]="groupPadding"
       [roundDomains]="true"
       [animations]="true"
       [yAxisTickFormatting]="formatYAxisTick"
-      [marginLeft]="60">
+      [marginLeft]="60"
+      [marginTop]="16"
+      [marginRight]="16"
+      [marginBottom]="marginBottom">
     </ngx-charts-bar-vertical-2d>
   </div>
 </div>

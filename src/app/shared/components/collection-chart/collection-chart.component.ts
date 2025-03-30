@@ -36,6 +36,19 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   private resizeObserver: ResizeObserver;
   LegendPosition = LegendPosition;
 
+  // Add methods for responsive values
+  get barPadding(): number {
+    return window.innerWidth <= 480 ? 4 : 8;
+  }
+
+  get groupPadding(): number {
+    return window.innerWidth <= 480 ? 8 : 16;
+  }
+
+  get marginBottom(): number {
+    return window.innerWidth <= 480 ? 100 : 60;
+  }
+
   constructor(private cdr: ChangeDetectorRef) {
     this.resizeObserver = new ResizeObserver(() => this.updateDimensions());
   }
@@ -65,10 +78,17 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   private updateDimensions() {
     if (this.chartContainer) {
       const { clientWidth, clientHeight } = this.chartContainer.nativeElement;
-      // Ensure the chart fits within its container
-      const width = Math.max(clientWidth, 300);
-      const height = Math.max(clientHeight, 200);
-      this.chartDimensions = [width, height];
+      const width = Math.max(Math.min(clientWidth, 1200), 300); // Cap width between 300 and 1200
+      const height = Math.max(Math.min(clientHeight, 600), 200); // Cap height between 200 and 600
+
+      // Adjust height based on width for better proportions
+      const aspectRatio = window.innerWidth <= 480 ? 1.2 : 1.6; // More square on mobile
+      const calculatedHeight = width / aspectRatio;
+
+      this.chartDimensions = [
+        width,
+        Math.min(calculatedHeight, height) // Use calculated height but don't exceed container
+      ];
       this.cdr.detectChanges();
     }
   }
