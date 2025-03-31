@@ -19,6 +19,13 @@
         </nav>
       </div>
 
+      <div id="totals-menu" class="totals-container">
+        <button mat-button [matMenuTriggerFor]="totalsMenu" class="totals-button">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <span class="desktop-only">Net Balance: {{formatCurrency(netBalance)}}</span>
+        </button>
+      </div>
+
       <div id="user-menu">
         <button mat-fab [matMenuTriggerFor]="menu" aria-label="User Menu">
           <mat-icon>account_circle</mat-icon>
@@ -36,6 +43,27 @@
       <button mat-menu-item routerLink="/apartment">Apartment</button>
       <button mat-menu-item routerLink="/collection">Collection</button>
       <button mat-menu-item routerLink="/expense">Expense</button>
+    </mat-menu>
+
+    <mat-menu #totalsMenu="matMenu" class="totals-menu">
+      <div class="totals-details">
+        <div class="total-item">
+          <span class="label">Total Payments:</span>
+          <span class="value">{{formatCurrency((totals$ | async)?.totalPayments || 0)}}</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Total Expenses:</span>
+          <span class="value">{{formatCurrency((totals$ | async)?.totalExpenses || 0)}}</span>
+        </div>
+        <div class="total-item">
+          <span class="label">Carry Forward:</span>
+          <span class="value">{{formatCurrency((totals$ | async)?.totalCarryForwardPayments || 0)}}</span>
+        </div>
+        <div class="total-item net-balance">
+          <span class="label">Net Balance:</span>
+          <span class="value">{{formatCurrency(netBalance)}}</span>
+        </div>
+      </div>
     </mat-menu>
   </mat-toolbar>
 

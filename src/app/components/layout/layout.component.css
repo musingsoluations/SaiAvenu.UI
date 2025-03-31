@@ -79,6 +79,67 @@ mat-toolbar-row {
   display: inline-block;
 }
 
+/* Totals Menu Styles */
+.totals-container {
+  margin-right: 1rem;
+}
+
+.totals-button {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.totals-button .mat-icon {
+  color: #4CAF50;
+}
+
+.totals-menu {
+  min-width: 300px;
+  padding: 16px;
+}
+
+.totals-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.total-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.total-item:last-child {
+  border-bottom: none;
+}
+
+.total-item .label {
+  color: #666;
+  font-size: 14px;
+}
+
+.total-item .value {
+  font-weight: 500;
+  color: #333;
+}
+
+.total-item.net-balance {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 2px solid #eee;
+  font-weight: 600;
+}
+
+.total-item.net-balance .value {
+  color: #4CAF50;
+  font-size: 16px;
+}
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
@@ -113,6 +174,10 @@ mat-toolbar-row {
   #logo {
     margin-right: 1rem;
   }
+
+  .totals-container {
+    margin-right: 0.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -140,5 +205,9 @@ mat-toolbar-row {
 
   #logo span {
     font-size: 0.9rem;
+  }
+
+  .totals-container {
+    margin-right: 0.25rem;
   }
 }

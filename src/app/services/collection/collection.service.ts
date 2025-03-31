@@ -6,7 +6,7 @@ import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 import { API_ENV } from '../../../environments/environment';
 import { Environment } from '../../../environments/environment.interface';
 import { Payment } from '../../models/payment';
-import { ChartDataItem } from '../../models/collection-expense';
+import { ChartDataItem, CollectionTotals } from '../../models/collection-expense';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +40,9 @@ export class CollectionService {
 
   getCollectionPaymentSelf(year: number): Observable<ChartDataItem[]> {
     return this.http.post<ChartDataItem[]>(`${this.environment.apiUrl}/api/Collections/demand-paid-self`, year);
+  }
+
+  getTotals(): Observable<CollectionTotals> {
+    return this.http.get<CollectionTotals>(`${this.environment.apiUrl}/api/Collections/totals`);
   }
 }
