@@ -89,12 +89,21 @@ mat-toolbar-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .totals-button .mat-icon {
   color: #4CAF50;
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.totals-button .desktop-only {
+  color: #4CAF50;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 ::ng-deep .totals-menu {
