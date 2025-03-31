@@ -89,29 +89,41 @@ mat-toolbar-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .totals-button .mat-icon {
   color: #4CAF50;
 }
 
-.totals-menu {
-  min-width: 300px;
-  padding: 16px;
+::ng-deep .totals-menu {
+  margin-top: 8px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-menu-panel.totals-menu {
+  min-width: 280px !important;
+  max-width: 280px !important;
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
 }
 
 .totals-details {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  padding: 16px;
+  background: white;
 }
 
 .total-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .total-item:last-child {
@@ -120,24 +132,31 @@ mat-toolbar-row {
 
 .total-item .label {
   color: #666;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .total-item .value {
   font-weight: 500;
+  font-size: 15px;
   color: #333;
 }
 
 .total-item.net-balance {
   margin-top: 8px;
-  padding-top: 12px;
-  border-top: 2px solid #eee;
-  font-weight: 600;
+  padding-top: 16px;
+  border-top: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.total-item.net-balance .label {
+  font-weight: 500;
+  color: #333;
 }
 
 .total-item.net-balance .value {
   color: #4CAF50;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {

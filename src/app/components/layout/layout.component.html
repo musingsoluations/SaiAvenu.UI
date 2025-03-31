@@ -22,7 +22,7 @@
       <div id="totals-menu" class="totals-container">
         <button mat-button [matMenuTriggerFor]="totalsMenu" class="totals-button">
           <mat-icon>account_balance_wallet</mat-icon>
-          <span class="desktop-only">Net Balance: {{formatCurrency(netBalance)}}</span>
+          <span class="desktop-only">₹{{netBalance | number:'1.0-0'}}</span>
         </button>
       </div>
 
@@ -48,20 +48,20 @@
     <mat-menu #totalsMenu="matMenu" class="totals-menu">
       <div class="totals-details">
         <div class="total-item">
-          <span class="label">Total Payments:</span>
-          <span class="value">{{formatCurrency((totals$ | async)?.totalPayments || 0)}}</span>
+          <span class="label">Total Payments</span>
+          <span class="value">₹{{(totals$ | async)?.totalPayments | number:'1.0-0'}}</span>
         </div>
         <div class="total-item">
-          <span class="label">Total Expenses:</span>
-          <span class="value">{{formatCurrency((totals$ | async)?.totalExpenses || 0)}}</span>
+          <span class="label">Total Expenses</span>
+          <span class="value">₹{{(totals$ | async)?.totalExpenses | number:'1.0-0'}}</span>
         </div>
         <div class="total-item">
-          <span class="label">Carry Forward:</span>
-          <span class="value">{{formatCurrency((totals$ | async)?.totalCarryForwardPayments || 0)}}</span>
+          <span class="label">Carry Forward</span>
+          <span class="value">₹{{(totals$ | async)?.totalCarryForwardPayments | number:'1.0-0'}}</span>
         </div>
         <div class="total-item net-balance">
-          <span class="label">Net Balance:</span>
-          <span class="value">{{formatCurrency(netBalance)}}</span>
+          <span class="label">Net Balance</span>
+          <span class="value">₹{{netBalance | number:'1.0-0'}}</span>
         </div>
       </div>
     </mat-menu>
