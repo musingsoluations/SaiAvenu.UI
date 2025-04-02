@@ -210,6 +210,7 @@ table {
   color: rgba(0, 0, 0, 0.87);
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   height: 48px;
+  vertical-align: top;
 }
 
 .mat-mdc-header-cell {
@@ -224,7 +225,22 @@ table {
 /* Form Fields in Table */
 td mat-form-field {
   width: 150px;
-  margin: -8px 0;
+  margin: 0;
+}
+
+/* Error state styles */
+td.mat-mdc-cell:has(.mat-form-field-invalid) {
+  height: auto;
+  min-height: 48px;
+  padding-bottom: 28px;
+}
+
+.mat-form-field-error {
+  position: absolute;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  margin-top: 2px;
 }
 
 /* Responsive Styles */
