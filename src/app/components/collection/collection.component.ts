@@ -22,6 +22,7 @@ import { ChartDataItem } from '../../models/collection-expense';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { PaymentReminderRequestDto } from '../../models/payment-reminder';
 
 @Component({
   selector: 'app-collection',
@@ -64,7 +65,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     'paymentAmount',
     'paymentMethod',
     'receivedDate',
-    'actions'
+    'actions',
+    'sendReminder'
   ];
   paymentForms: FormArray;
   collectionTypeOptions = [
@@ -91,6 +93,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   showFilter = false;
   // Map to track the original indices of fees after filtering
   filteredIndices: Map<number, number> = new Map();
+  reminderButtonDisabled: Map<string, boolean> = new Map();
 
   constructor(
     private fb: FormBuilder,
@@ -376,4 +379,38 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     today.setHours(0, 0, 0, 0);
     return date >= today;
   };
+
+  sendReminder(index: number): void {
+    const fee = this.unpaidFees[index];
+    const reminder: PaymentReminderRequestDto = {
+      apartmentName: fee.apartmentNumber,
+      requiredAmount: fee.remainingAmount,
+      requiredFor: fee.comment,
+      forMonth: this.formatDateForServer(new Date(fee.requestForDate)),
+      paymentDueDate: this.formatDateForServer(new Date(fee.dueDate))
+    };
+
+    // Disable the button immediately
+    this.reminderButtonDisabled.set(fee.id, true);
+
+    this.collectionService.sendReminder(reminder).subscribe({
+      next: () => {
+        this.snackBar.open('Reminder sent successfully', 'Close', { duration: 3000 });
+        // Set a timeout to re-enable the button after 5 minutes
+        setTimeout(() => {
+          this.reminderButtonDisabled.delete(fee.id);
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to send reminder', 'Close', { duration: 6000 });
+        console.error('Send reminder error:', error);
+        // Re-enable the button on error
+        this.reminderButtonDisabled.delete(fee.id);
+      }
+    });
+  }
+
+  isReminderButtonDisabled(feeId: string): boolean {
+    return this.reminderButtonDisabled.get(feeId) || false;
+  }
 }

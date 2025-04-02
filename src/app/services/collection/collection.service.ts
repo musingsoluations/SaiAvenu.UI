@@ -7,6 +7,7 @@ import { API_ENV } from '../../../environments/environment';
 import { Environment } from '../../../environments/environment.interface';
 import { Payment } from '../../models/payment';
 import { ChartDataItem, CollectionTotals } from '../../models/collection-expense';
+import { PaymentReminderRequestDto } from '../../models/payment-reminder';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class CollectionService {
 
   getTotals(): Observable<CollectionTotals> {
     return this.http.get<CollectionTotals>(`${this.environment.apiUrl}/api/Collections/totals`);
+  }
+
+  sendReminder(reminder: PaymentReminderRequestDto): Observable<void> {
+    return this.http.post<void>(`${this.environment.apiUrl}/api/Collections/send-reminder`, reminder);
   }
 }

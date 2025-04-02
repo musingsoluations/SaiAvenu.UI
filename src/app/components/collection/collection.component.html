@@ -216,6 +216,18 @@
           </td>
         </ng-container>
 
+        <!-- Send Reminder Column -->
+        <ng-container matColumnDef="sendReminder">
+          <th mat-header-cell *matHeaderCellDef> Send Reminder </th>
+          <td mat-cell *matCellDef="let fee; let i = index">
+            <button mat-raised-button color="accent" class="action-button"
+              [disabled]="isReminderButtonDisabled(fee.id)"
+              (click)="sendReminder(filteredIndices.has(i) ? filteredIndices.get(i) : i)">
+              {{isReminderButtonDisabled(fee.id) ? 'Reminder Sent' : 'Send Reminder'}}
+            </button>
+          </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
