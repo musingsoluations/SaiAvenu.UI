@@ -4,7 +4,7 @@ import { InjectionToken } from '@angular/core';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
+  apiUrl: ' http://localhost:8080',
 };
 
 export const API_ENV = new InjectionToken<Environment>('api.environment', {
