@@ -7,29 +7,36 @@
 }
 
 .container {
-  padding: 16px;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the page */
+  transition: opacity 0.3s ease-in-out;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
 
+.container.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* Grid Layout */
 .row {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 20px; /* Space between form/chart columns */
+  margin-bottom: 20px; /* Space below form/chart row */
   width: 100%;
 }
 
 .col {
-  flex: 1;
-  min-width: 300px;
-  width: 100%;
+  flex: 1; /* Make columns share space equally */
+  min-width: 0; /* Prevent flex items from overflowing */
 }
 
 .form-col {
-  flex: 0 1 400px;
-  min-width: 320px; /* Ensure minimum width for form controls */
+  max-width: 450px; /* Limit form width */
+  flex-basis: 450px;
+  flex-grow: 0;
 }
 
 .chart-col {
@@ -38,9 +45,9 @@
 
 /* Box Styles */
 .box {
-  background: white;
+  background-color: #ffffff;
+  padding: 20px;
   border-radius: 8px;
-  padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   width: 100%;
@@ -48,18 +55,27 @@
 
 /* Typography */
 h2 {
-  margin: 0 0 16px;
+  margin-top: 0;
+  margin-bottom: 20px;
   color: #333;
+  font-weight: 500;
   font-size: clamp(1.1rem, 1.5vw, 1.3rem);
 }
 
 /* Table Section */
 .table-section {
+  margin-top: 20px;
   width: 100%;
 }
 
 /* Chart Section */
 .chart-wrapper {
+  position: relative;
+  flex-grow: 1; /* Allow chart wrapper to grow */
+  min-height: 300px; /* Ensure minimum height for spinner visibility */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 600px;
   background: white;
@@ -78,32 +94,29 @@ h2 {
 
 mat-form-field {
   width: 100%;
+  margin-bottom: 10px;
   box-sizing: border-box;
 }
 
 .radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 8px 0;
+  margin-bottom: 15px;
 }
 
 .radio-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
-  font-size: 12px;
-  margin-bottom: 4px;
 }
 
 mat-radio-group {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 20px; /* Space between radio buttons */
 }
 
 .form-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
+  text-align: right;
+  margin-top: 20px;
 }
 
 /* Select All Option */
@@ -117,7 +130,7 @@ mat-radio-group {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: 10;
 }
 
 .container.loading::after {
@@ -131,9 +144,7 @@ mat-radio-group {
 
 /* Table Styles */
 .table-container {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
 }
 
 table {
@@ -395,4 +406,102 @@ td.mat-mdc-cell:has(.mat-form-field-invalid) {
 
 ::ng-deep .mat-form-field-flex {
   width: 100% !important;
+}
+
+/* Table Section Styles */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-container {
+  display: none; /* Hide by default */
+  margin-left: auto; /* Push filter to the right */
+  margin-right: 10px; /* Space before toggle button */
+}
+
+.filter-container.show-filter {
+  display: block; /* Show when active */
+}
+
+.filter-field .mat-mdc-form-field-infix {
+  padding-top: 8px; /* Adjust vertical alignment */
+  padding-bottom: 8px;
+}
+
+.filter-toggle-button {
+  margin-left: 10px; /* Space between filter and button if filter is visible */
+}
+
+/* Tree Table Specific Styles */
+.group-row {
+  font-weight: bold;
+  background-color: #f0f0f0; /* Light grey background for group headers */
+}
+
+.group-row:hover {
+    background-color: #e0e0e0; /* Slightly darker on hover */
+}
+
+/* Style for detail rows */
+.detail-row {
+  height: 0; /* Start collapsed */
+  overflow: hidden; /* Hide content when collapsed */
+  border-bottom-width: 0; /* Hide bottom border when collapsed */
+}
+
+/* Indentation for detail rows - target the spacer cell */
+.spacer-cell {
+  width: 48px; /* Match width of expander icon button cell */
+  padding: 0 !important; /* Remove padding */
+  border: none; /* Remove borders */
+}
+
+/* Expander button cell styling */
+.expander-cell {
+  width: 48px; /* Fixed width for the expander button */
+  padding-right: 0 !important;
+}
+
+/* Remove hover effect from detail rows if desired */
+/*
+.detail-row:hover {
+  background-color: transparent !important;
+}
+*/
+
+/* Payment related field styling */
+.payment-amount-field .mat-mdc-form-field-infix {
+  width: auto; /* Allow field to shrink */
+  min-width: 100px; /* Minimum width */
+  padding: 4px 0 !important; /* Reduce padding */
+}
+
+.payment-amount-field .mat-mdc-text-field-wrapper {
+    height: 40px; /* Adjust height */
+}
+
+.action-button {
+  min-width: 80px; /* Ensure buttons have reasonable width */
+  margin-right: 5px; /* Spacing between buttons if needed */
+}
+
+/* Align header text */
+.mat-mdc-header-cell {
+  text-align: left;
+}
+
+/* Align cell text */
+.mat-mdc-cell {
+  text-align: left;
+  vertical-align: middle; /* Align content vertically */
+}
+
+/* No Data Row */
+.mat-row.mat-no-data-row .mat-cell {
+    text-align: center;
+    padding: 20px;
+    color: grey;
 }
