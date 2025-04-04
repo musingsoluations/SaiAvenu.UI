@@ -23,6 +23,20 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { PaymentReminderRequestDto } from '../../models/payment-reminder';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
+// Define interface for display rows
+interface DisplayRow {
+  isGroupHeader: boolean;
+  apartmentNumber: string; // Present for both header and detail
+  fee?: UnpaidFeeDto;        // Present for detail rows
+  originalIndex?: number;  // Present for detail rows (index in original unpaidFees/paymentForms)
+  level: number;           // 0 for group, 1 for detail
+  isExpanded?: boolean;    // Present for group headers
+  feeCount?: number;       // Optional: Number of fees in the group
+  totalAmount?: number;    // Optional: Total amount for the group
+  totalRemaining?: number; // Optional: Total remaining for the group
+}
 
 @Component({
   selector: 'app-collection',
@@ -46,7 +60,14 @@ import { PaymentReminderRequestDto } from '../../models/payment-reminder';
     MatIconModule
   ],
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.css']
+  styleUrls: ['./collection.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class CollectionComponent implements OnInit, AfterViewInit {
   demandForm: FormGroup;
@@ -54,8 +75,10 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   allSelected = true;
   collectionTypes = CollectionType;
   unpaidFees: UnpaidFeeDto[] = [];
-  displayedColumns: string[] = [
-    'apartmentNumber',
+  originalUnpaidFees: UnpaidFeeDto[] = [];
+  displayedColumnsGroup: string[] = ['expander', 'groupApartmentNumber', 'feeCount', 'groupAmount', 'groupRemainingAmount', 'groupActions'];
+  displayedColumnsDetail: string[] = [
+    'spacer',
     'amount',
     'remainingAmount',
     'requestForDate',
@@ -86,14 +109,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   totalCollection = 0;
   collectionRate = 0;
 
-  selectedApartmentFilter: string = '';
-  filteredUnpaidFees: UnpaidFeeDto[] = [];
-  dataSource: MatTableDataSource<UnpaidFeeDto>;
+  dataSource = new MatTableDataSource<DisplayRow>();
   @ViewChild('filterInput') filterInput!: ElementRef;
   showFilter = false;
-  // Map to track the original indices of fees after filtering
-  filteredIndices: Map<number, number> = new Map();
   reminderButtonDisabled: Map<string, boolean> = new Map();
+  expansionState = new Map<string, boolean>();
+  groupedFees = new Map<string, UnpaidFeeDto[]>();
 
   constructor(
     private fb: FormBuilder,
@@ -124,13 +145,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     this.demandForm.get('apartmentName')?.valueChanges.subscribe((selectedApartments: string[]) => {
       this.allSelected = selectedApartments.length === this.apartments.length;
     });
-
-    this.dataSource = new MatTableDataSource<UnpaidFeeDto>();
-
-    // Configure the filter predicate for partial matches
-    this.dataSource.filterPredicate = (data: UnpaidFeeDto, filter: string) => {
-      return data.apartmentNumber.toLowerCase().includes(filter.toLowerCase());
-    };
   }
 
   getCollectionTypeLabel(type: CollectionType): string {
@@ -149,7 +163,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Force a layout recalculation after view initialization
     setTimeout(() => {
       this.cdr.detectChanges();
     }, 0);
@@ -205,81 +218,239 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       : 0;
   }
 
-  filterUnpaidFees() {
-    if (!this.selectedApartmentFilter) {
-      this.filteredUnpaidFees = this.unpaidFees;
-    } else {
-      this.filteredUnpaidFees = this.unpaidFees.filter(
-        fee => fee.apartmentNumber === this.selectedApartmentFilter
-      );
-    }
-  }
-
   private fetchUnpaidFees(): Promise<void> {
+    this.isLoading = true;
     return new Promise((resolve) => {
       this.collectionService.getUnpaidFees().subscribe({
         next: (fees) => {
-          this.unpaidFees = fees;
-          this.dataSource.data = fees; // Update the data source
+          this.originalUnpaidFees = fees;
           this.paymentForms.clear();
-          fees.forEach((fee) => this.paymentForms.push(this.fb.group({
-            paymentAmount: [fee.remainingAmount, [Validators.required, Validators.min(0), Validators.max(fee.amount)]],
-            paymentMethod: ['', [Validators.required]],
-            receivedDate: ['', [Validators.required]]
-          })));
+          this.originalUnpaidFees.forEach((fee, index) => {
+            this.paymentForms.push(this.fb.group({
+              paymentAmount: [fee.remainingAmount, [Validators.required, Validators.min(0.01), Validators.max(fee.remainingAmount)]],
+              paymentMethod: ['', [Validators.required]],
+              receivedDate: ['', [Validators.required]]
+            }));
+            if (!this.reminderButtonDisabled.has(fee.id)) {
+              this.reminderButtonDisabled.set(fee.id, false);
+            }
+          });
+
+          this.applyFilter();
           resolve();
         },
         error: (err) => {
           console.error('Failed to load unpaid fees:', err);
+          this.snackBar.open('Failed to load unpaid fees.', 'Close', { duration: 3000 });
+          this.originalUnpaidFees = [];
+          this.applyFilter();
           resolve();
         }
       });
     });
   }
 
+  private groupFees(fees: UnpaidFeeDto[]): Map<string, UnpaidFeeDto[]> {
+    const groups = new Map<string, UnpaidFeeDto[]>();
+    fees.forEach(fee => {
+      const group = groups.get(fee.apartmentNumber);
+      if (group) {
+        group.push(fee);
+      } else {
+        groups.set(fee.apartmentNumber, [fee]);
+      }
+    });
+    return new Map([...groups.entries()].sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true })));
+  }
+
+  private buildDisplayData(): void {
+    const displayData: DisplayRow[] = [];
+    this.groupedFees.forEach((fees, apartmentNumber) => {
+      const isExpanded = this.expansionState.get(apartmentNumber) ?? false;
+      const totalAmount = fees.reduce((sum, fee) => sum + fee.amount, 0);
+      const totalRemaining = fees.reduce((sum, fee) => sum + fee.remainingAmount, 0);
+
+      displayData.push({
+        isGroupHeader: true,
+        apartmentNumber: apartmentNumber,
+        level: 0,
+        isExpanded: isExpanded,
+        feeCount: fees.length,
+        totalAmount: totalAmount,
+        totalRemaining: totalRemaining
+      });
+
+      if (isExpanded) {
+        fees.forEach(fee => {
+          const originalIndex = this.originalUnpaidFees.findIndex(originalFee => originalFee.id === fee.id);
+          if (originalIndex !== -1) {
+            displayData.push({
+              isGroupHeader: false,
+              apartmentNumber: fee.apartmentNumber,
+              fee: fee,
+              originalIndex: originalIndex,
+              level: 1,
+            });
+          } else {
+            console.warn(`Could not find original index for fee id ${fee.id} in apartment ${fee.apartmentNumber}`);
+          }
+        });
+      }
+    });
+    this.dataSource.data = displayData;
+    this.isLoading = false;
+    this.cdr.detectChanges();
+  }
+
+  applyFilter(event?: Event) {
+    const filterValue = event ? (event.target as HTMLInputElement).value.trim().toLowerCase() : '';
+    this.isLoading = true;
+
+    const filteredFees = filterValue
+      ? this.originalUnpaidFees.filter(fee => fee.apartmentNumber.toLowerCase().includes(filterValue))
+      : [...this.originalUnpaidFees];
+
+    this.groupedFees = this.groupFees(filteredFees);
+
+    const currentExpansion = new Map(this.expansionState);
+    this.expansionState.clear();
+    this.groupedFees.forEach((_, apartmentNumber) => {
+      if (currentExpansion.has(apartmentNumber)) {
+        this.expansionState.set(apartmentNumber, currentExpansion.get(apartmentNumber)!);
+      } else {
+        this.expansionState.set(apartmentNumber, false);
+      }
+    });
+
+    this.buildDisplayData();
+  }
+
+  toggleFilter(event: Event): void {
+    event.stopPropagation();
+    this.showFilter = !this.showFilter;
+    if (this.showFilter) {
+      setTimeout(() => this.filterInput.nativeElement.focus());
+    } else {
+      this.filterInput.nativeElement.value = '';
+      this.applyFilter();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.showFilter && !this.filterInput.nativeElement.contains(event.target as Node)) {
+      const clickedElement = event.target as Element;
+      const filterButton = document.querySelector('.filter-button');
+      if (!filterButton || !filterButton.contains(clickedElement)) {
+        this.showFilter = false;
+      }
+    }
+  }
+
+  toggleExpansion(apartmentNumber: string): void {
+    const currentState = this.expansionState.get(apartmentNumber) ?? false;
+    this.expansionState.set(apartmentNumber, !currentState);
+    this.buildDisplayData();
+  }
+
+  isGroupRow = (index: number, item: DisplayRow): boolean => item.isGroupHeader;
+  isDetailRow = (index: number, item: DisplayRow): boolean => !item.isGroupHeader;
+
+  markAsPaid(originalIndex: number): void {
+    const paymentForm = this.paymentForms.at(originalIndex);
+    const fee = this.originalUnpaidFees[originalIndex];
+
+    if (!fee) {
+      console.error(`Fee not found at original index ${originalIndex}`);
+      this.snackBar.open(`Error: Fee not found.`, 'Close', { duration: 3000 });
+      return;
+    }
+    if (paymentForm.invalid) {
+      this.snackBar.open('Please fill in all payment details correctly.', 'Close', { duration: 3000 });
+      paymentForm.markAllAsTouched();
+      return;
+    }
+
+    const paymentAmount = paymentForm.get('paymentAmount')?.value;
+    const paymentMethod = paymentForm.get('paymentMethod')?.value;
+    const receivedDateRaw = paymentForm.get('receivedDate')?.value;
+
+    if (paymentAmount <= 0) {
+      this.snackBar.open('Payment amount must be positive.', 'Close', { duration: 3000 });
+      return;
+    }
+    if (paymentAmount > fee.remainingAmount) {
+      this.snackBar.open(`Payment (${paymentAmount}) cannot exceed remaining amount (${fee.remainingAmount}).`, 'Close', { duration: 5000 });
+      return;
+    }
+
+    const paymentDetails = {
+      amount: paymentAmount,
+      paymentMethod: paymentMethod,
+      paymentDate: this.formatDateForServer(new Date(receivedDateRaw)),
+      feeCollectionId: fee.id
+    };
+
+    this.isLoading = true;
+    this.collectionService.makePayment(paymentDetails).subscribe({
+      next: (response) => {
+        this.snackBar.open('Payment recorded successfully!', 'Close', { duration: 3000 });
+        this.fetchUnpaidFees().finally(() => this.isLoading = false);
+        this.fetchChartData();
+      },
+      error: (err) => {
+        console.error('Payment failed:', err);
+        this.snackBar.open(`Payment failed: ${err.error?.message || 'Server error'}`, 'Close', { duration: 5000 });
+        this.isLoading = false;
+      }
+    });
+  }
+
+  sendReminder(originalIndex: number): void {
+    const fee = this.originalUnpaidFees[originalIndex];
+    if (!fee || this.isReminderButtonDisabled(fee.id)) {
+      return;
+    }
+
+    const reminderRequest: PaymentReminderRequestDto = {
+      apartmentName: fee.apartmentNumber,
+      requiredAmount: fee.remainingAmount,
+      requiredFor: fee.comment || '',
+      forMonth: this.formatDateForServer(new Date(fee.requestForDate)),
+      paymentDueDate: this.formatDateForServer(new Date(fee.dueDate))
+    };
+    this.reminderButtonDisabled.set(fee.id, true);
+
+    this.collectionService.sendReminder(reminderRequest).subscribe({
+      next: () => {
+        this.snackBar.open(`Reminder sent for Apartment ${fee.apartmentNumber}.`, 'Close', { duration: 3000 });
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Failed to send reminder:', err);
+        this.snackBar.open(`Failed to send reminder: ${err.error?.message || 'Server error'}`, 'Close', { duration: 5000 });
+        this.reminderButtonDisabled.set(fee.id, false);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  isReminderButtonDisabled(feeId: string): boolean {
+    return this.reminderButtonDisabled.get(feeId) ?? false;
+  }
+
   private formatDateForServer(date: Date): string {
-    // Adjust for timezone to keep the date as selected by user
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 
-  markAsPaid(index: number): void {
-    const paymentForm = this.paymentForms.at(index);
-    const fee = this.unpaidFees[index];
-
-    console.log('Fee object:', fee);
-    console.log('Fee Id:', fee.id);
-
-    if (paymentForm.valid) {
-      const payment = {
-        amount: paymentForm.get('paymentAmount')?.value,
-        paymentDate: this.formatDateForServer(paymentForm.get('receivedDate')?.value),
-        feeCollectionId: fee.id,
-        paymentMethod: paymentForm.get('paymentMethod')?.value
-      };
-
-      console.log('Payment object:', payment);
-
-      this.collectionService.makePayment(payment).subscribe({
-        next: () => {
-          this.snackBar.open('Payment recorded successfully', 'Close', { duration: 3000 });
-          this.fetchUnpaidFees(); // Refresh the list
-          // Clear the filter after successful payment
-          this.dataSource.filter = '';
-          if (this.filterInput) {
-            this.filterInput.nativeElement.value = '';
-          }
-          this.showFilter = false;
-        },
-        error: (error) => {
-          this.snackBar.open('Failed to record payment', 'Close', { duration: 6000 });
-          console.error('Payment error:', error);
-        }
-      });
-    }
-  }
+  dateFilter = (date: Date | null): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date ? date <= today : false;
+  };
 
   toggleAllSelection() {
     if (this.allSelected) {
@@ -307,11 +478,9 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         next: (response) => {
           this.snackBar.open('Demand created successfully', 'Close', { duration: 3000 });
           this.demandForm.reset();
-          // Reset apartment selection to all apartments
           this.demandForm.patchValue({
             apartmentName: [...this.apartments]
           });
-          // Refresh the unpaid fees list
           this.fetchUnpaidFees();
         },
         error: (error) => {
@@ -320,7 +489,6 @@ export class CollectionComponent implements OnInit, AfterViewInit {
         }
       });
     } else {
-      // Mark all fields as touched to trigger validation messages
       Object.keys(this.demandForm.controls).forEach(key => {
         const control = this.demandForm.get(key);
         control?.markAsTouched();
@@ -328,89 +496,11 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleFilter(event: Event): void {
-    event.stopPropagation();
-    this.showFilter = !this.showFilter;
-    if (this.showFilter) {
-      setTimeout(() => {
-        this.filterInput.nativeElement.focus();
-      });
+  trackByRow(index: number, item: DisplayRow): string {
+    if (item.isGroupHeader) {
+      return `group-${item.apartmentNumber}`;
     } else {
-      // Clear the filter when hiding the filter UI
-      this.dataSource.filter = '';
-      if (this.filterInput) {
-        this.filterInput.nativeElement.value = '';
-      }
+      return `fee-${item.fee?.id ?? index}`;
     }
-  }
-
-  @HostListener('document:click', ['$event'])
-  closeFilter(event: Event): void {
-    // Only hide the filter UI but preserve the filter value when clicking elsewhere
-    if (this.showFilter && !this.filterInput.nativeElement.contains(event.target)) {
-      this.showFilter = false;
-      // Don't clear the filter or input value when clicking on table cells
-      // This allows the filter to persist when interacting with other elements
-    }
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // Update the filteredIndices map to maintain the relationship between
-    // the visible rows in the filtered table and their original indices
-    this.filteredIndices.clear();
-    if (this.dataSource.filteredData) {
-      this.dataSource.filteredData.forEach((filteredItem, filteredIndex) => {
-        // Find the original index of this item in the unpaidFees array
-        const originalIndex = this.unpaidFees.findIndex(fee => fee.id === filteredItem.id);
-        if (originalIndex !== -1) {
-          this.filteredIndices.set(filteredIndex, originalIndex);
-        }
-      });
-    }
-  }
-
-  dateFilter = (date: Date | null): boolean => {
-    if (!date) return false;
-    // Remove time part from the date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date >= today;
-  };
-
-  sendReminder(index: number): void {
-    const fee = this.unpaidFees[index];
-    const reminder: PaymentReminderRequestDto = {
-      apartmentName: fee.apartmentNumber,
-      requiredAmount: fee.remainingAmount,
-      requiredFor: fee.comment,
-      forMonth: this.formatDateForServer(new Date(fee.requestForDate)),
-      paymentDueDate: this.formatDateForServer(new Date(fee.dueDate))
-    };
-
-    // Disable the button immediately
-    this.reminderButtonDisabled.set(fee.id, true);
-
-    this.collectionService.sendReminder(reminder).subscribe({
-      next: () => {
-        this.snackBar.open('Reminder sent successfully', 'Close', { duration: 3000 });
-        // Set a timeout to re-enable the button after 5 minutes
-        setTimeout(() => {
-          this.reminderButtonDisabled.delete(fee.id);
-        }, 5 * 60 * 1000); // 5 minutes in milliseconds
-      },
-      error: (error) => {
-        this.snackBar.open('Failed to send reminder', 'Close', { duration: 6000 });
-        console.error('Send reminder error:', error);
-        // Re-enable the button on error
-        this.reminderButtonDisabled.delete(fee.id);
-      }
-    });
-  }
-
-  isReminderButtonDisabled(feeId: string): boolean {
-    return this.reminderButtonDisabled.get(feeId) || false;
   }
 }
