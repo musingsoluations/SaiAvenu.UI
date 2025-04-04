@@ -10,29 +10,23 @@
 
 .topbar {
   background: #2c3e50;
-  color: white;
+  color: #fff;
   padding: 1rem;
 }
 
 mat-toolbar-row {
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
   padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .nav-links {
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
   gap: 1.5rem;
 }
 
 .nav-links a {
   padding: 0 8px;
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
-  color: white;
+  color: #fff;
   text-decoration: none;
   transition: opacity 0.2s;
 }
@@ -42,13 +36,11 @@ mat-toolbar-row {
 }
 
 #logo {
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
   margin-right: 2rem;
 }
 
 .logo-icon {
-  color: white;
+  color: #fff;
   margin-right: 0.5rem;
   vertical-align: middle;
 }
@@ -79,18 +71,15 @@ mat-toolbar-row {
   display: inline-block;
 }
 
-/* Totals Menu Styles */
 .totals-container {
   margin-right: 1rem;
 }
 
 .totals-button {
-  color: white;
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
+  color: #fff;
   gap: 0.5rem;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .totals-button .mat-icon {
@@ -102,26 +91,18 @@ mat-toolbar-row {
 
 .totals-button .desktop-only {
   color: #4CAF50;
-  font-weight: 600;
-  font-size: 16px;
 }
 
-/* Apply these styles via panelClass='totals-menu-panel' on mat-menu */
-/* Removed ::ng-deep */
 .totals-menu-panel {
   margin-top: 8px;
   border-radius: 8px;
   overflow: hidden;
-  /* These styles target the overlay pane container */
 }
 
-/* Apply these styles via panelClass='totals-menu-panel' on mat-menu */
-/* Removed ::ng-deep */
-/* These styles target the mat-mdc-menu-panel element itself */
 .totals-menu-panel .mat-mdc-menu-panel {
   min-width: 280px;
   max-width: 280px;
-  background: white;
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
@@ -130,14 +111,11 @@ mat-toolbar-row {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: white;
+  background: #fff;
 }
 
 .total-item {
-  /* display: flex; align-items: center; */
-  /* Replaced by .flex-center class in HTML */
   justify-content: space-between;
-  /* Keep justify-content */
   padding: 16px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -148,17 +126,9 @@ mat-toolbar-row {
 
 .total-item .label {
   color: #666;
-  /* font-size: 15px; */
-  /* Removed */
-  /* font-weight: 400; */
-  /* Removed */
 }
 
 .total-item .value {
-  /* font-weight: 500; */
-  /* Removed */
-  /* font-size: 15px; */
-  /* Removed */
   color: #333;
 }
 
@@ -176,7 +146,7 @@ mat-toolbar-row {
 .total-item.net-balance .value {
   color: #4CAF50;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -205,9 +175,8 @@ mat-toolbar-row {
   }
 
   .nav-links .mat-icon {
-    margin-right: 4px;
+    /* margin-right and vertical-align inherited from base .mat-icon */
     font-size: 20px;
-    vertical-align: middle;
   }
 
   #logo {
