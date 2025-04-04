@@ -97,8 +97,7 @@
   <!-- Table Section -->
   <div class="box table-section">
     <div class="table-header">
-      <h2>Unpaid Collections</h2>
-      <!-- Keep the filter button and input field structure, but adjust its position/usage slightly if needed -->
+      <h2>Unpaid Collections (Total Unpaid Amount: {{ totalRemainingUnpaid | currency:'INR' }})</h2>
        <div class="filter-container" [class.show-filter]="showFilter">
             <mat-form-field appearance="outline" class="filter-field">
                 <mat-label>Filter by Apartment</mat-label>
