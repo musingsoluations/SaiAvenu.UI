@@ -108,6 +108,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
   totalDemand = 0;
   totalCollection = 0;
   collectionRate = 0;
+  totalRemainingUnpaid: number = 0;
 
   dataSource = new MatTableDataSource<DisplayRow>();
   @ViewChild('filterInput') filterInput!: ElementRef;
@@ -224,6 +225,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       this.collectionService.getUnpaidFees().subscribe({
         next: (fees) => {
           this.originalUnpaidFees = fees;
+          this.calculateTotalRemainingUnpaid();
           this.paymentForms.clear();
           this.originalUnpaidFees.forEach((fee, index) => {
             this.paymentForms.push(this.fb.group({
@@ -243,11 +245,18 @@ export class CollectionComponent implements OnInit, AfterViewInit {
           console.error('Failed to load unpaid fees:', err);
           this.snackBar.open('Failed to load unpaid fees.', 'Close', { duration: 3000 });
           this.originalUnpaidFees = [];
+          this.calculateTotalRemainingUnpaid();
           this.applyFilter();
           resolve();
         }
       });
     });
+  }
+
+  private calculateTotalRemainingUnpaid(): void {
+    this.totalRemainingUnpaid = this.originalUnpaidFees.reduce(
+        (sum, fee) => sum + fee.remainingAmount, 0
+    );
   }
 
   private groupFees(fees: UnpaidFeeDto[]): Map<string, UnpaidFeeDto[]> {
