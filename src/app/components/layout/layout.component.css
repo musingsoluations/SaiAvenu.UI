@@ -15,23 +15,23 @@
 }
 
 mat-toolbar-row {
-  display: flex;
-  align-items: center;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .nav-links {
-  display: flex;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   gap: 1.5rem;
-  align-items: center;
 }
 
 .nav-links a {
   padding: 0 8px;
-  display: flex;
-  align-items: center;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   color: white;
   text-decoration: none;
   transition: opacity 0.2s;
@@ -42,8 +42,8 @@ mat-toolbar-row {
 }
 
 #logo {
-  display: flex;
-  align-items: center;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   margin-right: 2rem;
 }
 
@@ -86,8 +86,8 @@ mat-toolbar-row {
 
 .totals-button {
   color: white;
-  display: flex;
-  align-items: center;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   gap: 0.5rem;
   font-size: 16px;
   font-weight: 600;
@@ -106,18 +106,24 @@ mat-toolbar-row {
   font-size: 16px;
 }
 
-::ng-deep .totals-menu {
-  margin-top: 8px !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
+/* Apply these styles via panelClass='totals-menu-panel' on mat-menu */
+/* Removed ::ng-deep */
+.totals-menu-panel {
+  margin-top: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  /* These styles target the overlay pane container */
 }
 
-::ng-deep .mat-mdc-menu-panel.totals-menu {
-  min-width: 280px !important;
-  max-width: 280px !important;
-  background: white !important;
-  border-radius: 12px !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+/* Apply these styles via panelClass='totals-menu-panel' on mat-menu */
+/* Removed ::ng-deep */
+/* These styles target the mat-mdc-menu-panel element itself */
+.totals-menu-panel .mat-mdc-menu-panel {
+  min-width: 280px;
+  max-width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .totals-details {
@@ -128,9 +134,10 @@ mat-toolbar-row {
 }
 
 .total-item {
-  display: flex;
+  /* display: flex; align-items: center; */
+  /* Replaced by .flex-center class in HTML */
   justify-content: space-between;
-  align-items: center;
+  /* Keep justify-content */
   padding: 16px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -141,13 +148,17 @@ mat-toolbar-row {
 
 .total-item .label {
   color: #666;
-  font-size: 15px;
-  font-weight: 400;
+  /* font-size: 15px; */
+  /* Removed */
+  /* font-weight: 400; */
+  /* Removed */
 }
 
 .total-item .value {
-  font-weight: 500;
-  font-size: 15px;
+  /* font-weight: 500; */
+  /* Removed */
+  /* font-size: 15px; */
+  /* Removed */
   color: #333;
 }
 

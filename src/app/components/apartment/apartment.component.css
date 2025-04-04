@@ -45,14 +45,13 @@
 
 /* Table styles */
 .table-container {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  /* Base width and overflow handled globally */
 }
 
 table {
-  width: 100%;
-  min-width: 500px; /* Ensures table doesn't get too squeezed */
+  /* Base width handled globally */
+  min-width: 500px;
+  /* Ensures table doesn't get too squeezed */
 }
 
 .mat-mdc-header-cell {
@@ -63,7 +62,8 @@ table {
 }
 
 .mat-mdc-cell {
-  padding: 12px 16px !important;
+  /* Base padding handled globally, specific overrides can remain if needed */
+  /* Keeping !important here might indicate a need for specificity, review if necessary */
 }
 
 .mat-mdc-row:nth-child(even) {

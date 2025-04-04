@@ -12,13 +12,13 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { CollectionType, CreateCollectionDemandDto } from '../../models/create-collection-demand';
 import { CollectionService } from '../../services/collection/collection.service';
-import { CollectionChartComponent, ChartDataPoint } from '../../shared/components/collection-chart/collection-chart.component';
+/* Chart component import removed */
 import { UnpaidFeeDto } from '../../models/unpaid-fee.dto';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { PaymentMethod } from '../../models/payment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ChartDataItem } from '../../models/collection-expense';
+/* ChartDataItem import removed */
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -52,7 +52,7 @@ interface DisplayRow {
     MatCheckboxModule,
     MatDividerModule,
     MatRadioModule,
-    CollectionChartComponent,
+    /* CollectionChartComponent removed from imports */
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -102,12 +102,8 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     { value: PaymentMethod.Online, label: 'Online' }
   ];
 
-  // Chart data
-  chartData: ChartDataItem[] = [];
-  isLoading = true;
-  totalDemand = 0;
-  totalCollection = 0;
-  collectionRate = 0;
+  isLoading = true; // Keep isLoading as it's used elsewhere
+  /* Chart related properties removed: chartData, totalDemand, totalCollection, collectionRate */
   totalRemainingUnpaid: number = 0;
 
   dataSource = new MatTableDataSource<DisplayRow>();
@@ -156,7 +152,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     Promise.all([
       this.fetchUnpaidFees(),
       this.fetchApartments(),
-      this.fetchChartData()
+      /* this.fetchChartData() removed */
     ]).finally(() => {
       this.isLoading = false;
       this.cdr.detectChanges();
@@ -187,37 +183,9 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private fetchChartData(): Promise<void> {
-    return new Promise((resolve) => {
-      this.collectionService.getCollectionPayment(new Date().getFullYear()).subscribe({
-        next: (data) => {
-          this.chartData = data;
-          this.calculateStatistics(data);
-          resolve();
-        },
-        error: (err) => {
-          console.error('Failed to load chart data:', err);
-          resolve();
-        }
-      });
-    });
-  }
+  /* fetchChartData method removed */
 
-  private calculateStatistics(data: ChartDataItem[]): void {
-    this.totalDemand = data.reduce((sum, item) => {
-      const demand = item.series.find(s => s.name === 'Total Demand');
-      return sum + (demand?.value || 0);
-    }, 0);
-
-    this.totalCollection = data.reduce((sum, item) => {
-      const collection = item.series.find(s => s.name === 'Total Collection');
-      return sum + (collection?.value || 0);
-    }, 0);
-
-    this.collectionRate = this.totalDemand > 0
-      ? (this.totalCollection / this.totalDemand) * 100
-      : 0;
-  }
+  /* calculateStatistics method removed */
 
   private fetchUnpaidFees(): Promise<void> {
     this.isLoading = true;
@@ -255,7 +223,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
 
   private calculateTotalRemainingUnpaid(): void {
     this.totalRemainingUnpaid = this.originalUnpaidFees.reduce(
-        (sum, fee) => sum + fee.remainingAmount, 0
+      (sum, fee) => sum + fee.remainingAmount, 0
     );
   }
 
@@ -405,7 +373,7 @@ export class CollectionComponent implements OnInit, AfterViewInit {
       next: (response) => {
         this.snackBar.open('Payment recorded successfully!', 'Close', { duration: 3000 });
         this.fetchUnpaidFees().finally(() => this.isLoading = false);
-        this.fetchChartData();
+        /* this.fetchChartData() removed */
       },
       error: (err) => {
         console.error('Payment failed:', err);

@@ -1,78 +1,8 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
+/* Styles specific to the profile component can go here */
+/* The main card layout is handled by global .form-card-* styles */
 
-.login-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
-  margin: auto;
-}
 
-@media (max-width: 768px) {
-  .login-card {
-    max-width: 90%;
-    padding: 1.5rem;
-  }
 
-  .form-header {
-    font-size: 1rem;
-    margin-bottom: 1.1rem;
-  }
-
-  .form-section h4 {
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .login-card {
-    padding: 1rem;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .form-header {
-    font-size: 1.3rem;
-    margin-bottom: 1.1rem;
-  }
-
-  .form-section h4 {
-    font-size: 1rem;
-  }
-
-  .roles-section {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-.form-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.form-section {
-  margin-bottom: 1.5rem;
-}
-
-mat-form-field {
-  width: 100%;
-  margin: 1rem 0;
-  display: block;
-}
-
-.form-section h4 {
-  margin: .6rem 0;
-  color: #3f51b5;
-}
 
 .roles-section {
   display: flex;
@@ -81,19 +11,6 @@ mat-form-field {
   margin: 1rem 0;
 }
 
-mat-form-field {
-  width: 100%;
-  margin: 1rem 0;
-  display: block;
-}
 
-.roles-section {
-  display: flex;
-  flex-direction: row;
-  margin-top: 1rem;
-}
-
-.login-button {
-  width: 100%;
-  margin-top: 1rem;
-}
+/* Buttons should now be placed within a .form-card-actions container */
+/* Use .form-card-full-width on buttons if needed */

@@ -1,9 +1,9 @@
-<div class="login-container">
-  <div class="login-card" style="width: 100%">
-    <form [formGroup]="registerForm" class="login-form">
-      <h2 class="form-header">User Registration</h2>
+<div class="form-card-container">
+  <div class="form-card">
+    <form [formGroup]="registerForm">
+      <h2 class="form-card-header">User Registration</h2>
 
-      <div class="form-section">
+      <div class="form-card-section">
         <h4>Personal Information</h4>
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>First Name</mat-label>
@@ -22,7 +22,7 @@
         </mat-form-field>
       </div>
 
-      <div class="form-section">
+      <div class="form-card-section">
         <h4>Account Details</h4>
         <mat-form-field [floatLabel]="floatLabel()">
           <mat-label>Email</mat-label>
@@ -41,16 +41,21 @@
 
         <div class="roles-section">
           <h4>Select Roles</h4>
-          <mat-checkbox [checked]="checkboxStates['Admin']" (change)="onRoleChange($event, 'Admin')">Admin</mat-checkbox>
-          <mat-checkbox [checked]="checkboxStates['Owner']" (change)="onRoleChange($event, 'Owner')">Owner</mat-checkbox>
-          <mat-checkbox [checked]="checkboxStates['Renter']" (change)="onRoleChange($event, 'Renter')">Renter</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Admin']"
+            (change)="onRoleChange($event, 'Admin')">Admin</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Owner']"
+            (change)="onRoleChange($event, 'Owner')">Owner</mat-checkbox>
+          <mat-checkbox [checked]="checkboxStates['Renter']"
+            (change)="onRoleChange($event, 'Renter')">Renter</mat-checkbox>
         </div>
       </div>
 
-      <button mat-raised-button color="primary" class="login-button" (click)="register()"
-        [disabled]="registerForm.invalid">
-        Register
-      </button>
+      <div class="form-card-actions">
+        <button mat-raised-button color="primary" class="form-card-full-width" (click)="register()"
+          [disabled]="registerForm.invalid">
+          Register
+        </button>
+      </div>
     </form>
   </div>
 </div>
