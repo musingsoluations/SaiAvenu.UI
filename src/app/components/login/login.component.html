@@ -1,3 +1,12 @@
+<!-- SVG Definition for Clip Path -->
+<svg width="0" height="0">
+  <defs>
+    <clipPath id="leftPanelCurve" clipPathUnits="objectBoundingBox">
+      <path d="M 0 0 L 1 0 C 0.9 0.25, 1.1 0.75, 0.85 1 L 0 1 Z" /> <!-- S-shape Cubic Bezier curve -->
+    </clipPath>
+  </defs>
+</svg>
+
 <div class="login-container">
   <div class="login-card">
     <div class="left-section">
@@ -19,9 +28,11 @@
 
         <mat-form-field [floatLabel]="floatLabel()" style="width: 80%">
           <mat-label>Password</mat-label>
-          <input matInput placeholder="Enter your password" type="password" formControlName="password">
-          <button mat-icon-button matSuffix aria-label="Toggle password visibility">
-            <mat-icon>visibility_off</mat-icon>
+          <input matInput placeholder="Enter your password" [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password">
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
 

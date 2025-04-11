@@ -53,6 +53,7 @@ export class LoginComponent {
   );
 
   loginForm: any;
+  hidePassword = true; // Property to track password visibility
 
   login() {
     const loginInfo = this.loginForm.value as UserLogin;
@@ -68,8 +69,14 @@ export class LoginComponent {
             title: 'Login Failed',
             content: err.error?.message || 'Invalid credentials. Please try again.'
           }
+
         });
       }
     });
+  }
+
+  // Method to toggle password visibility
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }
