@@ -13,6 +13,8 @@
   /* Adjusted padding */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   /* Subtle bottom border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Add subtle shadow for elevation */
 }
 
 mat-toolbar-row {
@@ -39,10 +41,25 @@ mat-toolbar-row {
   /* Added subtle background hover */
   border-radius: 4px;
   /* Optional: slightly rounded corners on hover */
+  padding-top: 4px;
+  /* Add slight vertical padding on hover */
+  padding-bottom: 4px;
+  /* Add slight vertical padding on hover */
 }
 
 #logo {
   margin-right: 2rem;
+  display: flex;
+  /* Align icon and text */
+  align-items: center;
+  /* Vertically center icon and text */
+}
+
+#logo span {
+  font-size: 1.1rem;
+  /* Slightly larger logo text */
+  font-weight: 500;
+  /* Medium weight */
 }
 
 .logo-icon {
@@ -66,6 +83,13 @@ mat-toolbar-row {
   height: 40px;
   min-width: 40px;
   padding: 0;
+  transition: background-color 0.2s ease-in-out;
+  /* Add transition */
+}
+
+#user-menu button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Subtle hover */
 }
 
 .mat-icon {
@@ -89,14 +113,18 @@ mat-toolbar-row {
 }
 
 .totals-button .mat-icon {
-  color: #4CAF50;
+  color: #fff;
+  /* Match button text color */
   font-size: 24px;
   height: 24px;
   width: 24px;
+  margin-right: 0;
+  /* Remove default icon margin if needed */
 }
 
 .totals-button .desktop-only {
   color: #4CAF50;
+  /* Restore green color for the amount */
 }
 
 
@@ -104,12 +132,17 @@ mat-toolbar-row {
   display: flex;
   flex-direction: column;
   padding: 16px;
-  background: #fff;
+  background: #f9f9f9;
+  /* Very light grey background */
 }
 
 .total-item {
+  display: flex;
+  /* Make this a flex container */
   justify-content: space-between;
-  padding: 16px 0;
+  /* Now this will work */
+  padding: 18px 0;
+  /* Increased vertical padding */
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -123,6 +156,8 @@ mat-toolbar-row {
 
 .total-item .value {
   color: #333;
+  margin-left: 8px;
+  /* Add space between label and value */
 }
 
 .total-item.net-balance {
