@@ -9,9 +9,13 @@
 }
 
 .topbar {
-  background: #2c3e50;
+  background: #34495e;
+  /* Slightly lighter dark blue-gray */
   color: #fff;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
+  /* Adjusted padding */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Subtle bottom border */
 }
 
 mat-toolbar-row {
@@ -32,7 +36,12 @@ mat-toolbar-row {
 }
 
 .nav-links a:hover {
-  opacity: 0.8;
+  /* opacity: 0.8; */
+  /* Removed opacity hover */
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Added subtle background hover */
+  border-radius: 4px;
+  /* Optional: slightly rounded corners on hover */
 }
 
 #logo {

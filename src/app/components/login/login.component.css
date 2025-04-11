@@ -84,6 +84,11 @@
     padding: 1rem;
     min-height: auto;
   }
+
+  .right-section {
+    padding: 1.5rem;
+    /* Reduce padding on small screens */
+  }
 }
 
 .login-container {
@@ -116,7 +121,8 @@
 .login-button {
   margin-top: 1.5rem;
   /* More space above button */
-  width: 100%;
+  width: 80%;
+  /* Match input width for centering */
   /* Full width button */
   padding: 12px 0;
   /* Taller button */
@@ -124,6 +130,10 @@
   /* Slightly larger text */
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   /* Smooth transition */
+  background-color: #1976d2;
+  /* Explicit primary background color */
+  color: white;
+  /* Explicit text color */
 }
 
 .login-button:hover:not([disabled]) {
