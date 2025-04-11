@@ -26,6 +26,7 @@
   pointer-events: none;
 }
 
+/* Flexbox for layout */
 /* Layout Sections */
 .layout-section {
   display: flex;
