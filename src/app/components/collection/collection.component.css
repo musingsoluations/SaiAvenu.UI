@@ -4,17 +4,21 @@
   height: 100%;
   width: 100%;
   overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  background-color: var(--app-background-color, #f5f7fa);
+  /* Softer background */
 }
 
 .container {
-  padding: 20px;
-  background-color: #f9f9f9;
-  /* Light background for the page */
+  padding: 24px;
+  /* Slightly more padding */
   transition: opacity 0.3s ease-in-out;
   width: 100%;
-  max-width: 100%;
-  /* box-sizing: border-box; */
-  /* Handled globally */
+  max-width: 1600px;
+  /* Max width for large screens */
+  margin: 0 auto;
+  /* Center container */
+  box-sizing: border-box;
 }
 
 .container.loading {
@@ -22,68 +26,79 @@
   pointer-events: none;
 }
 
-/* Grid Layout */
-.row {
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  gap: 20px;
-  /* Space between form/chart columns */
-  margin-bottom: 20px;
-  /* Space below form/chart row */
+/* Layout Sections */
+.layout-section {
+  display: flex;
+  flex-direction: column;
+  /* Explicitly set default direction */
+  gap: 24px;
+  margin-bottom: 24px;
   width: 100%;
+  flex-wrap: wrap;
+  /* Allow wrapping if needed, but row direction is primary */
 }
 
-.col {
-  flex: 1;
-  /* Make columns share space equally */
-  min-width: 0;
-  /* Prevent flex items from overflowing */
+.form-section {
+  flex: 1 1 auto;
+  /* Let basis be auto, rely on grow/shrink */
+  min-width: 320px;
+  max-width: 500px;
+  /* Keep max-width constraint */
 }
 
-.form-col {
-  max-width: 450px;
-  /* Limit form width */
-  flex-basis: 450px;
-  flex-grow: 0;
+.table-section-wrapper {
+  /* New wrapper for table + potential future elements */
+  flex: 2 1 auto;
+  /* Let basis be auto, grow more than form */
+  min-width: 400px;
+  /* Keep min-width */
 }
 
-/* .chart-col removed */
-
-/* Box Styles */
+/* Box Styles (Card-like appearance) */
+.box {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  /* Subtle border */
+}
 
 /* Typography */
 h2 {
   margin-top: 0;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 24px;
+  /* Increased spacing */
+  color: var(--app-primary-text-color, #212121);
   font-weight: 500;
-  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-size: 1.4rem;
+  /* Slightly larger */
+  border-bottom: 1px solid #eee;
+  /* Subtle separator */
+  padding-bottom: 10px;
 }
 
-/* Table Section */
+/* Table Section (inside wrapper) */
 .table-section {
-  margin-top: 20px;
   width: 100%;
+  /* Remove margin-top, handled by layout-section gap */
 }
 
-/* .chart-wrapper removed */
+/* Removed .chart-wrapper */
 
 /* Form Styles */
 .form-container {
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
+  display: flex;
+  /* Use flex here */
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
+  /* Slightly more gap */
   width: 100%;
-  /* box-sizing: border-box; */
-  /* Handled globally */
 }
 
 mat-form-field {
   width: 100%;
-  margin-bottom: 10px;
-  /* box-sizing: border-box; */
-  /* Handled globally by mat-form-field style */
+  /* Remove margin-bottom, handled by gap */
 }
 
 .radio-group {
@@ -98,15 +113,20 @@ mat-form-field {
 }
 
 mat-radio-group {
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  gap: 20px;
+  display: flex;
+  /* Use flex for radio buttons */
+  gap: 24px;
   /* Space between radio buttons */
+  flex-wrap: wrap;
+  /* Allow wrapping if needed */
 }
 
 .form-actions {
-  text-align: right;
-  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  /* Align button to the right */
+  margin-top: 16px;
+  /* Reduced top margin */
 }
 
 /* Select All Option */
@@ -134,178 +154,141 @@ mat-radio-group {
 
 /* Table Styles */
 .table-container {
-  /* Base width and overflow handled globally */
+  overflow-x: auto;
+  /* Allow horizontal scrolling on small screens */
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  /* Border around the table container */
+  border-radius: 4px;
+  /* Rounded corners for the container */
 }
 
-table {
-  /* Base width handled globally */
-  min-width: 800px;
+table.mat-table {
+  width: 100%;
+  min-width: 900px;
+  /* Minimum width before scroll appears */
+  border-collapse: collapse;
+  /* Ensure borders work nicely */
 }
 
-/* Table Header Filter */
-.header-cell {
-  position: relative;
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  flex-direction: row;
-  align-items: center;
-  min-height: 32px;
-}
-
-.header-content {
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  align-items: center;
-  gap: 4px;
-  height: 32px;
-}
-
-.header-label {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.87);
-  transition: all 0.3s ease;
-}
-
-.filter-button {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  align-items: center;
-  justify-content: center;
-}
-
-.filter-button mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.filter-field {
-  display: none;
-  width: 0;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.header-cell.show-filter {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.header-cell.show-filter .header-label {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.header-cell.show-filter .filter-field {
-  display: block;
-  width: 200px;
-  opacity: 1;
-}
+/* Removed old header filter styles, using simpler approach */
 
 /* Table Cell Styles */
 .mat-mdc-header-cell,
 .mat-mdc-cell {
-  /* Base padding handled globally, specific overrides can remain if needed */
-  /* This component uses smaller padding than the global default, so keep this line */
-  padding: 8px 16px;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.87);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  height: 48px;
-  vertical-align: top;
+  padding: 12px 16px;
+  /* Increased padding */
+  font-size: 0.875rem;
+  /* Standard size */
+  color: var(--app-secondary-text-color, #555);
+  border-bottom: 1px solid #e0e0e0;
+  /* Consistent border color */
+  vertical-align: middle;
+  /* Align content vertically */
 }
 
 .mat-mdc-header-cell {
-  font-weight: 500;
+  font-weight: 600;
+  /* Bolder headers */
   white-space: nowrap;
+  color: var(--app-primary-text-color, #212121);
+  background-color: #fafafa;
+  /* Light background for header */
+  height: 56px;
+  /* Standard header height */
 }
 
 /* Base hover handled globally, specific hover can override if needed */
-/* This component uses a different hover color, so keep this rule */
-.mat-mdc-row:hover {
-  background: #f5f5f5;
+.mat-mdc-row:hover:not(.group-row):not(.detail-row) {
+  /* Hover only on standard rows if needed */
+  background-color: rgba(0, 0, 0, 0.03);
+  /* Subtle hover */
 }
 
 /* Form Fields in Table */
 td mat-form-field {
-  width: 150px;
+  width: 160px;
+  /* Slightly wider */
   margin: 0;
+  /* Use outline appearance for consistency */
+  /* This needs to be set on the component itself or via global config */
 }
 
 /* Error state styles */
-td.mat-mdc-cell:has(.mat-form-field-invalid) {
-  height: auto;
-  min-height: 48px;
-  padding-bottom: 28px;
+/* Adjust padding for cells containing form fields to align baselines */
+td.mat-mdc-cell:has(mat-form-field) {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
-.mat-form-field-error {
-  position: absolute;
-  font-size: 12px;
-  line-height: 1.2;
-  white-space: nowrap;
-  margin-top: 2px;
-}
+/* Error state styles - rely on Angular Material defaults unless specific override needed */
+/* Removed custom error styles */
 
-/* Responsive styles removed for budget analysis */
+/* Removed comments about ::ng-deep */
 
-/* Date picker responsiveness */
-/* Removed ::ng-deep datepicker styles. Apply using panelClass. */
-
-/* Ensure form fields don't overflow */
-/* Removed ::ng-deep form field overrides. */
-
-/* Table Section Styles */
+/* Table Header Styles */
 .table-header {
-  /* display: flex; */
-  /* Replaced by .flex class in HTML */
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  /* Stack elements vertically */
+  align-items: flex-start;
+  /* Align items to the start (left) */
+  margin-bottom: 16px;
+  padding: 8px;
+  /* Add some padding all around */
+  gap: 12px;
+  /* Adjust gap for vertical spacing */
 }
 
-/* Removed duplicate .filter-container definition. */
-
-.filter-container.show-filter {
-  display: block;
-  /* Show when active */
+.table-header h2 {
+  margin-bottom: 0;
+  /* Remove bottom margin from h2 inside header */
+  border-bottom: none;
+  /* Remove border from h2 inside header */
+  padding-bottom: 0;
+  font-size: 1.2rem;
+  /* Slightly smaller title in header */
 }
 
-.filter-field .mat-mdc-form-field-infix {
-  padding-top: 8px;
-  /* Adjust vertical alignment */
-  padding-bottom: 8px;
-}
+/* .filter-container styles removed */
 
-.filter-toggle-button {
-  margin-left: 10px;
-  /* Space between filter and button if filter is visible */
-}
+/* .filter-field styles removed */
+
+/* Removed filter toggle button styles */
 
 /* Tree Table Specific Styles */
 .group-row {
-  font-weight: bold;
-  background-color: #f0f0f0;
-  /* Light grey background for group headers */
+  font-weight: 600;
+  /* Bolder group row */
+  background-color: #eef2f7;
+  /* Distinct background for group rows */
+  border-top: 2px solid #d0d9e3;
+  /* Separator */
+  border-bottom: 1px solid #d0d9e3;
 }
 
 .group-row:hover {
-  background-color: #e0e0e0;
-  /* Slightly darker on hover */
+  background-color: #e4eaf1;
+  /* Hover for group row */
+}
+
+.group-row .mat-mdc-cell {
+  color: var(--app-primary-text-color, #333);
+  /* Darker text for group row */
 }
 
 /* Style for detail rows */
 .detail-row {
-  height: 0;
-  /* Start collapsed */
-  overflow: hidden;
-  /* Hide content when collapsed */
-  border-bottom-width: 0;
-  /* Hide bottom border when collapsed */
+  background-color: #ffffff;
+  /* White background for detail */
+  border-bottom: 1px dashed #eee;
+  /* Dashed separator for detail items */
+}
+
+/* Remove height: 0; Angular animation handles collapsing */
+.detail-row.expanded {
+  /* Style when expanded (if needed, animation handles visibility) */
+  /* Add specific styles for expanded rows if necessary */
 }
 
 /* Indentation for detail rows - target the spacer cell */
@@ -313,62 +296,118 @@ td.mat-mdc-cell:has(.mat-form-field-invalid) {
   width: 48px;
   /* Match width of expander icon button cell */
   padding: 0 !important;
-  /* Remove padding */
   border: none;
-  /* Remove borders */
+  background-color: #fafbff;
+  /* Slightly different background for indentation area */
 }
 
 /* Expander button cell styling */
 .expander-cell {
   width: 48px;
-  /* Fixed width for the expander button */
-  padding-right: 0 !important;
+  /* Fixed width */
+  padding: 0 0 0 8px !important;
+  /* Adjust padding for icon alignment */
 }
 
-/* Remove hover effect from detail rows if desired */
-/*
 .detail-row:hover {
-  background-color: transparent !important;
+  background-color: rgba(0, 0, 0, 0.02);
+  /* Very subtle hover for detail rows */
 }
-*/
 
 /* Payment related field styling */
-.payment-amount-field .mat-mdc-form-field-infix {
-  width: auto;
-  /* Allow field to shrink */
-  min-width: 100px;
-  /* Minimum width */
-  padding: 4px 0 !important;
-  /* Reduce padding */
+/* Payment related field styling */
+.payment-amount-field {
+  /* Use appearance="outline" on the component */
+  /* Adjustments via global styles or component properties preferred */
 }
 
-.payment-amount-field .mat-mdc-text-field-wrapper {
-  height: 40px;
-  /* Adjust height */
-}
+/* Removed specific infix/wrapper height overrides, rely on Material defaults */
 
 .action-button {
   min-width: 80px;
-  /* Ensure buttons have reasonable width */
-  margin-right: 5px;
-  /* Spacing between buttons if needed */
+  margin: 0 4px;
+  /* Consistent margin around buttons */
+  line-height: 32px;
+  /* Adjust line height for button text */
+  padding: 0 12px;
+  /* Adjust padding */
 }
 
-/* Align header text */
-.mat-mdc-header-cell {
-  text-align: left;
-}
-
-/* Align cell text */
-.mat-mdc-cell {
-  text-align: left;
-  vertical-align: middle;
-  /* Align content vertically */
-}
+/* Text alignment is handled in base cell styles */
+/* Removed redundant alignment rules */
 
 /* No Data Row */
 .mat-row.mat-no-data-row .mat-cell {
   text-align: center;
-  padding: 20px;
-  color: grey;
+  padding: 32px;
+  /* More padding */
+  color: #757575;
+  /* Standard grey */
+  font-style: italic;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 959px) {
+
+  /* Tablet breakpoint */
+  .layout-section {
+    flex-direction: column;
+    /* Stack form and table ONLY below this breakpoint */
+    gap: 20px;
+  }
+
+  .form-section,
+  .table-section-wrapper {
+    flex-basis: auto;
+    /* Allow full width */
+    max-width: 100%;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Filter styles already removed */
+
+  /* Filter styles already removed */
+}
+
+@media (max-width: 599px) {
+
+  /* Mobile breakpoint */
+  .container {
+    padding: 16px;
+    /* Reduce padding */
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .table-header h2 {
+    font-size: 1.1rem;
+  }
+
+  mat-radio-group {
+    gap: 16px;
+  }
+
+  .action-button {
+    min-width: 70px;
+    padding: 0 8px;
+    font-size: 0.8rem;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    padding: 8px 10px;
+    /* Reduce padding */
+    font-size: 0.8rem;
+  }
+
+  td mat-form-field {
+    width: 120px;
+    /* Smaller fields in table */
+  }
 }
