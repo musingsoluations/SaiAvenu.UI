@@ -4,9 +4,6 @@
   height: 100vh;
 }
 
-.fill-remaining-space {
-  flex: 1 1 auto;
-}
 
 .topbar {
   background: #34495e;
@@ -102,19 +99,6 @@ mat-toolbar-row {
   color: #4CAF50;
 }
 
-.totals-menu-panel {
-  margin-top: 8px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.totals-menu-panel .mat-mdc-menu-panel {
-  min-width: 280px;
-  max-width: 280px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-}
 
 .totals-details {
   display: flex;
@@ -227,4 +211,13 @@ mat-toolbar-row {
   .totals-container {
     margin-right: 0.25rem;
   }
+}
+
+.content-area {
+  padding: 1.5rem;
+  /* Add padding around the main content */
+  flex-grow: 1;
+  /* Ensure it takes available space */
+  overflow-y: auto;
+  /* Allow scrolling if content overflows */
 }
