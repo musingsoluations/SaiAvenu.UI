@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, AfterViewInit } from '@angular/core';
 import { FloatLabelType, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +26,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -42,6 +42,9 @@ export class LoginComponent {
       password: ['', [Validators.required]]
     });
   }
+
+  @ViewChild('mobileNumberInput') mobileNumberInput!: ElementRef;
+
 
   readonly hideRequiredControl = new FormControl(false);
   readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
@@ -78,5 +81,9 @@ export class LoginComponent {
   // Method to toggle password visibility
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
+  } 
+  ngAfterViewInit(): void {
+        // Set focus to the mobile number input after the view has initialized
+    this.mobileNumberInput.nativeElement.focus();
   }
 }

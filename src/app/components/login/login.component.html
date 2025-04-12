@@ -23,7 +23,7 @@
       <form [formGroup]="loginForm" class="login-form">
         <mat-form-field [floatLabel]="floatLabel()" style="width: 80%">
           <mat-label>Mobile Number</mat-label>
-          <input matInput placeholder="Enter your mobile number" type="text" formControlName="mobileNumber">
+          <input matInput #mobileNumberInput placeholder="Enter your mobile number" type="text" formControlName="mobileNumber">
         </mat-form-field>
 
         <mat-form-field [floatLabel]="floatLabel()" style="width: 80%">
