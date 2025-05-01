@@ -428,6 +428,12 @@ export class CollectionComponent implements OnInit, AfterViewInit {
     today.setHours(0, 0, 0, 0);
     return date ? date <= today : false;
   };
+  // Filter to allow only today and future dates
+  futureDateFilter = (date: Date | null): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize today's date to midnight
+    return date ? date >= today : false; // Allows dates greater than or equal to today
+  };
 
   toggleAllSelection() {
     if (this.allSelected) {
