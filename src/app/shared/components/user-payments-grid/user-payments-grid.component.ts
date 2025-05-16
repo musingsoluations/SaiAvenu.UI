@@ -66,7 +66,7 @@ export class UserPaymentsGridComponent implements OnInit {
   payments: UserPayment[] = [];
   displayedColumns: string[] = ['amount', 'paidDate', 'paymentMethod', 'apartmentNumber'];
 
-  constructor(private userPaymentsService: UserPaymentsService) {}
+  constructor(private userPaymentsService: UserPaymentsService) { }
 
   ngOnInit(): void {
     this.loadPayments();
@@ -75,7 +75,7 @@ export class UserPaymentsGridComponent implements OnInit {
   private loadPayments(): void {
     this.userPaymentsService.getUserPayments().subscribe({
       next: (payments) => {
-        this.payments = payments;
+        this.payments = payments.sort((a, b) => new Date(b.paidDate).getTime() - new Date(a.paidDate).getTime());
       },
       error: (error) => {
         console.error('Load payments error:', error);
