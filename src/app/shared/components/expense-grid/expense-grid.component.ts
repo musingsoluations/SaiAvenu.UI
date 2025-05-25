@@ -27,15 +27,15 @@ export class ExpenseGridComponent implements OnInit {
   currentMonth = new Date().getMonth() + 1;
   currentYear = new Date().getFullYear();
 
-  months = Array.from({length: 12}, (_, i) => ({ value: i + 1, label: new Date(0, i).toLocaleString('default', { month: 'long' }) }));
-  years = Array.from({length: 5}, (_, i) => this.currentYear - 2 + i);
+  months = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: new Date(0, i).toLocaleString('default', { month: 'long' }) }));
+  years = Array.from({ length: 5 }, (_, i) => this.currentYear - 2 + i);
 
   expenseTypes = [
     { value: ExpenseType.recurring, label: 'Recurring' },
     { value: ExpenseType.adHoc, label: 'Ad Hoc' }
   ];
 
-  constructor(private expenseService: ExpenseService) {}
+  constructor(private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
     this.loadExpenses();
@@ -44,8 +44,8 @@ export class ExpenseGridComponent implements OnInit {
   loadExpenses(): void {
     this.expenseService.getExpenses(this.currentMonth, this.currentYear).subscribe({
       next: (expenses) => {
-        this.expenses = expenses;
-        this.expensesChange.emit(expenses);
+        this.expenses = expenses.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.expensesChange.emit(this.expenses);
         this.calculateTotal();
       },
       error: (error) => {
