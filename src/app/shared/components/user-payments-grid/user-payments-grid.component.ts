@@ -21,6 +21,12 @@ import { UserPayment, UserPaymentsService } from '../../../services/user-payment
         <td mat-cell *matCellDef="let payment">{{payment.paidDate | date}}</td>
       </ng-container>
 
+       <!-- Date Column -->
+      <ng-container matColumnDef="paidDate">
+        <th mat-header-cell *matHeaderCellDef>For What</th>
+        <td mat-cell *matCellDef="let payment">{{payment.comment}}</td>
+      </ng-container>
+
       <!-- Payment Method Column -->
       <ng-container matColumnDef="paymentMethod">
         <th mat-header-cell *matHeaderCellDef>Payment Method</th>
@@ -62,9 +68,10 @@ import { UserPayment, UserPaymentsService } from '../../../services/user-payment
     }
   `]
 })
+
 export class UserPaymentsGridComponent implements OnInit {
   payments: UserPayment[] = [];
-  displayedColumns: string[] = ['amount', 'paidDate', 'paymentMethod', 'apartmentNumber'];
+  displayedColumns: string[] = ['amount', 'paidDate', 'comment', 'paymentMethod', 'apartmentNumber'];
 
   constructor(private userPaymentsService: UserPaymentsService) { }
 
