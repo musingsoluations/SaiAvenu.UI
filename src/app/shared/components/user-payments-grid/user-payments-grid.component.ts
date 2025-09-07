@@ -22,7 +22,7 @@ import { UserPayment, UserPaymentsService } from '../../../services/user-payment
       </ng-container>
 
        <!-- Date Column -->
-      <ng-container matColumnDef="paidDate">
+      <ng-container matColumnDef="comment">
         <th mat-header-cell *matHeaderCellDef>For What</th>
         <td mat-cell *matCellDef="let payment">{{payment.comment}}</td>
       </ng-container>
