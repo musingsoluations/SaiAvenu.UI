@@ -29,20 +29,30 @@ export class DashboardComponent implements OnInit {
   chartData: ChartDataItem[] = [];
   chartDataSelf: ChartDataItem[] = [];
   expenses: ExpenseDto[] = [];
+  selectedYear: number = new Date().getFullYear();
+
   constructor(
     private collectionService: CollectionService,
     private expenseService: ExpenseService
   ) { }
 
   ngOnInit(): void {
-    const currentYear = new Date().getFullYear();
-    this.collectionService.getCollectionPayment(currentYear).subscribe(data => {
+    this.loadCollectionData(this.selectedYear);
+    this.loadExpenses();
+  }
+
+  onYearChange(year: number): void {
+    this.selectedYear = year;
+    this.loadCollectionData(year);
+  }
+
+  private loadCollectionData(year: number): void {
+    this.collectionService.getCollectionPayment(year).subscribe(data => {
       this.chartData = data ?? [];
     });
-    this.collectionService.getCollectionPaymentSelf(currentYear).subscribe(selfData => {
+    this.collectionService.getCollectionPaymentSelf(year).subscribe(selfData => {
       this.chartDataSelf = selfData ?? [];
     });
-    this.loadExpenses();
   }
 
   loadExpenses(): void {

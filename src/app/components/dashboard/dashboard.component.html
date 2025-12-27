@@ -4,7 +4,7 @@
     <div *ngIf="chartData.length === 0" class="loading">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-    <app-collection-chart *ngIf="chartData.length > 0" [chartData]="chartData"></app-collection-chart>
+    <app-collection-chart *ngIf="chartData.length > 0" [chartData]="chartData" (yearChanged)="onYearChange($event)"></app-collection-chart>
   </div>
 
   <div class="card">
@@ -20,7 +20,7 @@
     <div *ngIf="chartDataSelf.length === 0" class="loading">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-    <app-collection-chart *ngIf="chartDataSelf.length > 0" [chartData]="chartDataSelf"></app-collection-chart>
+    <app-collection-chart *ngIf="chartDataSelf.length > 0" [chartData]="chartDataSelf" (yearChanged)="onYearChange($event)"></app-collection-chart>
   </div>
 
   <div class="card">
