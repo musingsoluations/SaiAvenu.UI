@@ -1,10 +1,20 @@
 <div class="dashboard">
   <div class="card">
-    <h2>Overall Demand Vs Payment</h2>
-    <div *ngIf="chartData.length === 0" class="loading">
+    <div class="card-header">
+      <h2>Overall Demand Vs Payment</h2>
+      <mat-form-field appearance="outline" class="year-selector">
+        <mat-label>Year</mat-label>
+        <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange($event.value)">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="isLoadingChartData" class="loading">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-    <app-collection-chart *ngIf="chartData.length > 0" [chartData]="chartData" (yearChanged)="onYearChange($event)"></app-collection-chart>
+    <app-collection-chart *ngIf="!isLoadingChartData" [chartData]="chartData"></app-collection-chart>
   </div>
 
   <div class="card">
@@ -17,10 +27,10 @@
 
   <div class="card">
     <h2>Your Demand Vs Payment</h2>
-    <div *ngIf="chartDataSelf.length === 0" class="loading">
+    <div *ngIf="isLoadingChartDataSelf" class="loading">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-    <app-collection-chart *ngIf="chartDataSelf.length > 0" [chartData]="chartDataSelf" (yearChanged)="onYearChange($event)"></app-collection-chart>
+    <app-collection-chart *ngIf="!isLoadingChartDataSelf" [chartData]="chartDataSelf"></app-collection-chart>
   </div>
 
   <div class="card">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CollectionChartComponent } from '../../shared/components/collection-chart/collection-chart.component';
 import { CollectionService } from '../../services/collection/collection.service';
@@ -16,6 +17,7 @@ import { UserPaymentsGridComponent } from '../../shared/components/user-payments
   imports: [
     CommonModule,
     MatSelectModule,
+    MatFormFieldModule,
     MatProgressSpinnerModule,
     CollectionChartComponent,
     ExpenseGridComponent,
@@ -30,6 +32,9 @@ export class DashboardComponent implements OnInit {
   chartDataSelf: ChartDataItem[] = [];
   expenses: ExpenseDto[] = [];
   selectedYear: number = new Date().getFullYear();
+  years: number[] = [];
+  isLoadingChartData = true;
+  isLoadingChartDataSelf = true;
 
   constructor(
     private collectionService: CollectionService,
@@ -37,6 +42,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Generate years from 2025 to 2035 (10 years ahead)
+    const startYear = 2025;
+    const endYear = startYear + 10;
+    this.years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
     this.loadCollectionData(this.selectedYear);
     this.loadExpenses();
   }
@@ -47,11 +56,27 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadCollectionData(year: number): void {
-    this.collectionService.getCollectionPayment(year).subscribe(data => {
-      this.chartData = data ?? [];
+    this.isLoadingChartData = true;
+    this.isLoadingChartDataSelf = true;
+
+    this.collectionService.getCollectionPayment(year).subscribe({
+      next: (data) => {
+        this.chartData = data ?? [];
+        this.isLoadingChartData = false;
+      },
+      error: () => {
+        this.isLoadingChartData = false;
+      }
     });
-    this.collectionService.getCollectionPaymentSelf(year).subscribe(selfData => {
-      this.chartDataSelf = selfData ?? [];
+
+    this.collectionService.getCollectionPaymentSelf(year).subscribe({
+      next: (selfData) => {
+        this.chartDataSelf = selfData ?? [];
+        this.isLoadingChartDataSelf = false;
+      },
+      error: () => {
+        this.isLoadingChartDataSelf = false;
+      }
     });
   }
 

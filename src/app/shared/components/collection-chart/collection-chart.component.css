@@ -12,14 +12,6 @@
   height: 100%;
 }
 
-.year-selector {
-  padding: 16px 16px 0 16px;
-}
-
-.year-selector mat-form-field {
-  width: 200px;
-}
-
 .stats-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

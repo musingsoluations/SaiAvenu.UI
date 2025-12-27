@@ -1,9 +1,7 @@
-import { Component, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LegendPosition } from '@swimlane/ngx-charts';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
 export interface SeriesItem {
   name: string;
@@ -18,7 +16,7 @@ export interface ChartDataPoint {
 @Component({
   selector: 'app-collection-chart',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatSelectModule, MatFormFieldModule],
+  imports: [CommonModule, NgxChartsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './collection-chart.component.html',
   styleUrls: ['./collection-chart.component.css']
@@ -31,11 +29,6 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
     return this._chartData;
   }
   private _chartData: ChartDataPoint[] = [];
-
-  @Output() yearChanged = new EventEmitter<number>();
-
-  selectedYear: number = new Date().getFullYear();
-  years: number[] = [];
 
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
@@ -65,12 +58,6 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // Generate years from 2025 to 2035 (10 years ahead)
-    const currentYear = new Date().getFullYear();
-    const startYear = 2025;
-    const endYear = startYear + 10;
-    this.years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
-    this.selectedYear = currentYear;
     setTimeout(() => this.updateDimensions(), 0);
   }
 
@@ -86,11 +73,6 @@ export class CollectionChartComponent implements OnInit, AfterViewInit {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
-  }
-
-  onYearChange(year: number): void {
-    this.selectedYear = year;
-    this.yearChanged.emit(year);
   }
 
   private updateDimensions() {
